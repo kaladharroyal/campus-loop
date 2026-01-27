@@ -1,45 +1,38 @@
-// Navbar.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-const Navbar = () => {
-  return (
-    <nav style={styles.navbar}>
-      <h2 style={styles.logo}>MyApp</h2>
-      <ul style={styles.navLinks}>
-        <li>
-          <Link to="/login" style={styles.link}>Login</Link>
-        </li>
-        <li>
-          <Link to="/register" style={styles.link}>Register</Link>
-        </li>
-      </ul>
-    </nav>
-  );
-};
+import React, { useState } from "react";
+import "./Navbar.css";
 
-const styles = {
-  navbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px 20px',
-    backgroundColor: '#333',
-    color: '#fff',
-  },
-  logo: {
-    margin: 0,
-  },
-  navLinks: {
-    listStyle: 'none',
-    display: 'flex',
-    gap: '15px',
-    margin: 0,
-    padding: 0,
-  },
-  link: {
-    color: '#fff',
-    textDecoration: 'none',
-  },
+const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <nav className="lms-navbar fixed-top m-1">
+            <div className="navbar-brand">
+                <img src="/logo.png" alt="LMS Logo" className="navbar-logo" />
+                <h2>CampusLoop LMS</h2>
+            </div>
+
+            <button className="menu-toggle" onClick={toggleMenu}>
+                ☰
+            </button>
+
+            <ul className={`navbar-links ${isOpen ? "open" : ""}`}>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/courses">Courses</a></li>
+                <li><a href="/assignments">Assignments</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/support">Support</a></li>
+            </ul>
+
+            <div className="navbar-actions">
+                <a href="/notifications" className="icon">🔔</a>
+                <a href="/login" className="btn-login">Login</a>
+            </div>
+        </nav>
+    );
 };
 
 export default Navbar;
