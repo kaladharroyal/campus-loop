@@ -1,0 +1,19 @@
+/* @import './styles/variables.css';
+
+:root {
+  font-family: var(--font-family-base);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text-main);
+  background-color: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  height: 100vh;
+} */
