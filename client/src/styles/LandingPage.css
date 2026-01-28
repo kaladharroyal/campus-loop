@@ -1,0 +1,234 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #dbdfe8;
+    color: #f6efef;
+}
+
+.container {
+    width: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2b4eff;
+}
+
+.auth-links a {
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #2b4eff;
+}
+
+/* ================= SLIDER ================= */
+
+.banner-section {
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider-track {
+    display: flex;
+}
+
+.slide {
+    min-width: 100%;
+    height: 420px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Apply background directly to slide */
+    background: linear-gradient(135deg, #000000, #6a82fb);
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Remove separate background layer triggers */
+.slide-bg {
+    display: none !important;
+}
+
+#slidedata {
+    color: #ffffff;
+}
+
+/* Text layer - simplified */
+.slide-content {
+    position: relative;
+    z-index: 10;
+    color: #ffffff;
+    text-align: center;
+    padding: 30px;
+    max-width: 800px;
+    /* Text Shadow for visibility */
+    /* text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); */
+}
+
+.slide-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+.slide-content p {
+    font-size: 1.15rem;
+    max-width: 700px;
+}
+
+/* Active / inactive logic - Simplified opacity on entire slide */
+.slide.blurred {
+    opacity: 0.5;
+    transform: scale(0.95);
+    transition: all 0.4s ease;
+}
+
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.4s ease;
+}
+
+
+/* ================= SECTIONS ================= */
+
+.section-title {
+    text-align: center;
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+}
+
+.courses-grid {
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.course-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Companies */
+.companies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.company-box {
+    background: #f0f3ff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.company-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Testimonials */
+.testimonial {
+    background: #f9fafc;
+    padding: 20px;
+    border-left: 5px solid #2b4eff;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+.testimonial:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+    border-top: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .slide {
+        height: 340px;
+    }
+
+    .slide-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .slide-content p {
+        font-size: 1rem;
+    }
+
+    .courses-grid {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .slide {
+        height: 300px;
+    }
+
+    .slide-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .slide-content p {
+        font-size: 0.95rem;
+    }
+}

@@ -1,0 +1,187 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* General body and typography styles for Auth Pages */
+.auth-wrapper {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3e8ff;
+    /* lavender */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #1f2937;
+    width: 100%;
+}
+
+/* Container for the login card */
+
+.login-container {
+    width: 100%;
+    max-width: 900px;
+    /* max-height: 1200px; Removed or kept if user really wants it, but usually auto is better. I'll remove the line the user added if it isn't serving a purpose, or just modify width. */
+    max-height: 1200px;
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    /* Ensure image doesn't overflow rounded corners */
+}
+
+.form-section {
+    flex: 1;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.image-section {
+    flex: 1;
+    background-color: #f3f4f6;
+    display: none;
+    /* Hidden on mobile by default */
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Show image on larger screens */
+@media (min-width: 768px) {
+    .image-section {
+        display: block;
+    }
+}
+
+/* Helper to remove padding from container since it's now in form-section */
+.login-container {
+    padding: 0;
+}
+
+
+/* Header styling */
+.header {
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Role tabs */
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    background-color: #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    color: #4b5563;
+}
+
+.tab-button.active {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    color: #1f2937;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #ffffff;
+    /* lavender border */
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
+
+/* Primary button */
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #b158d2;
+    background-color: #ffffff;
+    /* lavender */
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary:hover {
+    background-color: #7c3aed;
+    /* darker lavender */
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    background-color: #6d28d9;
+    /* even darker lavender */
+    transform: translateY(0);
+}
+
+/* Utilities */
+.text-link {
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
