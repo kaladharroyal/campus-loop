@@ -20,7 +20,7 @@ const Login = () => {
     if (role === 'student') {
       setLabel('Roll Number');
       setPlaceholder('e.g., CSE001');
-    } else if (role === 'instructor') {
+    } else if (role === 'teacher') {
       setLabel('Email Address');
       setPlaceholder('faculty@university.edu');
     } else if (role === 'admin') {
@@ -47,25 +47,16 @@ const Login = () => {
   const getRoleIcon = (roleType) => {
     switch (roleType) {
       case 'student': return '🎓';
-      case 'instructor': return '👨‍🏫';
+      case 'teacher': return '👨‍🏫';
       case 'admin': return '⚙️';
       default: return '🎓';
-    }
-  };
-
-  const getRoleLabel = (roleType) => {
-    switch (roleType) {
-      case 'student': return 'Student';
-      case 'instructor': return 'Faculty';
-      case 'admin': return 'Admin';
-      default: return roleType.charAt(0).toUpperCase() + roleType.slice(1);
     }
   };
 
   const getRoleDescription = () => {
     switch (role) {
       case 'student': return 'Access your courses, assignments, and grades';
-      case 'instructor': return 'Manage courses, students, and assessments';
+      case 'teacher': return 'Manage courses, students, and assessments';
       case 'admin': return 'System administration and management';
       default: return '';
     }
@@ -140,7 +131,7 @@ const Login = () => {
 
             {/* Role Selector */}
             <div className="role-selector">
-              {['student', 'instructor', 'admin'].map((roleType) => (
+              {['student', 'teacher', 'admin'].map((roleType) => (
                 <button
                   key={roleType}
                   type="button"
@@ -148,7 +139,7 @@ const Login = () => {
                   onClick={() => setRole(roleType)}
                 >
                   <span className="role-icon">{getRoleIcon(roleType)}</span>
-                  <span className="role-name">{getRoleLabel(roleType)}</span>
+                  <span className="role-name">{roleType.charAt(0).toUpperCase() + roleType.slice(1)}</span>
                 </button>
               ))}
             </div>
@@ -256,4 +247,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

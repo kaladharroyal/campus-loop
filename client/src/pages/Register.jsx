@@ -52,16 +52,8 @@ const Register = () => {
   const getRoleIcon = (roleType) => {
     switch (roleType) {
       case 'student': return '🎓';
-      case 'instructor': return '👨‍🏫';
+      case 'teacher': return '👨‍🏫';
       default: return '🎓';
-    }
-  };
-
-  const getRoleLabel = (roleType) => {
-    switch (roleType) {
-      case 'student': return 'Student';
-      case 'instructor': return 'Faculty';
-      default: return roleType.charAt(0).toUpperCase() + roleType.slice(1);
     }
   };
 
@@ -150,7 +142,7 @@ const Register = () => {
         <div className="auth-form-section">
           <div className="form-wrapper register-form">
             <div className="form-header">
-              <h2 className="form-title">Create Account</h2>
+              <h2 className="form-title ">Create Account</h2>
               <p className="form-subtitle">Join thousands of learners today</p>
             </div>
 
@@ -169,7 +161,7 @@ const Register = () => {
 
             {/* Role Selector */}
             <div className="role-selector">
-              {['student', 'instructor'].map((roleType) => (
+              {['student', 'teacher'].map((roleType) => (
                 <button
                   key={roleType}
                   type="button"
@@ -177,7 +169,7 @@ const Register = () => {
                   onClick={() => setRole(roleType)}
                 >
                   <span className="role-icon">{getRoleIcon(roleType)}</span>
-                  <span className="role-name">{getRoleLabel(roleType)}</span>
+                  <span className="role-name">{roleType.charAt(0).toUpperCase() + roleType.slice(1)}</span>
                 </button>
               ))}
             </div>
