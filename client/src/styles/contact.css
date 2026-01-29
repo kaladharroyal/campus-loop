@@ -1,0 +1,105 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px);
+    /* Adjust for header/footer */
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Blurred Background */
+.form-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-bg);
+    background-image: url('../assets/background-image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px);
+    z-index: 1;
+}
+
+.form-content {
+    background-color: var(--color-white);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--color-border);
+    position: relative;
+    z-index: 2;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-text-main);
+}
+
+.form-header h2 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-main);
+}
+
+.form-header p {
+    color: var(--color-text-light);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-main);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.form-group textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.9;
+}

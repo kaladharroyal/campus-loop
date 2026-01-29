@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/campus-loop-logo.png';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const { logout } = useAuth();
     const navigate = useNavigate();
 
@@ -12,8 +12,12 @@ const Sidebar = () => {
         navigate('/login');
     };
 
+    const handleLinkClick = () => {
+        if (onClose) onClose();
+    };
+
     return (
-        <div className="sidebar">
+        <div className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div className="logo-container">
                 <img src={logo} alt="CampusLoop" className="logo-img" style={{ height: '80px' }} />
                 <span className="logo-text">CampusLoop</span>
@@ -21,26 +25,29 @@ const Sidebar = () => {
 
             <div className="menu-section">
                 <h3>Discover</h3>
-                <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">🏠</span> Home
                 </NavLink>
-                <NavLink to="/courses" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/courses" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">🔍</span> Browse Courses
                 </NavLink>
             </div>
 
             <div className="menu-section">
                 <h3>Menu</h3>
-                <NavLink to="/favourites" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/favourites" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">❤️</span> Favourite
                 </NavLink>
-                <NavLink to="/feedback" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/feedback" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">≡</span> Feedback
                 </NavLink>
-                <NavLink to="/focus-mode" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/focus-mode" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">▶️</span> Focus Mode
                 </NavLink>
-                <NavLink to="/profile" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')}>
+                <NavLink to="/ide" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
+                    <span className="icon">💻</span> IDE
+                </NavLink>
+                <NavLink to="/profile" className={({ isActive }) => (isActive ? 'menu-item active' : 'menu-item')} onClick={handleLinkClick}>
                     <span className="icon">👤</span> Profile
                 </NavLink>
             </div>

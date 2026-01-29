@@ -14,13 +14,17 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 5px;
-    color: #000;
+    color: var(--color-primary);
+    background: transparent;
 }
 
 .section-sub {
     color: var(--color-text-light);
     margin-bottom: 25px;
     font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Grids */
@@ -46,6 +50,18 @@
 
     .course-grid-5 {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .course-grid-4,
+    .course-grid-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .page-container {
+        padding: 15px;
     }
 }
 
@@ -186,6 +202,21 @@
     gap: 20px;
 }
 
+@media (max-width: 900px) {
+
+    .dashboard-grid-main,
+    .dashboard-grid-bottom,
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
 .chart-card,
 .list-card,
 .table-card {
@@ -293,6 +324,14 @@
     padding: 12px;
     font-size: 1rem;
     outline: none;
+    background-color: transparent;
+    color: var(--color-text-main);
+}
+
+.input-outline:disabled {
+    color: var(--color-text-main);
+    opacity: 0.7;
+    -webkit-text-fill-color: var(--color-text-main);
 }
 
 .edit-btn {
@@ -496,7 +535,7 @@ footer {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 30px;
-    color: #000;
+    color: var(--color-text-main);
 }
 
 .form-group {
@@ -536,8 +575,8 @@ footer {
 .auth-btn {
     width: 100%;
     padding: 14px;
-    background: #000;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-bg);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -611,10 +650,28 @@ footer {
 }
 
 .feedback-form-card {
-    background: white;
+    background: var(--color-sidebar-bg);
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-border);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--color-text-main);
+    transition: all 0.2s;
+    margin-bottom: 10px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-text-main);
 }
 
 .rating-group {
@@ -670,8 +727,8 @@ footer {
 }
 
 .continue-btn {
-    background: #000;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-bg);
     border: none;
     padding: 10px 25px;
     border-radius: 8px;
@@ -689,23 +746,41 @@ footer {
     display: flex;
     height: calc(100vh - 80px);
     /* Adjust based on topbar height */
-    background-color: #f8f9fa;
+    background-color: var(--color-bg);
     overflow: hidden;
 }
 
 .assignments-sidebar {
     width: 250px;
-    background-color: #ffffff;
-    border-right: 1px solid #e0e0e0;
+    background-color: var(--color-sidebar-bg);
+    border-right: 1px solid var(--color-border);
     padding: 20px;
     display: flex;
     flex-direction: column;
 }
 
+@media (max-width: 768px) {
+    .assignments-layout {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+
+    .assignments-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .assignments-content {
+        height: auto;
+    }
+}
+
 .assignments-sidebar h3 {
     margin-bottom: 20px;
     font-size: 1.2rem;
-    color: #333;
+    color: var(--color-text-main);
 }
 
 .subject-list {
@@ -719,15 +794,15 @@ footer {
     border-radius: 8px;
     display: flex;
     align-items: center;
-    color: #555;
+    color: var(--color-text-light);
     transition: background 0.2s;
     margin-bottom: 5px;
 }
 
 .subject-list li:hover,
 .subject-list li.active {
-    background-color: #f0f4ff;
-    color: #000;
+    background-color: var(--color-hover);
+    color: var(--color-text-main);
     font-weight: 500;
 }
 
@@ -755,6 +830,7 @@ footer {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
+    color: var(--color-text-main);
 }
 
 .header-actions {
@@ -764,24 +840,27 @@ footer {
 
 .search-bar {
     padding: 8px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-border);
     border-radius: 20px;
     width: 250px;
+    background: var(--color-bg);
+    color: var(--color-text-main);
 }
 
 .filter-btn {
     padding: 8px 15px;
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-text-main);
     border-radius: 20px;
     cursor: pointer;
 }
 
 /* Assignments Table */
 .assignments-table-container {
-    background: white;
+    background: var(--color-white);
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
 }
 
@@ -793,16 +872,16 @@ footer {
 .assignments-table th {
     text-align: left;
     padding: 15px 20px;
-    color: #888;
+    color: var(--color-text-light);
     font-weight: 500;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-border);
     font-size: 0.9rem;
 }
 
 .assignments-table td {
     padding: 15px 20px;
-    border-bottom: 1px solid #f9f9f9;
-    color: #333;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-main);
     font-size: 0.95rem;
 }
 
@@ -812,7 +891,7 @@ footer {
 }
 
 .assignments-table tr.clickable-row:hover {
-    background-color: #f8f9ff;
+    background-color: var(--color-hover);
 }
 
 .task-id {
@@ -903,11 +982,13 @@ footer {
 }
 
 .question-card {
-    background: white;
+    background: var(--color-white);
     padding: 40px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
     width: 100%;
+    color: var(--color-text-main);
 }
 
 .question-text {
@@ -925,8 +1006,9 @@ footer {
 
 .option-btn {
     padding: 20px;
-    border: 2px solid #eee;
-    background: white;
+    border: 2px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-main);
     border-radius: 12px;
     cursor: pointer;
     text-align: left;
@@ -936,7 +1018,7 @@ footer {
 
 .option-btn:hover {
     border-color: var(--primary-color);
-    background: #f8f9ff;
+    background: var(--color-hover);
 }
 
 .option-btn.selected {
@@ -949,6 +1031,39 @@ footer {
     display: flex;
     justify-content: flex-end;
     gap: 15px;
+    margin-top: 20px;
+}
+
+.primary-btn {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--color-text-main);
+    border: 1px solid var(--color-border);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.secondary-btn:hover {
+    background: var(--color-hover);
 }
 
 .quiz-progress-bar {
@@ -968,10 +1083,11 @@ footer {
 
 .quiz-result-card {
     text-align: center;
-    background: white;
+    background: var(--color-white);
     padding: 50px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
+    color: var(--color-text-main);
 }
 
 .score-circle {
@@ -1013,9 +1129,9 @@ footer {
 .search-wrapper {
     display: flex;
     align-items: center;
-    background: white;
+    background: var(--color-white);
     padding: 8px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     /* Slightly squarer than before, matching screenshot */
     width: 300px;
@@ -1030,24 +1146,25 @@ footer {
     border: none;
     outline: none;
     width: 100%;
-    color: #555;
+    color: var(--color-text-main);
     font-size: 0.95rem;
+    background: transparent;
 }
 
 .search-input-styled::placeholder {
-    color: #aaa;
+    color: var(--color-text-light);
 }
 
 .filter-btn-styled {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: white;
-    border: 1px solid #ddd;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
     padding: 8px 15px;
     border-radius: 8px;
     cursor: pointer;
-    color: #666;
+    color: var(--color-text-main);
     font-weight: 500;
 }
 
@@ -1057,7 +1174,7 @@ footer {
 
 .view-toggles-styled {
     display: flex;
-    background: #f1f2f4;
+    background: var(--color-hover);
     /* Light grey background for the toggle group */
     border-radius: 8px;
     padding: 4px;
@@ -1074,13 +1191,13 @@ footer {
     background: transparent;
     cursor: pointer;
     border-radius: 6px;
-    color: #666;
+    color: var(--color-text-light);
 }
 
 .toggle-btn.active {
-    background: white;
+    background: var(--color-white);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    color: #000;
+    color: var(--color-primary);
 }
 
 .toggle-btn svg {
@@ -1096,8 +1213,8 @@ footer {
 }
 
 .grid-assignment-card {
-    background: white;
-    border: 1px solid #eee;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 20px;
     cursor: pointer;
@@ -1122,12 +1239,12 @@ footer {
 
 .task-date {
     font-size: 0.8rem;
-    color: #888;
+    color: var(--color-text-light);
 }
 
 .task-subject {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-text-light);
     margin-bottom: 20px;
 }
 
@@ -1135,16 +1252,16 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #f9f9f9;
+    border-top: 1px solid var(--color-border);
     padding-top: 15px;
 }
 
 /* Calendar View Styles */
 .calendar-view-placeholder {
-    background: white;
+    background: var(--color-white);
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid #eee;
+    border: 1px solid var(--color-border);
 }
 
 .calendar-grid {
@@ -1156,21 +1273,21 @@ footer {
 
 .calendar-day {
     height: 100px;
-    border: 1px solid #f0f0f0;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 10px;
     position: relative;
-    background: #fafafa;
+    background: var(--color-bg);
 }
 
 .calendar-day.has-event {
-    background: #fff;
+    background: var(--color-white);
     border-color: var(--primary-color);
 }
 
 .day-number {
     font-weight: 600;
-    color: #333;
+    color: var(--color-text-main);
 }
 
 .calendar-event-dot {

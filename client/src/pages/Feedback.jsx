@@ -53,11 +53,10 @@ const Feedback = () => {
                                     rows="10"
                                     placeholder="Describe how this course helps..."
                                     required
-                                    style={{ background: '#fff0f0', border: '1px solid #ffcccc' }}
                                 ></textarea>
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                                <button type="submit" className="continue-btn" style={{ background: '#333' }}>Submit</button>
+                                <button type="submit" className="continue-btn">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -123,7 +122,7 @@ const Feedback = () => {
                             </div>
 
                             <div style={{ textAlign: 'center', marginTop: '30px' }}>
-                                <button type="submit" className="continue-btn" style={{ background: '#333' }}>Submit</button>
+                                <button type="submit" className="continue-btn">Submit</button>
                             </div>
 
                             <div className="request-link-container">

@@ -105,6 +105,7 @@ router.put('/profile', protect, async (req, res) => {
             user.branch = req.body.branch || user.branch;
             user.year = req.body.year || user.year;
             user.phone = req.body.phone || user.phone;
+            user.profilePicture = req.body.profilePicture || user.profilePicture;
 
             if (req.body.password) {
                 user.password = req.body.password;
@@ -122,6 +123,7 @@ router.put('/profile', protect, async (req, res) => {
                 branch: updatedUser.branch,
                 year: updatedUser.year,
                 phone: updatedUser.phone,
+                profilePicture: updatedUser.profilePicture,
                 token: generateToken(updatedUser._id),
             });
         } else {

@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
     },
     branch: { type: String, default: '' },
     year: { type: String, default: '' },
-    phone: { type: String, default: '' }
+    phone: { type: String, default: '' },
+    profilePicture: { type: String, default: '' }
 }, { timestamps: true });
 
 // Encrypt password using bcrypt

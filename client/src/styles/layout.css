@@ -32,3 +32,14 @@
     top: 0;
     z-index: 90;
 }
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .side-nav-placeholder {
+        display: none;
+    }
+}

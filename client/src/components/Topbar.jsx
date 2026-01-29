@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import { NavLink, useLocation } from 'react-router-dom';
 import '../styles/components.css';
 
-const Topbar = () => {
+const Topbar = ({ onToggleMenu }) => {
     const { logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const location = useLocation();
@@ -13,6 +13,9 @@ const Topbar = () => {
 
     return (
         <div className="topbar">
+            <button className="mobile-menu-btn" onClick={onToggleMenu}>
+                ☰
+            </button>
             <div className="topbar-tabs">
                 <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'tab-btn active' : 'tab-btn')}>
                     Courses
@@ -25,13 +28,15 @@ const Topbar = () => {
                 </NavLink>
             </div>
 
-            <button onClick={toggleTheme} className="theme-toggle-btn" style={{ marginRight: '1rem', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '1.2rem' }}>
-                {theme === 'light' ? '🌙' : '☀️'}
-            </button>
+            <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <button onClick={toggleTheme} className="theme-toggle-btn" style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '1.2rem' }}>
+                    {theme === 'light' ? '🌙' : '☀️'}
+                </button>
 
-            {isProfile && (
-                <button onClick={logout} className="logout-btn">Log out</button>
-            )}
+                {isProfile && (
+                    <button onClick={logout} className="logout-btn">Log out</button>
+                )}
+            </div>
         </div>
     );
 };

@@ -13,7 +13,8 @@ const Profile = () => {
         branch: '',
         year: '',
         phone: '',
-        email: ''
+        email: '',
+        profilePicture: ''
     });
 
     useEffect(() => {
@@ -25,13 +26,25 @@ const Profile = () => {
                 branch: user.branch || '',
                 year: user.year || '',
                 phone: user.phone || '',
-                email: user.email || ''
+                email: user.email || '',
+                profilePicture: user.profilePicture || ''
             });
         }
     }, [user]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, profilePicture: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSave = async () => {
@@ -42,7 +55,8 @@ const Profile = () => {
                 branch: formData.branch,
                 year: formData.year,
                 phone: formData.phone,
-                email: formData.email
+                email: formData.email,
+                profilePicture: formData.profilePicture
             });
             setIsEditing(false);
             alert('Profile updated successfully!');
@@ -54,10 +68,43 @@ const Profile = () => {
     return (
         <div className="page-container">
             <div className="profile-page-content">
-                <div className="profile-pic-large">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                <div className="profile-pic-section" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '15px' }}>
+                    <div className="profile-pic-large" style={{
+                        position: 'relative',
+                        overflow: 'hidden',
+                        backgroundImage: formData.profilePicture ? `url(${formData.profilePicture})` : 'none',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        marginBottom: 0
+                    }}>
+                        {!formData.profilePicture && (user?.name ? user.name.charAt(0).toUpperCase() : 'U')}
+                    </div>
+
+                    {isEditing && (
+                        <div className="profile-upload-action">
+                            <input
+                                type="file"
+                                id="profile-upload"
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                            />
+                            <label htmlFor="profile-upload" style={{
+                                fontSize: '2rem',
+                                cursor: 'pointer',
+                                padding: '10px',
+                                background: 'transparent',
+                                border: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }} title="Upload Profile Picture">
+                                📷
+                            </label>
+                        </div>
+                    )}
                 </div>
-                <p className="profile-caption">Profile picture</p>
+                <p className="profile-caption" style={{ marginBottom: '50px' }}>Profile picture</p>
 
                 <div className="profile-form">
                     <div className="input-group">

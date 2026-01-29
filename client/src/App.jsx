@@ -17,6 +17,10 @@ import Favourites from './pages/Favourites';
 import Feedback from './pages/Feedback';
 import FocusMode from './pages/FocusMode';
 import CoursePlayer from './pages/CoursePlayer';
+import Contact from './pages/Contact';
+import Support from './pages/Support';  
+import About from './pages/About';
+import Ide from './pages/Ide';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -47,6 +51,10 @@ function App() {
             <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
             <Route path="/manage-courses" element={<ProtectedRoute><Layout><ManageCourses /></Layout></ProtectedRoute>} />
             <Route path="/course/:title" element={<ProtectedRoute><Layout><CoursePlayer /></Layout></ProtectedRoute>} />
+            <Route path="/contact" element={<ProtectedRoute><Layout><Contact /></Layout></ProtectedRoute>} />
+            <Route path="/support" element={<ProtectedRoute><Layout><Support /></Layout></ProtectedRoute>} />
+            <Route path="/about" element={<ProtectedRoute><Layout><About /></Layout></ProtectedRoute>} /> 
+            <Route path="/ide" element={<ProtectedRoute><Layout><Ide /></Layout></ProtectedRoute>} />
           </Routes>
         </Router>
       </AuthProvider>
