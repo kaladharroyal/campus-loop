@@ -11,7 +11,79 @@
     display: flex;
     flex-direction: column;
     z-index: 100;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .menu-section h3 {
+    display: none;
+}
+
+.sidebar.collapsed .logo-container {
+    padding: 0 10px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sidebar.collapsed .brand-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar.collapsed .logo-img {
+    height: 40px;
+    /* Smaller logo size */
+    width: auto;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .menu-item span:not(.icon) {
+    display: none;
+}
+
+.sidebar.collapsed .menu-item .icon {
+    width: auto;
+    font-size: 1.5rem;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+}
+
+.hamburger-icon .line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text-main);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.sidebar-toggle:hover .line {
+    background-color: var(--color-primary);
 }
 
 .mobile-menu-btn {
@@ -45,6 +117,11 @@
     gap: 12px;
     margin-bottom: 40px;
     padding: 0 25px;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
 }
 
 .logo-text {

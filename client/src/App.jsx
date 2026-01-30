@@ -18,9 +18,27 @@ import Feedback from './pages/Feedback';
 import FocusMode from './pages/FocusMode';
 import CoursePlayer from './pages/CoursePlayer';
 import Contact from './pages/Contact';
-import Support from './pages/Support';  
+import Support from './pages/Support';
 import About from './pages/About';
 import Ide from './pages/Ide';
+
+
+
+// Admin Components
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import ManageStudents from './pages/admin/ManageStudents';
+import ManageTeachers from './pages/admin/ManageTeachers';
+import AdminManageCourses from './pages/admin/ManageCourses';
+import ManageAssignments from './pages/admin/ManageAssignments';
+import ReportsAndAnalytics from './pages/admin/ReportsAndAnalytics';
+import AdminSettings from './pages/admin/AdminSettings';
+import FacultyDashboard from './pages/Instructor/FacultyDashboard';
+
+// Route Protection Components
+import AdminRoute from './components/routes/AdminRoute';
+import StudentRoute from './components/routes/StudentRoute';
+import TeacherRoute from './components/routes/TeacherRoute';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -32,32 +50,52 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <Router>
+      <Router>
+        <AuthProvider>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={<ProtectedRoute><Layout><Home /></Layout></ProtectedRoute>} />
-            <Route path="/analytics" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
-            <Route path="/courses" element={<ProtectedRoute><Layout><Courses /></Layout></ProtectedRoute>} />
-            <Route path="/favourites" element={<ProtectedRoute><Layout><Favourites /></Layout></ProtectedRoute>} />
-            <Route path="/feedback" element={<ProtectedRoute><Layout><Feedback /></Layout></ProtectedRoute>} />
-            <Route path="/focus-mode" element={<ProtectedRoute><FocusMode /></ProtectedRoute>} />
-            <Route path="/assignments" element={<ProtectedRoute><Layout><Assignments /></Layout></ProtectedRoute>} />
-            <Route path="/attendance" element={<ProtectedRoute><Layout><Attendance /></Layout></ProtectedRoute>} />
+            {/* Shared/Generic Protected Routes */}
             <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
-            <Route path="/manage-courses" element={<ProtectedRoute><Layout><ManageCourses /></Layout></ProtectedRoute>} />
-            <Route path="/course/:title" element={<ProtectedRoute><Layout><CoursePlayer /></Layout></ProtectedRoute>} />
             <Route path="/contact" element={<ProtectedRoute><Layout><Contact /></Layout></ProtectedRoute>} />
             <Route path="/support" element={<ProtectedRoute><Layout><Support /></Layout></ProtectedRoute>} />
-            <Route path="/about" element={<ProtectedRoute><Layout><About /></Layout></ProtectedRoute>} /> 
+            <Route path="/about" element={<ProtectedRoute><Layout><About /></Layout></ProtectedRoute>} />
             <Route path="/ide" element={<ProtectedRoute><Layout><Ide /></Layout></ProtectedRoute>} />
+
+            {/* Student Routes */}
+            <Route path="/dashboard" element={<StudentRoute><Layout><Home /></Layout></StudentRoute>} />
+            <Route path="/analytics" element={<StudentRoute><Layout><Dashboard /></Layout></StudentRoute>} />
+            <Route path="/courses" element={<StudentRoute><Layout><Courses /></Layout></StudentRoute>} />
+            <Route path="/favourites" element={<StudentRoute><Layout><Favourites /></Layout></StudentRoute>} />
+            <Route path="/feedback" element={<StudentRoute><Layout><Feedback /></Layout></StudentRoute>} />
+            <Route path="/focus-mode" element={<StudentRoute><FocusMode /></StudentRoute>} />
+            <Route path="/assignments" element={<StudentRoute><Layout><Assignments /></Layout></StudentRoute>} />
+            <Route path="/attendance" element={<StudentRoute><Layout><Attendance /></Layout></StudentRoute>} />
+            <Route path="/course/:title" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
+
+            {/* Teacher Routes */}
+            <Route path="/teacher" element={<TeacherRoute><Layout><FacultyDashboard /></Layout></TeacherRoute>}>
+              <Route index element={<Navigate to="/teacher/dashboard" replace />} />
+              <Route path="dashboard" element={<FacultyDashboard />} />
+              <Route path="courses" element={<ManageCourses />} />
+            </Route>
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="students" element={<ManageStudents />} />
+              <Route path="teachers" element={<ManageTeachers />} />
+              <Route path="courses" element={<AdminManageCourses />} />
+              <Route path="assignments" element={<ManageAssignments />} />
+              <Route path="reports" element={<ReportsAndAnalytics />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
           </Routes>
-        </Router>
-      </AuthProvider>
+        </AuthProvider>
+      </Router>
     </ThemeProvider>
   );
 }

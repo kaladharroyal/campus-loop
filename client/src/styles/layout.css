@@ -17,6 +17,16 @@
     width: calc(100% - 250px);
     margin-left: 250px;
     /* Crucial fix for fixed sidebar overlap */
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.app-layout.collapsed-mode .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.app-layout.collapsed-mode .side-nav-placeholder {
+    width: 80px;
 }
 
 .page-content {

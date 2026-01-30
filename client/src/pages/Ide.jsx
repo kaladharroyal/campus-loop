@@ -10,6 +10,7 @@ const Ide = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [history, setHistory] = useState([]);
     const [showHistory, setShowHistory] = useState(false);
+    const [showInputModal, setShowInputModal] = useState(false);
     const fileInputRef = useRef(null);
 
     // Language configurations for Monaco Editor and Piston API
@@ -36,7 +37,12 @@ const Ide = () => {
         setOutput('');
     };
 
-    const handleRun = async () => {
+    const handleRun = () => {
+        setShowInputModal(true);
+    };
+
+    const executeCode = async () => {
+        setShowInputModal(false);
         setIsRunning(true);
         setOutput('Running...');
 
@@ -213,6 +219,33 @@ const Ide = () => {
                 </div>
             )}
 
+            {/* Input Modal */}
+            {showInputModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h2>Program Input</h2>
+                            <button className="close-btn" onClick={() => setShowInputModal(false)}>✕</button>
+                        </div>
+                        <div className="modal-body">
+                            <p className="modal-instruction">Enter input for your program (if any):</p>
+                            <textarea
+                                className="modal-input-area"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Enter input values here (one per line)..."
+                            />
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-gray" onClick={() => setShowInputModal(false)}>Cancel</button>
+                            <button className="btn btn-indigo" onClick={executeCode}>
+                                ▶️ Run Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="ide-body">
                 <div className="editor-section">
                     <div className="ide-section-header">Source</div>
@@ -233,15 +266,6 @@ const Ide = () => {
                 </div>
 
                 <div className="io-section">
-                    <div className="input-panel">
-                        <div className="ide-section-header">Input (stdin)</div>
-                        <textarea
-                            className="input-area"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Enter input values here (one per line)&#10;&#10;Example for multiple inputs:&#10;John&#10;25&#10;&#10;Tip: Use input() without prompts for cleaner output"
-                        />
-                    </div>
                     <div className="output-panel">
                         <div className="ide-section-header">Output</div>
                         <pre className="output-area">{output || 'Output will appear here...'}</pre>

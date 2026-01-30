@@ -36,7 +36,6 @@ const Login = () => {
 
     try {
       await login(identifier, password, role);
-      navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {

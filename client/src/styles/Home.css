@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --accent: #ec4899;
+    
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-secondary);
+    min-height: 100vh;
+}
+
+.home-page {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ==================== SECTION STYLES ==================== */
+.course-section {
+    margin-bottom: 60px;
+}
+
+.section-header {
+    font-family: 'Sora', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.section-sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    text-transform: capitalize;
+}
+
+/* ==================== COURSE GRIDS ==================== */
+.course-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.course-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* ==================== COURSE CARDS ==================== */
+.campus-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideUp 0.5s ease both;
+}
+
+.campus-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-light);
+}
+
+.campus-card.registered {
+    position: relative;
+}
+
+.campus-card.registered::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.campus-card.registered:hover::before {
+    transform: scaleX(1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.campus-card:nth-child(1) { animation-delay: 0.1s; }
+.campus-card:nth-child(2) { animation-delay: 0.15s; }
+.campus-card:nth-child(3) { animation-delay: 0.2s; }
+.campus-card:nth-child(4) { animation-delay: 0.25s; }
+.campus-card:nth-child(5) { animation-delay: 0.3s; }
+
+/* ==================== CARD IMAGE ==================== */
+.card-image-placeholder {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    overflow: hidden;
+}
+
+.card-image-placeholder.small {
+    height: 160px;
+    padding: 24px;
+}
+
+.card-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.campus-card:hover .card-image-placeholder img {
+    transform: scale(1.05);
+}
+
+/* ==================== FAVORITE BUTTON ==================== */
+.fav-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.fav-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.fav-btn.active {
+    background: #fee2e2;
+}
+
+/* ==================== CARD CONTENT ==================== */
+.card-content {
+    padding: 24px;
+}
+
+.card-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    font-family: 'Sora', sans-serif;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    text-transform: capitalize;
+}
+
+.campus-card.registered .card-content h3 {
+    font-size: 22px;
+}
+
+.campus-card.registered .card-content p {
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* ==================== PROGRESS BAR ==================== */
+.progress-wrapper {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.progress-text {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.progress-percent {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: 'Sora', sans-serif;
+}
+
+.progress-bar-bg {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1200px) {
+    .course-grid-4 {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .course-grid-5 {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 968px) {
+    .page-container {
+        padding: 24px;
+    }
+
+    .section-header {
+        font-size: 28px;
+    }
+
+    .section-sub {
+        font-size: 15px;
+    }
+
+    .course-grid-4 {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .course-grid-5 {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .course-grid-4,
+    .course-grid-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .card-image-placeholder {
+        height: 180px;
+    }
+
+    .card-image-placeholder.small {
+        height: 140px;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-container {
+        padding: 16px;
+    }
+
+    .section-header {
+        font-size: 24px;
+    }
+
+    .section-sub {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .course-section {
+        margin-bottom: 48px;
+    }
+
+    .card-content {
+        padding: 20px;
+    }
+
+    .card-content h3 {
+        font-size: 18px;
+    }
+
+    .campus-card.registered .card-content h3 {
+        font-size: 20px;
+    }
+}
+
+/* ==================== SMOOTH ANIMATIONS ==================== */
+html {
+    scroll-behavior: smooth;
+}
+
+::selection {
+    background: var(--primary-light);
+    color: white;
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+.campus-card {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.card-image-placeholder img {
+    will-change: transform;
+}

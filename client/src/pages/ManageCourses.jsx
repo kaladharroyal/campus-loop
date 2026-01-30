@@ -42,7 +42,16 @@ const ManageCourses = () => {
             }
 
             setMessage('Course created successfully!');
-            setTimeout(() => navigate('/courses'), 1500);
+            setMessage('Course created successfully!');
+            setTimeout(() => {
+                if (user.role === 'teacher') {
+                    navigate('/teacher/dashboard');
+                } else if (user.role === 'admin') {
+                    navigate('/admin/courses');
+                } else {
+                    navigate('/courses');
+                }
+            }, 1500);
         } catch (error) {
             setMessage('Error creating course. Please try again.');
         } finally {

@@ -144,7 +144,6 @@
     gap: 15px;
 }
 
-.input-panel,
 .output-panel {
     flex: 1;
     display: flex;
@@ -164,22 +163,6 @@
     font-size: 14px;
 }
 
-.input-area {
-    flex: 1;
-    padding: 15px;
-    background: #1e1e1e;
-    color: #d4d4d4;
-    border: none;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 14px;
-    resize: none;
-    outline: none;
-}
-
-.input-area::placeholder {
-    color: #6a6a6a;
-}
-
 .output-area {
     flex: 1;
     padding: 15px;
@@ -193,8 +176,9 @@
     word-wrap: break-word;
 }
 
-/* History Modal */
-.history-modal {
+/* History Modal & Input Modal Reuse */
+.history-modal, 
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -205,21 +189,36 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(2px);
 }
 
-.history-content {
+.history-content,
+.modal-content {
     background: #1e1e1e;
     border: 1px solid #333;
     border-radius: 12px;
     width: 90%;
     max-width: 800px;
-    max-height: 80vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease;
 }
 
-.history-header {
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.history-header,
+.modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -227,7 +226,8 @@
     border-bottom: 2px solid #333;
 }
 
-.history-header h2 {
+.history-header h2,
+.modal-header h2 {
     margin: 0;
     color: #fff;
     font-size: 20px;
@@ -252,6 +252,43 @@
     flex: 1;
     overflow-y: auto;
     padding: 20px;
+    max-height: 60vh;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-instruction {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #aaa;
+}
+
+.modal-input-area {
+    width: 100%;
+    height: 150px;
+    background: #2d2d30;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    color: #d4d4d4;
+    padding: 10px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+}
+
+.modal-input-area:focus {
+    border-color: #667eea;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .no-history {
@@ -308,23 +345,27 @@
 
 /* Scrollbar Styling */
 .history-list::-webkit-scrollbar,
-.output-area::-webkit-scrollbar {
+.output-area::-webkit-scrollbar,
+.modal-input-area::-webkit-scrollbar {
     width: 10px;
 }
 
 .history-list::-webkit-scrollbar-track,
-.output-area::-webkit-scrollbar-track {
+.output-area::-webkit-scrollbar-track,
+.modal-input-area::-webkit-scrollbar-track {
     background: #1e1e1e;
 }
 
 .history-list::-webkit-scrollbar-thumb,
-.output-area::-webkit-scrollbar-thumb {
+.output-area::-webkit-scrollbar-thumb,
+.modal-input-area::-webkit-scrollbar-thumb {
     background: #3e3e42;
     border-radius: 5px;
 }
 
 .history-list::-webkit-scrollbar-thumb:hover,
-.output-area::-webkit-scrollbar-thumb:hover {
+.output-area::-webkit-scrollbar-thumb:hover,
+.modal-input-area::-webkit-scrollbar-thumb:hover {
     background: #667eea;
 }
 
@@ -336,10 +377,6 @@
 
     .editor-section {
         min-height: 400px;
-    }
-
-    .io-section {
-        flex-direction: row;
     }
 }
 
@@ -367,5 +404,9 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+    }
+    
+    .modal-content {
+        width: 95%;
     }
 }

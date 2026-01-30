@@ -1,6 +1,27 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, CartesianGrid, Legend } from 'recharts';
 import '../styles/pages.css';
+
+const dataProgress = [
+  { name: '23 Nov', hours: 2 },
+  { name: '24', hours: 4 },
+  { name: '25', hours: 1 },
+  { name: '26', hours: 5 },
+  { name: '27', hours: 2 },
+  { name: '28', hours: 8 },
+  { name: '29', hours: 3 },
+  { name: '30', hours: 6 },
+];
+
+const dataTrends = [
+  { name: 'Java', score: 80 },
+  { name: 'DBMS', score: 65 },
+  { name: 'MERN', score: 90 },
+  { name: 'NLP', score: 40 },
+  { name: 'Py', score: 75 },
+  { name: 'C', score: 55 },
+  { name: 'DL', score: 85 },
+];
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -77,16 +98,15 @@ const Dashboard = () => {
         {/* Progress Chart */}
         <div className="chart-card progress-chart">
           <h3>Progress</h3>
-          <p className="chart-sub">12 Hours</p>
-          <div className="chart-placeholder line-chart">
-            {/* SVG or Canvas placeholder for Line Chart */}
-            <svg viewBox="0 0 500 150" className="simple-chart">
-              <polyline fill="none" stroke="black" strokeWidth="3" points="0,140 50,135 100,120 150,100 200,110 250,90 300,80 350,95 400,60 450,40" />
-              <circle cx="450" cy="40" r="6" fill="black" />
-            </svg>
-          </div>
-          <div className="chart-labels">
-            <span>23 Nov</span> <span>24</span> <span>25</span> <span>26</span> <span>27</span> <span>28</span> <span>29</span> <span>30</span>
+          <p className="chart-sub">12 Hours this week</p>
+          <div style={{ width: '100%', height: 200 }}>
+            <ResponsiveContainer>
+              <LineChart data={dataProgress}>
+                <XAxis dataKey="name" stroke="#888" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px' }} />
+                <Line type="monotone" dataKey="hours" stroke="#8884d8" strokeWidth={3} dot={{ r: 4 }} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -137,21 +157,15 @@ const Dashboard = () => {
         {/* Results Trend */}
         <div className="chart-card">
           <h3>Course Results Trend</h3>
-          <div className="chart-placeholder bar-chart">
-            <div className="bar" style={{ height: '60%' }}></div>
-            <div className="bar" style={{ height: '80%' }}></div>
-            <div className="bar" style={{ height: '65%' }}></div>
-            <div className="bar" style={{ height: '60%' }}></div>
-            <div className="bar" style={{ height: '90%' }}></div>
-            <div className="bar" style={{ height: '100%' }}></div>
-            <div className="bar" style={{ height: '85%' }}></div>
-            <div className="bar" style={{ height: '80%' }}></div>
-            <div className="bar" style={{ height: '65%' }}></div>
-            <div className="bar" style={{ height: '50%' }}></div>
-            <div className="bar" style={{ height: '10%' }}></div>
-          </div>
-          <div className="chart-labels-bar">
-            <span>Java</span> <span>DBMS</span> <span>MERN</span> <span>NLP</span> <span>Py</span> <span>C</span> <span>C#</span> <span>DL</span> <span>CN</span> <span>ML</span> <span>R</span>
+          <div style={{ width: '100%', height: 200 }}>
+            <ResponsiveContainer>
+              <BarChart data={dataTrends}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" fontSize={10} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{ fill: '#f0f0f0' }} />
+                <Bar dataKey="score" fill="#4d7bf3" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>

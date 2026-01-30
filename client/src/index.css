@@ -1,19 +1,103 @@
-/* @import './styles/variables.css';
+/* Import your variables */
+@import './styles/variables.css';
 
+/* Reset and base styles */
 :root {
-  font-family: var(--font-family-base);
+  font-family: var(--font-family);
   line-height: 1.5;
   font-weight: 400;
-  color: var(--color-text-main);
-  background-color: var(--color-bg);
+  color-scheme: light dark;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  transition: background-color var(--transition-base), 
+              color var(--transition-base);
 }
 
 #root {
-  height: 100vh;
-} */
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+}
+
+/* Improve theme switching transitions */
+*,
+*::before,
+*::after {
+  transition: background-color var(--transition-base) ease,
+              border-color var(--transition-base) ease,
+              color var(--transition-base) ease,
+              box-shadow var(--transition-base) ease,
+              opacity var(--transition-base) ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+  border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Remove list styles */
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Remove link underline */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Smooth image rendering */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
