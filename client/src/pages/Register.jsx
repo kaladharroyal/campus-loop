@@ -142,7 +142,7 @@ const Register = () => {
         <div className="auth-form-section">
           <div className="form-wrapper register-form">
             <div className="form-header">
-              <h2 className="form-title ">Create Account</h2>
+              <h2 className="form-title">Create Account</h2>
               <p className="form-subtitle">Join thousands of learners today</p>
             </div>
 

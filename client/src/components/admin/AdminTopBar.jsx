@@ -1,42 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/admin.css';
 
 /**
- * AdminTopbar Component
- * Top navigation bar for admin dashboard
+ * AdminTopbar component
+ * Top navigation bar for admin pages
+ * Shows admin profile, notifications, and quick actions
  */
-const AdminTopbar = () => {
-    const { user, logout } = useAuth();
-
-    const handleLogout = () => {
-        logout();
-    };
+const AdminTopbar = ({ user }) => {
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const { logout } = useAuth();
 
     return (
-        <div className="admin-topbar">
-            <div className="admin-topbar-left">
-                <h1>Campus Loop LMS</h1>
+        <header className="admin-topbar">
+            <div className="topbar-left">
+                <h1 className="page-title">Admin Dashboard</h1>
             </div>
 
-            <div className="admin-topbar-right">
-                <div className="admin-profile">
-                    <div className="admin-profile-info">
-                        <span className="admin-name">
-                            {user?.firstName} {user?.lastName}
-                        </span>
-                        <span className="admin-role">Administrator</span>
-                    </div>
-                    <div className="admin-avatar">
-                        {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
-                    </div>
-                </div>
+            <div className="topbar-right">
+                {/* Search */}
+                {/* <div className="topbar-search">
+                    <span className="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        className="search-input"
+                    />
+                </div> */}
 
-                <button className="admin-logout-btn" onClick={handleLogout}>
-                    🚪 Logout
+                {/* Notifications */}
+                <button className="topbar-icon-btn" aria-label="Notifications">
+                    <span>🔔</span>
+                    <span className="notification-badge">3</span>
                 </button>
+
+                {/* Profile Dropdown */}
+                <div className="topbar-profile">
+                    <button
+                        className="profile-btn"
+                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    >
+                        <div className="profile-avatar">
+                            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+                        </div>
+                        <div className="profile-info">
+                            <span className="profile-name">
+                                {user?.firstName} {user?.lastName}
+                            </span>
+                            <span className="profile-role">Administrator</span>
+                        </div>
+                        <span className="dropdown-arrow">▼</span>
+                    </button>
+
+                    {showProfileMenu && (
+                        <div className="profile-menu">
+                            <a href="/admin/profile" className="profile-menu-item">
+                                <span>👤</span> Profile
+                            </a>
+                            <a href="/admin/settings" className="profile-menu-item">
+                                <span>⚙️</span> Settings
+                            </a>
+                            <hr className="menu-divider" />
+                            <button
+                                className="profile-menu-item logout-item"
+                                onClick={logout}
+                            >
+                                <span>🚪</span> Logout
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </header>
     );
 };
 

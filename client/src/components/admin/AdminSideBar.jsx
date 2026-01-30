@@ -1,97 +1,72 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import '../../styles/admin.css';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 /**
- * AdminSidebar Component
- * Navigation sidebar for admin dashboard
+ * AdminSidebar component
+ * Navigation sidebar for admin pages
  */
-const AdminSidebar = ({ isCollapsed, onToggle }) => {
+const AdminSidebar = () => {
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    const navItems = [
+        { path: '/admin/dashboard', icon: '📊', label: 'System Overview' },
+        { path: '/admin/students', icon: '👨‍🎓', label: 'Student Management' },
+        { path: '/admin/teachers', icon: '👨‍🏫', label: 'Faculty Management' },
+        { path: '/admin/courses', icon: '📚', label: 'Course Administration' },
+        { path: '/admin/assignments', icon: '📝', label: 'Assignment Oversight' },
+        { path: '/admin/reports', icon: '📈', label: 'Analytics & Insights' },
+        { path: '/admin/settings', icon: '⚙️', label: 'System Configuration' },
+    ];
+
     return (
-        <div className={`admin-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-            <div className={`admin-sidebar-header ${isCollapsed ? 'collapsed-header' : ''}`}>
-                <div className="brand-wrapper">
-                    {!isCollapsed && <h2>🎓 Admin Panel</h2>}
-                    {isCollapsed && <span className="icon admin-logo-collapsed">🎓</span>}
+        <aside className={`admin-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+            <div className="admin-sidebar-header">
+                <div className="admin-logo">
+                    <span className="logo-icon">🎓</span>
+                    {!isCollapsed && <span className="logo-text">Admin Panel</span>}
                 </div>
                 <button
-                    className="sidebar-toggle"
-                    onClick={onToggle}
-                    title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                    className="collapse-btn"
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    aria-label="Toggle sidebar"
                 >
-                    <span className="hamburger-icon">
-                        <span className="line"></span>
-                        <span className="line"></span>
-                        <span className="line"></span>
-                    </span>
+                    {isCollapsed ? '→' : '←'}
                 </button>
             </div>
 
             <nav className="admin-nav">
-                <NavLink
-                    to="/admin/dashboard"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Dashboard"
-                >
-                    <span className="icon">📊</span>
-                    {!isCollapsed && <span>Dashboard</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/students"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Students"
-                >
-                    <span className="icon">👨‍🎓</span>
-                    {!isCollapsed && <span>Students</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/teachers"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Teachers"
-                >
-                    <span className="icon">👨‍🏫</span>
-                    {!isCollapsed && <span>Teachers</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/courses"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Courses"
-                >
-                    <span className="icon">📚</span>
-                    {!isCollapsed && <span>Courses</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/assignments"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Assignments"
-                >
-                    <span className="icon">📝</span>
-                    {!isCollapsed && <span>Assignments</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/reports"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Reports"
-                >
-                    <span className="icon">📈</span>
-                    {!isCollapsed && <span>Reports</span>}
-                </NavLink>
-
-                <NavLink
-                    to="/admin/settings"
-                    className={({ isActive }) => isActive ? 'admin-nav-item active' : 'admin-nav-item'}
-                    title="Settings"
-                >
-                    <span className="icon">⚙️</span>
-                    {!isCollapsed && <span>Settings</span>}
-                </NavLink>
+                {navItems.map((item) => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) =>
+                            `admin-nav-item ${isActive ? 'active' : ''}`
+                        }
+                    >
+                        <span className="nav-icon">{item.icon}</span>
+                        {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                    </NavLink>
+                ))}
             </nav>
-        </div>
+
+            <div className="admin-sidebar-footer">
+                <button
+                    className="admin-logout-btn"
+                    onClick={handleLogout}
+                >
+                    <span className="nav-icon">🚪</span>
+                    {!isCollapsed && <span className="nav-label">Logout</span>}
+                </button>
+            </div>
+        </aside>
     );
 };
 

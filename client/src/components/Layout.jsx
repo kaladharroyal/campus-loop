@@ -3,10 +3,12 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import Footer from './Footer';
 import { useAuth } from '../context/AuthContext';
+import { useLayout } from '../context/LayoutContext';
 import '../styles/layout.css';
 
 const Layout = ({ children }) => {
     const { user } = useAuth();
+    const { isSidebarHidden } = useLayout();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -28,8 +30,8 @@ const Layout = ({ children }) => {
     }, []);
 
     return (
-        <div className="app-layout">
-            <Sidebar role={user?.role} isOpen={mobileMenuOpen} onClose={closeMobileMenu} />
+        <div className={`app-layout ${isSidebarHidden ? 'full-width-mode' : ''}`}>
+            <Sidebar role={user?.role} isOpen={mobileMenuOpen} onClose={closeMobileMenu} hidden={isSidebarHidden} />
 
             {/* Enhanced Mobile Overlay with Backdrop Blur */}
             {mobileMenuOpen && (

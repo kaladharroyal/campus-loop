@@ -816,3 +816,52 @@
         font-size: 12px;
     }
 }
+.form-group input{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    border-radius: 8px;
+}
+
+.settings-tabs{
+    padding:20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+}
+.tab-btn.active{
+    color: #3b82f6;
+    background-color: #f8f9ff;
+
+}
+.system-settings-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    
+}
+.notification-item{
+    padding: 10PX;
+}
+
+.save-stn{
+    margin-top: 20px;
+}
+.filter-section{
+    padding: 10px;
+    /* margin-bottom: 10px; */
+    border-radius: 12px;
+    background-color: #f8f9ff;
+}
+.filter-select > option{
+    background-color: #333;
+    color: white;
+}
+select.filter-select{
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;    
+}

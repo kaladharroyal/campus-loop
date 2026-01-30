@@ -1,29 +1,27 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import AdminTopbar from './AdminTopbar';
-import '../../styles/admin.css';
+import { useAuth } from '../../context/AuthContext';
+import '../../styles/admin-layout.css';
+import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 /**
- * AdminLayout Component
- * Main layout wrapper for all admin pages
- * Includes sidebar and topbar
+ * AdminLayout component
+ * Provides consistent layout for all admin pages
+ * Includes sidebar navigation and topbar
  */
-const AdminLayout = () => {
-    const [isCollapsed, setIsCollapsed] = React.useState(false);
-
-    const toggleSidebar = () => {
-        setIsCollapsed(!isCollapsed);
-    };
+const AdminLayout = ({ children }) => {
+    const { user } = useAuth();
 
     return (
-        <div className={`admin-layout ${isCollapsed ? 'collapsed-mode' : ''}`}>
-            <AdminSidebar isCollapsed={isCollapsed} onToggle={toggleSidebar} />
-            <div className="admin-main">
-                <AdminTopbar />
-                <div className="admin-content">
+        <div className="admin-layout">
+            <AdminSidebar />
+            <div className="admin-main-content">
+                <AdminTopbar user={user} />
+                <main className="admin-page-content">
                     <Outlet />
-                </div>
+                </main>
             </div>
         </div>
     );
