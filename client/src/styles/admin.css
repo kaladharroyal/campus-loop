@@ -398,6 +398,7 @@
     font-size: 14px;
     font-weight: 500;
     transition: all 0.3s;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .admin-btn-primary {
@@ -475,12 +476,15 @@
 
 .admin-filter-input,
 .admin-filter-select {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s;
+    font-family: inherit;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
 .admin-filter-input:focus,
@@ -541,12 +545,14 @@
 .admin-form select,
 .admin-form textarea {
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background-color 0.3s;
     font-family: inherit;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
 .admin-input:focus,
@@ -554,6 +560,7 @@
 .admin-form select:focus,
 .admin-form textarea:focus {
     border-color: #667eea;
+    background-color: #fff;
 }
 
 .admin-form label {
