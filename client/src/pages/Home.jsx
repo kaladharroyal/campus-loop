@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/pages.css';
+import '../styles/Home.css';
 import dbms from '../assets/dbms.png';
 import java from '../assets/java.png';
 import mern from '../assets/mern-stack.png';
@@ -15,24 +15,22 @@ const Home = () => {
     const navigate = useNavigate();
 
     const registeredCourses = [
-        { title: 'DBMS', sub: 'Database management system', img: dbms, color: '#0F172A' },
-        { title: 'JAVA', sub: 'programming with java', img: java, color: '#EA580C' },
-        { title: 'MERN Stack dev', sub: 'MERN stack development', img: mern, color: '#0F766E' },
-        { title: 'Machine Learning', sub: 'introduction to machine learning', img: ml, color: '#1E3A8A' },
+        { title: 'DBMS', sub: 'Database management system', img: dbms, color: '#6366f1', progress: 65 },
+        { title: 'JAVA', sub: 'programming with java', img: java, color: '#f97316', progress: 42 },
+        { title: 'MERN Stack dev', sub: 'MERN stack development', img: mern, color: '#0ea5e9', progress: 78 },
+        { title: 'Machine Learning', sub: 'introduction to machine learning', img: ml, color: '#8b5cf6', progress: 23 },
     ];
 
     const allCourses = [
-        { title: 'NLP', sub: 'NLP Using python', img: nlp },
-        { title: 'Programming for AI', sub: 'python', img: ai },
-        { title: 'Artificial intelligence', sub: 'fundamentals of ai', img: ai2 },
-        { title: 'Deep Learning', sub: 'DL using python', img: dl },
-        { title: 'Computer Netwoks', sub: 'CN', img: cn },
+        { title: 'NLP', sub: 'NLP Using python', img: nlp, color: '#10b981' },
+        { title: 'Programming for AI', sub: 'python', img: ai, color: '#f59e0b' },
+        { title: 'Artificial intelligence', sub: 'fundamentals of ai', img: ai2, color: '#ec4899' },
+        { title: 'Deep Learning', sub: 'DL using python', img: dl, color: '#6366f1' },
+        { title: 'Computer Netwoks', sub: 'CN', img: cn, color: '#14b8a6' },
     ];
 
-    // Repeat for second row just to match visual volume if needed
     const displayAll = [...allCourses, ...allCourses];
 
-    // Favorites Logic
     const [favorites, setFavorites] = React.useState(() => {
         const saved = localStorage.getItem('favorites');
         return saved ? JSON.parse(saved) : [];
@@ -55,11 +53,8 @@ const Home = () => {
     const isFav = (title) => favorites.some(c => c.title === title);
 
     const handleCourseClick = (title) => {
-        // Handle "MERN Stack dev" -> "MERN" mapping if needed, or update courseData to match titles exactly.
-        // For now, let's assume we map "MERN Stack dev" to "MERN" based on inclusion or update logical mapping.
         let searchTitle = title;
         if (title === 'MERN Stack dev') searchTitle = 'MERN';
-
         navigate(`/course/${encodeURIComponent(searchTitle)}`);
     };
 
@@ -67,9 +62,11 @@ const Home = () => {
         <div
             className={`campus-card ${!isSmall ? 'registered' : ''}`}
             onClick={() => handleCourseClick(course.title)}
-            style={{ cursor: 'pointer' }}
         >
-            <div className={`card-image-placeholder ${isSmall ? 'small' : ''}`} style={course.color ? { background: course.color } : { background: '#1e293b' }}>
+            <div 
+                className={`card-image-placeholder ${isSmall ? 'small' : ''}`} 
+                style={{ background: course.color || '#1e293b' }}
+            >
                 <img src={course.img} alt={course.title} />
                 <button
                     className={`fav-btn ${isFav(course.title) ? 'active' : ''}`}
@@ -84,6 +81,23 @@ const Home = () => {
             <div className="card-content">
                 <h3>{course.title}</h3>
                 <p>{course.sub}</p>
+                {!isSmall && course.progress !== undefined && (
+                    <div className="progress-wrapper">
+                        <div className="progress-info">
+                            <span className="progress-text">Progress</span>
+                            <span className="progress-percent">{course.progress}%</span>
+                        </div>
+                        <div className="progress-bar-bg">
+                            <div 
+                                className="progress-bar-fill" 
+                                style={{ 
+                                    width: `${course.progress}%`,
+                                    background: course.color 
+                                }}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -92,7 +106,7 @@ const Home = () => {
         <div className="page-container home-page">
             <section className="course-section">
                 <h2 className="section-header">Registered courses</h2>
-                <p className="section-sub">see the registered courses</p>
+                <p className="section-sub">Continue your learning journey</p>
 
                 <div className="course-grid-4">
                     {registeredCourses.map((course, i) => (

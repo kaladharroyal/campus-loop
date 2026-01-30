@@ -35,8 +35,16 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      await login(identifier, password, role);
-      navigate('/dashboard');
+      const userData = await login(identifier, password, role);
+
+      // Role-based navigation
+      if (userData.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (userData.role === 'instructor') { // Assuming 'teacher' role from UI maps to 'instructor' in backend
+        navigate('/teacher/dashboard');
+      } else { // Default for student or other roles
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {

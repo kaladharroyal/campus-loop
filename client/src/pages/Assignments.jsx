@@ -14,14 +14,14 @@ const Assignments = () => {
 
     // Mock Assignments Data matching the user's screenshot
     const assignmentsList = [
-        { id: 'FIG-122', title: 'JAVA Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
-        { id: 'FIG-121', title: 'DBMS Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'DBMS' },
-        { id: 'FIG-120', title: 'DLCO Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'DLCO' },
-        { id: 'FIG-119', title: 'Machine learning Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'Instructor', subject: 'Machine Learning' },
-        { id: 'FIG-118', title: 'NLP Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'Instructor', subject: 'NLP' },
-        { id: 'FIG-117', title: 'core python lab', type: 'Coding', priority: 'High', date: 'Dec 21', owner: 'Instructor', subject: 'Python' },
-        { id: 'FIG-116', title: 'core java ab', type: 'coding', priority: 'Low', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
-        { id: 'FIG-113', title: 'Quiz - 0215', type: 'Quiz', priority: 'High', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
+        { id: 'FIG-122', title: 'JAVA Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
+        { id: 'FIG-121', title: 'DBMS Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'DBMS' },
+        { id: 'FIG-120', title: 'DLCO Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'DLCO' },
+        { id: 'FIG-119', title: 'Machine learning Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'teacher', subject: 'Machine Learning' },
+        { id: 'FIG-118', title: 'NLP Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'teacher', subject: 'NLP' },
+        { id: 'FIG-117', title: 'core python lab', type: 'Coding', priority: 'High', date: 'Dec 21', owner: 'teacher', subject: 'Python' },
+        { id: 'FIG-116', title: 'core java ab', type: 'coding', priority: 'Low', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
+        { id: 'FIG-113', title: 'Quiz - 0215', type: 'Quiz', priority: 'High', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
     ];
 
     const subjects = ['All', 'DBMS', 'JAVA', 'DLCO', 'Machine Learning', 'NLP'];
@@ -47,6 +47,18 @@ const Assignments = () => {
         } else {
             setShowResult(true);
         }
+    };
+    const handlePrevQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(prev => prev - 1);
+        }
+    };
+
+    const handleClearResponse = () => {
+        setUserAnswers(prev => ({
+            ...prev,
+            [currentQuestionIndex]: null
+        }));
     };
 
     const calculateScore = () => {
@@ -147,15 +159,25 @@ const Assignments = () => {
 
         if (showResult) {
             const score = calculateScore();
+            const percentage = Math.round((score / totalQuestions) * 100);
             return (
                 <div className="page-container quiz-container">
                     <div className="quiz-result-card">
                         <h2>Quiz Results</h2>
-                        <div className="score-circle">
+                        <div
+                            className={`score-circle ${percentage >= 70
+                                    ? "good"
+                                    : percentage >= 40
+                                        ? "average"
+                                        : "poor"
+                                }`}
+                            style={{ "--progress": `${percentage}%` }}
+                        >
                             <span>{score} / {totalQuestions}</span>
                         </div>
+
                         <p>{score > 5 ? 'Good Job!' : 'Keep Practicing!'}</p>
-                        <button className="primary-btn" onClick={handleCloseQuiz}>Back to Assignments</button>
+                        <button id='backToAssignmentsBtn' className="primary-btn" onClick={handleCloseQuiz}>Back to Assignments</button>
                     </div>
                 </div>
             );
@@ -185,11 +207,38 @@ const Assignments = () => {
                         ))}
                     </div>
                     <div className="quiz-actions">
-                        <button className="secondary-btn" onClick={handleCloseQuiz}>Cancel</button>
-                        <button className="primary-btn" onClick={handleNextQuestion}>
-                            {currentQuestionIndex === totalQuestions - 1 ? 'Submit' : 'Next'}
+                        <button
+                            id="clearResponseBtn"
+                            className="secondary-btn"
+                            onClick={handleClearResponse}
+                            disabled={userAnswers[currentQuestionIndex] == null}
+                        >
+                            Clear Response
                         </button>
+
+                        <div className="right-actions">
+                            <button
+                                id="prevQuestionBtn"
+                                className="secondary-btn"
+                                onClick={handlePrevQuestion}
+                                disabled={currentQuestionIndex === 0}
+                            >
+                                Prev
+                            </button>
+
+                            <button
+                                id="nextQuestionBtn"
+                                className="primary-btn"
+                                onClick={handleNextQuestion}
+                                disabled={userAnswers[currentQuestionIndex] == null}
+                            >
+                                {currentQuestionIndex === totalQuestions - 1 ? "Submit" : "Next"}
+                            </button>
+                        </div>
                     </div>
+
+
+
                 </div>
             </div>
         );

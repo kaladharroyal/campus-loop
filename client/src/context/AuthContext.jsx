@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -14,6 +15,17 @@ export const AuthProvider = ({ children }) => {
         }
         setLoading(false);
     }, []);
+
+    // Navigate user to appropriate dashboard based on role
+    const navigateBasedOnRole = (userData) => {
+        if (userData.role === 'admin') {
+            navigate('/admin/dashboard');
+        } else if (userData.role === 'teacher') {
+            navigate('/teacher/dashboard');
+        } else {
+            navigate('/dashboard'); // student
+        }
+    };
 
     const login = async (email, password) => {
         try {
@@ -33,6 +45,10 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem('userInfo', JSON.stringify(data));
             setUser(data);
+
+            // Navigate based on user role
+            navigateBasedOnRole(data);
+
             return data;
         } catch (error) {
             throw error;
@@ -57,6 +73,10 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem('userInfo', JSON.stringify(data));
             setUser(data);
+
+            // Navigate based on user role
+            navigateBasedOnRole(data);
+
             return data;
         } catch (error) {
             throw error;

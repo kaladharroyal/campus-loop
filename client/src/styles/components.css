@@ -11,6 +11,104 @@
     display: flex;
     flex-direction: column;
     z-index: 100;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .menu-section h3 {
+    display: none;
+}
+
+.sidebar.collapsed .logo-container {
+    padding: 0 10px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sidebar.collapsed .brand-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar.collapsed .logo-img {
+    height: 40px;
+    /* Smaller logo size */
+    width: auto;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.sidebar.collapsed .menu-item span:not(.icon) {
+    display: none;
+}
+
+.sidebar.collapsed .menu-item .icon {
+    width: auto;
+    font-size: 1.5rem;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+}
+
+.hamburger-icon .line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text-main);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.sidebar-toggle:hover .line {
+    background-color: var(--color-primary);
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-main);
+    margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
 }
 
 .logo-container {
@@ -19,6 +117,11 @@
     gap: 12px;
     margin-bottom: 40px;
     padding: 0 25px;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
 }
 
 .logo-text {
@@ -94,7 +197,7 @@
     gap: 5px;
     background: #f4f4f5;
     padding: 4px;
-
+    /* color: black; */
     border-radius: 8px;
 }
 
@@ -105,19 +208,19 @@
     background: transparent;
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--color-text-light);
+    color: black;
     cursor: pointer;
 }
 
 .tab-btn.active {
-    background: #fff;
-    color: #000;
+    background: var(--color-bg);
+    color: var(--color-text-main);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .logout-btn {
-    background: #000;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-bg);
     border: none;
     padding: 8px 16px;
     border-radius: 6px;
@@ -148,7 +251,7 @@
 .stat-value {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #000;
+    color: var(--color-text-main);
     line-height: 1;
 }
 

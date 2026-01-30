@@ -7,10 +7,10 @@
     color: var(--color-text-main);
 }
 
-.footer-top {
+.lms-footer-top {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
@@ -18,40 +18,62 @@
     gap: var(--spacing-lg);
 }
 
-.footer-brand {
+.lms-footer-brand {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
-.footer-logo {
+.lms-footer-logo {
     height: 40px;
     object-fit: contain;
 }
 
-.footer-brand h3 {
+.lms-footer-brand h3 {
     font-size: 1.2rem;
     color: var(--color-text-main);
     margin: 0;
 }
 
-.footer-links {
+.lms-footer-links {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
     gap: var(--spacing-lg);
 }
 
-.footer-links a {
+.lms-footer-links a {
     color: var(--color-text-main);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 
-.footer-links a:hover {
+.lms-footer-links a:hover {
     color: var(--color-secondary);
 }
 
-.footer-bottom {
+/* Contact Middle Section */
+.lms-footer-middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.lms-footer-middle p {
+    color: var(--color-text-light);
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.lms-footer-bottom {
     max-width: 1200px;
     margin: var(--spacing-lg) auto 0;
     padding: var(--spacing-md) var(--spacing-md) 0;
@@ -65,34 +87,39 @@
     color: var(--color-text-light);
 }
 
-.footer-legal {
+.lms-footer-legal {
     display: flex;
     gap: var(--spacing-md);
 }
 
-.footer-legal a {
+.lms-footer-legal a {
     color: var(--color-text-light);
     text-decoration: none;
 }
 
-.footer-legal a:hover {
+.lms-footer-legal a:hover {
     color: var(--color-text-main);
 }
 
 @media (max-width: 768px) {
-    .footer-top {
+    .lms-footer-top {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
 
-    .footer-links {
+    .lms-footer-links {
         flex-direction: column;
         gap: var(--spacing-sm);
     }
 
-    .footer-bottom {
+    .lms-footer-bottom {
         flex-direction: column;
         text-align: center;
+    }
+
+    .lms-footer-middle {
+        flex-direction: column;
+        gap: 10px;
     }
 }

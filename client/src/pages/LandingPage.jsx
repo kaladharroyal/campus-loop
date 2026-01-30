@@ -181,9 +181,9 @@ const LandingPage = () => {
                 Start Learning Free
                 <span className="arrow">→</span>
               </Link>
-              <Link to="/courses" className="cta-secondary">
+              <a href="#courses" className="cta-secondary">
                 Explore Courses
-              </Link>
+              </a>
             </div>
 
             <div className="hero-stats">
