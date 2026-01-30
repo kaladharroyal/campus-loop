@@ -3,10 +3,13 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/campus-loop-logo.png';
 
+// IMPORTANT: Add this in your index.html head for Bootstrap icons:
+// <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 const Sidebar = ({ isOpen, onClose }) => {
     const { logout } = useAuth();
     const navigate = useNavigate();
-    const [hoveredItem, setHoveredItem] = useState(null);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -17,55 +20,67 @@ const Sidebar = ({ isOpen, onClose }) => {
         if (onClose) onClose();
     };
 
+    const toggleSidebar = () => {
+        setIsCollapsed(!isCollapsed);
+    };
+
     const menuItems = {
         discover: [
-            { to: '/dashboard', icon: '🏠', label: 'Home' },
-            { to: '/courses', icon: '📚', label: 'Browse Courses' }
+            { to: '/dashboard', icon: 'bi-house-door-fill', label: 'Home', color: '#6366F1' },
+            { to: '/courses', icon: 'bi-book-fill', label: 'Browse Courses', color: '#0EA5E9' }
         ],
         menu: [
-            { to: '/favourites', icon: '❤️', label: 'Favourites' },
-            { to: '/feedback', icon: '💬', label: 'Feedback' },
-            { to: '/focus-mode', icon: '🎯', label: 'Focus Mode' },
-            { to: '/ide', icon: '💻', label: 'IDE' },
-            { to: '/profile', icon: '👤', label: 'Profile' }
+            { to: '/favourites', icon: 'bi-heart-fill', label: 'Favourites', color: '#EF4444' },
+            { to: '/feedback', icon: 'bi-chat-dots-fill', label: 'Feedback', color: '#22C55E' },
+            { to: '/focus-mode', icon: 'bi-bullseye', label: 'Focus Mode', color: '#F59E0B' },
+            { to: '/ide', icon: 'bi-code-slash', label: 'IDE', color: '#8B5CF6' },
+            { to: '/profile', icon: 'bi-person-circle', label: 'Profile', color: '#64748B' }
         ]
     };
 
     return (
         <>
-            <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <div className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
+
+                {/* Toggle / Close Button */}
+                <button className="toggle-btn" onClick={toggleSidebar} aria-label="Toggle Sidebar">
+                    <i className={`toggle-icon ${isCollapsed ? 'bi-list' : 'bi-x-lg'}`}></i>
+                </button>
+
                 {/* Logo Section */}
                 <div className="logo-container">
                     <div className="logo-wrapper">
                         <img src={logo} alt="CampusLoop" className="logo-img" />
-                        <div className="logo-text-wrapper">
-                            <span className="logo-text">CampusLoop</span>
-                            <span className="logo-tagline">Learn Smarter</span>
-                        </div>
+                        {!isCollapsed && (
+                            <div className="logo-text-wrapper">
+                                <span className="logo-text">CampusLoop</span>
+                                <span className="logo-tagline">Learn Smarter</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* Navigation */}
                 <nav className="sidebar-nav">
+
                     {/* Discover Section */}
                     <div className="menu-section">
-                        <h3 className="section-title">Discover</h3>
+                        {!isCollapsed && <h3 className="section-title">Discover</h3>}
                         <div className="menu-items">
-                            {menuItems.discover.map((item, index) => (
+                            {menuItems.discover.map((item) => (
                                 <NavLink
                                     key={item.to}
                                     to={item.to}
                                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                                     onClick={handleLinkClick}
-                                    onMouseEnter={() => setHoveredItem(`discover-${index}`)}
-                                    onMouseLeave={() => setHoveredItem(null)}
-                                    style={{
-                                        animationDelay: `${index * 0.05}s`
-                                    }}
+                                    title={isCollapsed ? item.label : ''}
                                 >
-                                    <span className="item-icon">{item.icon}</span>
-                                    <span className="item-label">{item.label}</span>
-                                    <span className="item-indicator"></span>
+                                    <i
+                                        className={`item-icon ${item.icon}`}
+                                        style={{ '--icon-color': item.color }}
+                                    ></i>
+                                    {!isCollapsed && <span className="item-label">{item.label}</span>}
+                                    {!isCollapsed && <span className="item-indicator"></span>}
                                 </NavLink>
                             ))}
                         </div>
@@ -73,255 +88,232 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                     {/* Menu Section */}
                     <div className="menu-section">
-                        <h3 className="section-title">Menu</h3>
+                        {!isCollapsed && <h3 className="section-title">Menu</h3>}
                         <div className="menu-items">
-                            {menuItems.menu.map((item, index) => (
+                            {menuItems.menu.map((item) => (
                                 <NavLink
                                     key={item.to}
                                     to={item.to}
                                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                                     onClick={handleLinkClick}
-                                    onMouseEnter={() => setHoveredItem(`menu-${index}`)}
-                                    onMouseLeave={() => setHoveredItem(null)}
-                                    style={{
-                                        animationDelay: `${(index + 2) * 0.05}s`
-                                    }}
+                                    title={isCollapsed ? item.label : ''}
                                 >
-                                    <span className="item-icon">{item.icon}</span>
-                                    <span className="item-label">{item.label}</span>
-                                    <span className="item-indicator"></span>
+                                    <i
+                                        className={`item-icon ${item.icon}`}
+                                        style={{ '--icon-color': item.color }}
+                                    ></i>
+                                    {!isCollapsed && <span className="item-label">{item.label}</span>}
+                                    {!isCollapsed && <span className="item-indicator"></span>}
                                 </NavLink>
                             ))}
                         </div>
                     </div>
                 </nav>
-
-                {/* Decorative Element */}
-                <div className="sidebar-decoration"></div>
             </div>
 
+            {/* ===================== STYLES ===================== */}
             <style jsx>{`
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 280px;
-        background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-        border-right: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        z-index: var(--z-modal);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
+                .sidebar {
+                    position: fixed;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 285px;
+                    background: #ffffff;
+                    border-right: 1px solid #e5e7eb;
+                    display: flex;
+                    flex-direction: column;
+                    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    z-index: var(--z-modal);
+                }
 
-    .sidebar::-webkit-scrollbar {
-        width: 6px;
-    }
+                .sidebar.collapsed {
+                    width: 72px;
+                }
 
-    .sidebar::-webkit-scrollbar-track {
-        background: transparent;
-    }
+                /* Toggle / Close Button */
+                .toggle-btn {
+                    position: absolute;
+                    top: 15px;
+                    right: 20px;
+                    width: 28px;
+                    height: 28px;
+                    background: #ffffff;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    z-index: 200; /* higher than logo */
+                    transition: all 0.2s ease;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                    padding: 0;
+                }
 
-    .sidebar::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 3px;
-    }
 
-    .sidebar::-webkit-scrollbar-thumb:hover {
-        background: var(--text-tertiary);
-    }
+                .toggle-btn:hover {
+                    background: #f9fafb;
+                    transform: scale(1.05);
+                }
 
-    /* Logo Section */
-    .logo-container {
-        padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
-        border-bottom: 1px solid var(--border);
-        background: var(--bg-primary);
-    }
+                .toggle-btn:active {
+                    transform: scale(0.95);
+                }
 
-    .logo-wrapper {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-md);
-        animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+                .toggle-icon {
+                    font-size: 16px;
+                    color: #374151;
+                }
 
-    .logo-img {
-        height: 48px;
-        width: 48px;
-        object-fit: contain;
-        transition: transform 0.3s ease;
-    }
+                /* Logo */
+                .logo-container {
+                    padding: 24px 20px;
+                    border-bottom: 1px solid #f3f4f6;
+                    background: #ffffff;
+                    flex-shrink: 0;
+                    margin-top: 35px;
+                }
 
-    .logo-wrapper:hover .logo-img {
-        transform: scale(1.05) rotate(5deg);
-    }
+                .logo-wrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                }
 
-    .logo-text-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
+                .logo-img {
+                    height: 40px;
+                    width: 40px;
+                    object-fit: contain;
+                }
 
-    .logo-text {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--text-primary);
-        letter-spacing: -0.5px;
-    }
+                .logo-text-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                }
 
-    .logo-tagline {
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--text-tertiary);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }
+                .logo-text {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #6366f1;
+                }
 
-    /* Navigation */
-    .sidebar-nav {
-        flex: 1;
-        padding: var(--spacing-lg) var(--spacing-md);
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-xl);
-    }
+                .logo-tagline {
+                    font-size: 10px;
+                    font-weight: 600;
+                    color: #9ca3af;
+                    text-transform: uppercase;
+                }
 
-    .menu-section {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
+                /* Navigation */
+                .sidebar-nav {
+                    flex: 1;
+                    padding: 24px 12px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 32px;
+                    overflow-y: auto;
+                }
 
-    .section-title {
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--text-tertiary);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 0 var(--spacing-sm);
-        margin-bottom: 4px;
-    }
+                .menu-section {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
 
-    .menu-items {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
+                .section-title {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #9ca3af;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                    padding: 0 12px;
+                    margin-bottom: 4px;
+                }
 
-    .menu-item {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        padding: var(--spacing-sm) var(--spacing-md);
-        border-radius: var(--radius-md);
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 15px;
-        font-weight: 500;
-        position: relative;
-        overflow: hidden;
-        transition: all var(--transition-base);
-        animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
-    }
+                .menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    border-radius: 10px;
+                    color: #6b7280;
+                    text-decoration: none;
+                    font-size: 15px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                }
 
-    .menu-item::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: var(--primary-gradient);
-        opacity: 0;
-        transition: opacity var(--transition-base);
-        border-radius: var(--radius-md);
-    }
+                .menu-item:hover {
+                    background: #f9fafb;
+                }
 
-    .menu-item:hover {
-        color: var(--primary);
-        background: var(--bg-tertiary);
-        transform: translateX(4px);
-    }
+                .menu-item.active {
+                    background: #eef2ff;
+                    color: #6366f1;
+                }
 
-    .menu-item.active {
-        color: var(--text-inverse);
-        background: var(--primary-gradient);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        transform: translateX(4px);
-    }
+                /* Icon Styling */
+                .item-icon {
+                    font-size: 20px;
+                    color: #9ca3af; /* default gray */
+                    transition: color 0.2s ease, transform 0.2s ease;
+                }
 
-    .menu-item.active::before {
-        opacity: 1;
-    }
+                .menu-item:hover .item-icon {
+                    color: var(--icon-color);
+                    transform: scale(1.05);
+                }
 
-    .item-icon {
-        font-size: 20px;
-        position: relative;
-        z-index: 1;
-        transition: transform var(--transition-base);
-    }
+                .menu-item.active .item-icon {
+                    color: var(--icon-color);
+                }
 
-    .menu-item:hover .item-icon {
-        transform: scale(1.1);
-    }
+                .item-label {
+                    flex: 1;
+                }
 
-    .item-label {
-        position: relative;
-        z-index: 1;
-        flex: 1;
-    }
+                .item-indicator {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: currentColor;
+                    opacity: 0;
+                    transition: all 0.2s ease;
+                }
 
-    .item-indicator {
-        width: 6px;
-        height: 6px;
-        border-radius: var(--radius-full);
-        background: currentColor;
-        opacity: 0;
-        transform: scale(0);
-        transition: all var(--transition-base);
-        position: relative;
-        z-index: 1;
-    }
+                .menu-item.active .item-indicator {
+                    opacity: 1;
+                }
 
-    .menu-item.active .item-indicator {
-        opacity: 1;
-        transform: scale(1);
-    }
+                /* Mobile Support */
+                @media (max-width: 768px) {
+                    .sidebar {
+                        transform: translateX(-100%);
+                        width: 285px;
+                    }
 
-    /* Decorative Element */
-    .sidebar-decoration {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 120px;
-        background: linear-gradient(180deg, transparent 0%, var(--primary) 100%);
-        opacity: 0.03;
-        pointer-events: none;
-    }
+                    .sidebar.open {
+                        transform: translateX(0);
+                        box-shadow: 2px 0 16px rgba(0,0,0,0.1);
+                    }
 
-    /* Mobile Styles */
-    @media (max-width: 768px) {
-        .sidebar {
-            transform: translateX(-100%);
-        }
+                    .toggle-btn {
+                        top: 14px;
+                        right: 14px;
+                        background: transparent;
+                        border: none;
+                        box-shadow: none;
+                    }
 
-        .sidebar.open {
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-`}</style>
+                    .toggle-icon {
+                        font-size: 20px;
+                        color: #111827;
+                    }
+                }
+            `}</style>
         </>
     );
 };

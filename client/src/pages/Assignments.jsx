@@ -48,6 +48,18 @@ const Assignments = () => {
             setShowResult(true);
         }
     };
+    const handlePrevQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(prev => prev - 1);
+        }
+    };
+
+    const handleClearResponse = () => {
+        setUserAnswers(prev => ({
+            ...prev,
+            [currentQuestionIndex]: null
+        }));
+    };
 
     const calculateScore = () => {
         let score = 0;
@@ -147,15 +159,25 @@ const Assignments = () => {
 
         if (showResult) {
             const score = calculateScore();
+            const percentage = Math.round((score / totalQuestions) * 100);
             return (
                 <div className="page-container quiz-container">
                     <div className="quiz-result-card">
                         <h2>Quiz Results</h2>
-                        <div className="score-circle">
+                        <div
+                            className={`score-circle ${percentage >= 70
+                                    ? "good"
+                                    : percentage >= 40
+                                        ? "average"
+                                        : "poor"
+                                }`}
+                            style={{ "--progress": `${percentage}%` }}
+                        >
                             <span>{score} / {totalQuestions}</span>
                         </div>
+
                         <p>{score > 5 ? 'Good Job!' : 'Keep Practicing!'}</p>
-                        <button className="primary-btn" onClick={handleCloseQuiz}>Back to Assignments</button>
+                        <button id='backToAssignmentsBtn' className="primary-btn" onClick={handleCloseQuiz}>Back to Assignments</button>
                     </div>
                 </div>
             );
@@ -185,11 +207,38 @@ const Assignments = () => {
                         ))}
                     </div>
                     <div className="quiz-actions">
-                        <button className="secondary-btn" onClick={handleCloseQuiz}>Cancel</button>
-                        <button className="primary-btn" onClick={handleNextQuestion}>
-                            {currentQuestionIndex === totalQuestions - 1 ? 'Submit' : 'Next'}
+                        <button
+                            id="clearResponseBtn"
+                            className="secondary-btn"
+                            onClick={handleClearResponse}
+                            disabled={userAnswers[currentQuestionIndex] == null}
+                        >
+                            Clear Response
                         </button>
+
+                        <div className="right-actions">
+                            <button
+                                id="prevQuestionBtn"
+                                className="secondary-btn"
+                                onClick={handlePrevQuestion}
+                                disabled={currentQuestionIndex === 0}
+                            >
+                                Prev
+                            </button>
+
+                            <button
+                                id="nextQuestionBtn"
+                                className="primary-btn"
+                                onClick={handleNextQuestion}
+                                disabled={userAnswers[currentQuestionIndex] == null}
+                            >
+                                {currentQuestionIndex === totalQuestions - 1 ? "Submit" : "Next"}
+                            </button>
+                        </div>
                     </div>
+
+
+
                 </div>
             </div>
         );
