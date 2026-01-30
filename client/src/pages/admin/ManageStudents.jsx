@@ -187,73 +187,76 @@ const ManageStudents = () => {
         <div className="admin-page">
             <div className="admin-page-header">
                 <h1>Manage Students</h1>
-                <div>
-                    <button className="add-btn btn-primary" onClick={() => setShowContainer(true)}>Add Student</button>
-                    {showContainer && (
-                        <div style={styles.overlay}>
-                            <div style={styles.container}>
-                                <div style={styles.header}>
-                                    <h3 style={styles.title}>Add New Student</h3>
-                                    <button
-                                        onClick={() => setShowContainer(false)}
-                                        style={styles.closeBtn}
-                                        title="Close"
-                                    >
-                                        &times;
-                                    </button>
-                                </div>
-                                <div style={styles.form}>
-                                    <div className="form-group">
-                                        <label style={styles.label} htmlFor="name">Name *</label>
-                                        <input
-                                            type="text"
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            placeholder="Enter student name"
-                                            className="admin-input"
-                                        />
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label style={styles.label} htmlFor="email">Email *</label>
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Enter student email"
-                                            className="admin-input"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label style={styles.label} htmlFor="password">Password *</label>
-                                        <input
-                                            type="text"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Initial password"
-                                            className="admin-input"
-                                        />
-                                    </div>
+                <button
+                    className="admin-btn admin-btn-primary"
+                    onClick={() => setShowContainer(true)}
+                >
+                    Add Student
+                </button>
+                {showContainer && (
+                    <div style={styles.overlay}>
+                        <div style={styles.container}>
+                            <div style={styles.header}>
+                                <h3 style={styles.title}>Add New Student</h3>
+                                <button
+                                    onClick={() => setShowContainer(false)}
+                                    style={styles.closeBtn}
+                                    title="Close"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <div style={styles.form}>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="name">Name *</label>
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter student name"
+                                        className="admin-input"
+                                    />
                                 </div>
 
-                                <div style={styles.footer}>
-                                    <button
-                                        onClick={() => setShowContainer(false)}
-                                        className="admin-btn admin-btn-secondary"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleAddStudent}
-                                        className="admin-btn admin-btn-primary"
-                                    >
-                                        Add Student
-                                    </button>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="email">Email *</label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Enter student email"
+                                        className="admin-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="password">Password *</label>
+                                    <input
+                                        type="text"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Initial password"
+                                        className="admin-input"
+                                    />
                                 </div>
                             </div>
+
+                            <div style={styles.footer}>
+                                <button
+                                    onClick={() => setShowContainer(false)}
+                                    className="admin-btn admin-btn-secondary"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleAddStudent}
+                                    className="admin-btn admin-btn-primary"
+                                >
+                                    Add Student
+                                </button>
+                            </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
 
             {/* Filters */}
