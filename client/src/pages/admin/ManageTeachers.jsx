@@ -178,14 +178,20 @@ const ManageTeachers = () => {
                                 onChange={handleInputChange}
                                 className="admin-input"
                             />
-                            <input
-                                type="text"
+                            <select
                                 name="branch"
-                                placeholder="Department/Branch"
                                 value={formData.branch}
                                 onChange={handleInputChange}
                                 className="admin-input"
-                            />
+                            >
+                                <option value="">Select Department/Branch</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Finance">Finance</option>
+                                <option value="IT Support">IT Support</option>
+                            </select>
                         </div>
                         <button type="submit" className="admin-btn admin-btn-success">
                             Create Teacher

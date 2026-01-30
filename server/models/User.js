@@ -21,16 +21,49 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['student', 'instructor', 'admin'],
+        enum: ['student', 'instructor', 'teacher', 'admin'], // Support both teacher and instructor
         default: 'student'
     },
     branch: { type: String, default: '' },
     year: { type: String, default: '' },
     phone: { type: String, default: '' },
-    profilePicture: { type: String, default: '' }
+    status: {
+        type: String,
+        enum: ['active', 'inactive'],
+        default: 'active'
+    },
+    // Extended Profile Fields
+    profilePicture: {
+        type: String,
+        default: ''
+    },
+    bio: {
+        type: String,
+        default: ''
+    },
+    socialLinks: {
+        github: { type: String, default: '' },
+        linkedin: { type: String, default: '' },
+        website: { type: String, default: '' }
+    },
+    // Course Relationships
+    enrolledCourses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+    wishlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+    createdCourses: [{ // For instructors/teachers
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    }],
+    // Password Reset
+    resetPasswordToken: String,
+    resetPasswordExpire: Date
 }, { timestamps: true });
 
-// Encrypt password using bcrypt
 // Encrypt password using bcrypt
 userSchema.pre('save', async function () {
     if (!this.isModified('password')) {
