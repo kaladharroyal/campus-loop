@@ -1,9 +1,2 @@
-[dotenv@17.2.3] injecting env (3) from server\.env -- tip: ≡ƒöä add secrets lifecycle management: https://dotenvx.com/ops
-Connecting to: mongodb+srv://kaladharroyal_db_user:hCPer7SFX6Qw6WXq@cluster0.4vbul3w.mongodb.net/?appName=Cluster0
-Connected to MongoDB
-Creating user...
-User created: new ObjectId('697c36d7709490ae2580cf98')
-Verifying fields...
-SUCCESS: All new fields verified.
-SUCCESS: Update verified.
-Cleanup done.
+
+

@@ -1,6 +1,6 @@
 # Campus Loop LMS
 
-Campus Loop is a comprehensive Learning Management System designed to facilitate interaction between students, instructors, and administrators.
+Campus Loop is a comprehensive Learning Management System designed to facilitate interaction between students, teachers, and administrators.
 
 ## ✨ Features
 
@@ -10,7 +10,7 @@ Campus Loop is a comprehensive Learning Management System designed to facilitate
 - **Login**: JWT-based authentication with 30-day token expiration
 - **Profile Management**: Update personal details, branch, year, phone number
 - **Protected Routes**: ProtectedRoute component guards authenticated pages
-- **Role-Based Access**: Support for `student`, `instructor`, `admin` roles
+- **Role-Based Access**: Support for `student`, `teacher`, `admin` roles
 - **Password Security**: Bcrypt hashing with salt rounds
 
 ### 2. Dashboard & Analytics
@@ -28,7 +28,7 @@ Campus Loop is a comprehensive Learning Management System designed to facilitate
 - Search and filter available courses
 - Categories: MERN, Java, AI/ML, Database, Networks, etc.
 - Grid/List view toggle
-- Course details: Description, Duration, Level, Instructor
+- Course details: Description, Duration, Level, teacher
 
 #### Course Player
 - Integrated YouTube video player
@@ -45,7 +45,7 @@ Campus Loop is a comprehensive Learning Management System designed to facilitate
   - **Calendar View**: Due dates displayed on calendar
 - **Assignment Details**: Title, Description, Course, Due Date
 - **Submission Tracking**: Upload URL, submission timestamp
-- **Grading System**: Instructor feedback and grades
+- **Grading System**: teacher feedback and grades
 - **Quiz Integration**: Interactive quizzes linked to assignments
 
 ### 5. Attendance Tracking

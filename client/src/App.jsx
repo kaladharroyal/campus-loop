@@ -33,7 +33,7 @@ import AdminManageCourses from './pages/admin/ManageCourses';
 import ManageAssignments from './pages/admin/ManageAssignments';
 import ReportsAndAnalytics from './pages/admin/ReportsAndAnalytics';
 import AdminSettings from './pages/admin/AdminSettings';
-import FacultyDashboard from './pages/Instructor/FacultyDashboard';
+import FacultyDashboard from './pages/teacher/FacultyDashboard';
 
 // Route Protection Components
 import AdminRoute from './components/routes/AdminRoute';

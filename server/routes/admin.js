@@ -93,7 +93,7 @@ router.get('/teachers', async (req, res) => {
         const teachersWithCourses = await Promise.all(
             teachers.map(async (teacher) => {
                 const courseCount = await Course.countDocuments({
-                    instructor: teacher._id
+                    teacher: teacher._id
                 });
                 return {
                     ...teacher.toObject(),
@@ -288,7 +288,7 @@ router.post('/assign-course', async (req, res) => {
             return res.status(404).json({ message: 'Course not found' });
         }
 
-        course.instructor = teacherId;
+        course.teacher = teacherId;
         await course.save();
 
         res.json({

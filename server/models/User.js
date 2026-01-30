@@ -21,8 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['student', 'instructor', 'teacher', 'admin'], // Support both teacher and instructor
-        default: 'student'
+        enum: ['student', 'teacher', 'teacher', 'admin'], 
     },
     branch: { type: String, default: '' },
     year: { type: String, default: '' },
@@ -55,7 +54,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
     }],
-    createdCourses: [{ // For instructors/teachers
+    createdCourses: [{ // For teachers/teachers
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
     }],

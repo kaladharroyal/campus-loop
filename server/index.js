@@ -75,16 +75,12 @@ app.post('/api/execute-code', async (req, res) => {
 console.log('✅ Code execution route registered at POST /api/execute-code');
 
 
-// Routes (wrapped in try-catch to prevent crashes)
-try {
-  app.use('/api/auth', require('./routes/auth'));
-  app.use('/api/courses', require('./routes/courses'));
-  app.use('/api/assignments', require('./routes/assignments'));
-  app.use('/api/attendance', require('./routes/attendance'));
-  app.use('/api/admin', require('./routes/admin')); // Admin routes
-} catch (error) {
-  console.error('Error loading routes:', error.message);
-}
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/courses', require('./routes/courses'));
+app.use('/api/assignments', require('./routes/assignments'));
+app.use('/api/attendance', require('./routes/attendance'));
+app.use('/api/admin', require('./routes/admin')); // Admin routes
 
 console.log('✅ All routes loaded');
 
