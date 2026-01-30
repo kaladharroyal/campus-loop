@@ -3,11 +3,11 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 /**
- * TeacherRoute component
- * Protects teacher-only routes
- * Redirects to appropriate dashboard if user is not a teacher
+ * Base ProtectedRoute component
+ * Ensures user is authenticated before accessing protected routes
+ * Redirects to login if not authenticated
  */
-const TeacherRoute = ({ children }) => {
+const ProtectedRoute = ({ children }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
@@ -23,21 +23,11 @@ const TeacherRoute = ({ children }) => {
         );
     }
 
-    // Not authenticated - redirect to login
     if (!user) {
         return <Navigate to="/login" replace />;
     }
 
-    // Not a teacher - redirect to appropriate dashboard
-    if (user.role !== 'instructor') {
-        if (user.role === 'admin') {
-            return <Navigate to="/admin/dashboard" replace />;
-        }
-        return <Navigate to="/dashboard" replace />;
-    }
-
-    // User is teacher - allow access
     return children;
 };
 
-export default TeacherRoute;
+export default ProtectedRoute;

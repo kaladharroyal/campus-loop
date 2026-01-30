@@ -20,6 +20,11 @@
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
+.app-layout.full-width-mode .main-content {
+    margin-left: 0;
+    width: 100%;
+}
+
 .app-layout.collapsed-mode .main-content {
     margin-left: 80px;
     width: calc(100% - 80px);

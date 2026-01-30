@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLayout } from '../context/LayoutContext';
 import logo from '../assets/campus-loop-logo.png';
-
-// IMPORTANT: Add this in your index.html head for Bootstrap icons:
-// <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 const Sidebar = ({ isOpen, onClose }) => {
     const { logout } = useAuth();
+    const { isSidebarHidden } = useLayout();
+    const location = useLocation();
     const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -37,6 +37,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             { to: '/profile', icon: 'bi-person-circle', label: 'Profile', color: '#64748B' }
         ]
     };
+
+
+
+    if (isSidebarHidden) return null;
 
     return (
         <>

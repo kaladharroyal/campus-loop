@@ -150,7 +150,7 @@ const LandingPage = () => {
 
           <div className="nav-actions">
             <Link to="/login" className="nav-btn btn-ghost">Login</Link>
-            <Link to="/register" className="nav-btn btn-secondary">Get Started</Link>
+            <Link to="/register" className="nav-btn btn-primary">Get Started</Link>
           </div>
         </div>
       </nav>
@@ -181,9 +181,9 @@ const LandingPage = () => {
                 Start Learning Free
                 <span className="arrow">→</span>
               </Link>
-              <Link to="/courses" className="cta-secondary">
+              <a href="#courses" className="cta-secondary">
                 Explore Courses
-              </Link>
+              </a>
             </div>
 
             <div className="hero-stats">

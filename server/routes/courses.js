@@ -22,12 +22,12 @@ const protect = async (req, res, next) => {
     }
 };
 
-// Middleware for instructor/admin only
-const instructorOnly = (req, res, next) => {
-    if (req.user && (req.user.role === 'instructor' || req.user.role === 'admin')) {
+// Middleware for teacher/admin only
+const teacherOnly = (req, res, next) => {
+    if (req.user && (req.user.role === 'teacher' || req.user.role === 'admin')) {
         next();
     } else {
-        res.status(403).json({ message: 'Not authorized as an instructor' });
+        res.status(403).json({ message: 'Not authorized as an teacher' });
     }
 };
 
@@ -36,7 +36,7 @@ const instructorOnly = (req, res, next) => {
 // @access  Private
 router.get('/', protect, async (req, res) => {
     try {
-        const courses = await Course.find({}).populate('instructor', 'name email');
+        const courses = await Course.find({}).populate('teacher', 'name email');
         res.json(courses);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
@@ -45,8 +45,8 @@ router.get('/', protect, async (req, res) => {
 
 // @desc    Create a course
 // @route   POST /api/courses
-// @access  Private/Instructor
-router.post('/', protect, instructorOnly, async (req, res) => {
+// @access  Private/teacher
+router.post('/', protect, teacherOnly, async (req, res) => {
     const { title, description, category, duration, level, thumbnail } = req.body;
 
     try {
@@ -57,7 +57,7 @@ router.post('/', protect, instructorOnly, async (req, res) => {
             duration,
             level,
             thumbnail,
-            instructor: req.user._id
+            teacher: req.user._id
         });
 
         const createdCourse = await course.save();
@@ -67,17 +67,17 @@ router.post('/', protect, instructorOnly, async (req, res) => {
     }
 });
 
-// @desc    Get logged in user's enrolled courses (or created courses if instructor)
+// @desc    Get logged in user's enrolled courses (or created courses if teacher)
 // @route   GET /api/courses/mycourses
 // @access  Private
 router.get('/mycourses', protect, async (req, res) => {
     try {
-        if (req.user.role === 'instructor') {
-            const courses = await Course.find({ instructor: req.user._id });
+        if (req.user.role === 'teacher') {
+            const courses = await Course.find({ teacher: req.user._id });
             res.json(courses);
         } else {
             // For students, find courses where their ID is in studentsEnrolled
-            const courses = await Course.find({ studentsEnrolled: req.user._id }).populate('instructor', 'name');
+            const courses = await Course.find({ studentsEnrolled: req.user._id }).populate('teacher', 'name');
             res.json(courses);
         }
     } catch (error) {

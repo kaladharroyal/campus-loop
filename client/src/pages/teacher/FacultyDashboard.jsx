@@ -29,7 +29,7 @@ const FacultyDashboard = () => {
             <header className="dashboard-header">
                 <div>
                     <h1>Faculty Dashboard</h1>
-                    <p>Welcome back, Instructor {user?.lastName}!</p>
+                    <p>Welcome back, teacher {user?.lastName}!</p>
                 </div>
                 <button className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
                     + Create New Course

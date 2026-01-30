@@ -33,7 +33,15 @@ const ManageTeachers = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                setTeachers(data.teachers);
+                console.log('Fetched teachers:', data); // Debug log
+                if (data.teachers && Array.isArray(data.teachers)) {
+                    setTeachers(data.teachers);
+                } else {
+                    console.error('Invalid teacher data format:', data);
+                    setTeachers([]);
+                }
+            } else {
+                console.error('Failed to fetch teachers:', response.status);
             }
         } catch (error) {
             console.error('Error fetching teachers:', error);

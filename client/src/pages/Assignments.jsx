@@ -14,14 +14,14 @@ const Assignments = () => {
 
     // Mock Assignments Data matching the user's screenshot
     const assignmentsList = [
-        { id: 'FIG-122', title: 'JAVA Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
-        { id: 'FIG-121', title: 'DBMS Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'DBMS' },
-        { id: 'FIG-120', title: 'DLCO Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'Instructor', subject: 'DLCO' },
-        { id: 'FIG-119', title: 'Machine learning Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'Instructor', subject: 'Machine Learning' },
-        { id: 'FIG-118', title: 'NLP Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'Instructor', subject: 'NLP' },
-        { id: 'FIG-117', title: 'core python lab', type: 'Coding', priority: 'High', date: 'Dec 21', owner: 'Instructor', subject: 'Python' },
-        { id: 'FIG-116', title: 'core java ab', type: 'coding', priority: 'Low', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
-        { id: 'FIG-113', title: 'Quiz - 0215', type: 'Quiz', priority: 'High', date: 'Dec 21', owner: 'Instructor', subject: 'JAVA' },
+        { id: 'FIG-122', title: 'JAVA Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
+        { id: 'FIG-121', title: 'DBMS Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'DBMS' },
+        { id: 'FIG-120', title: 'DLCO Assignment 1', type: 'ASGN', priority: 'medium', date: 'Dec 21', owner: 'teacher', subject: 'DLCO' },
+        { id: 'FIG-119', title: 'Machine learning Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'teacher', subject: 'Machine Learning' },
+        { id: 'FIG-118', title: 'NLP Assignment 1', type: 'ASGN', priority: 'Medium', date: 'Dec 21', owner: 'teacher', subject: 'NLP' },
+        { id: 'FIG-117', title: 'core python lab', type: 'Coding', priority: 'High', date: 'Dec 21', owner: 'teacher', subject: 'Python' },
+        { id: 'FIG-116', title: 'core java ab', type: 'coding', priority: 'Low', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
+        { id: 'FIG-113', title: 'Quiz - 0215', type: 'Quiz', priority: 'High', date: 'Dec 21', owner: 'teacher', subject: 'JAVA' },
     ];
 
     const subjects = ['All', 'DBMS', 'JAVA', 'DLCO', 'Machine Learning', 'NLP'];

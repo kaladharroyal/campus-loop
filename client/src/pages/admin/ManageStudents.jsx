@@ -8,12 +8,31 @@ import '../../styles/admin.css';
 const ManageStudents = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showContainer, setShowContainer] = useState(false);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [branch, setBranch] = useState("");
+    const [roll, setRoll] = useState("");
+    const [address, setAddress] = useState("");
+    const [year, setYear] = useState("");
+    const [phone, setPhone] = useState("0000000000");
     const [filters, setFilters] = useState({
         search: '',
         branch: '',
         year: '',
         status: ''
     });
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Debounce search term
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setFilters(prev => ({ ...prev, search: searchTerm }));
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
 
     useEffect(() => {
         fetchStudents();
@@ -42,10 +61,14 @@ const ManageStudents = () => {
     };
 
     const handleFilterChange = (e) => {
-        setFilters({
-            ...filters,
-            [e.target.name]: e.target.value
-        });
+        if (e.target.name === 'search') {
+            setSearchTerm(e.target.value);
+        } else {
+            setFilters({
+                ...filters,
+                [e.target.name]: e.target.value
+            });
+        }
     };
 
     const toggleStatus = async (studentId) => {
@@ -90,6 +113,72 @@ const ManageStudents = () => {
         }
     };
 
+    const handleAddStudent = async () => {
+        // Validation
+        if (!name || !email || !password) {
+            alert("Please fill in all required fields (Name, Email, Password)");
+            return;
+        }
+
+        try {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+            // Split name into firstName and lastName
+            const nameParts = name.trim().split(' ');
+            const firstName = nameParts[0];
+            const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+            const studentData = {
+                firstName,
+                lastName, // If no last name, it will be empty string, but schema requires it.
+                email,
+                password,
+                branch,
+                year,
+                phone,
+                roll,
+                address
+            };
+
+            // If lastName is empty, we might want to handle it (e.g. use "." or duplicate firstName) 
+            // but for now let's hope user enters full name.
+            if (!lastName) {
+                studentData.lastName = "."; // Fallback to satisfy required constraint if needed
+            }
+
+            const response = await fetch('/api/admin/create-student', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userInfo.token}`
+                },
+                body: JSON.stringify(studentData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Student added successfully");
+                setShowContainer(false);
+                // Reset form
+                setName("");
+                setEmail("");
+                setBranch("");
+                setYear("");
+                setRoll("");
+                setPhone("");
+                setAddress("");
+                setPassword("");
+                fetchStudents(); // Refresh list
+            } else {
+                alert(data.message || "Failed to add student");
+            }
+        } catch (error) {
+            console.error("Error adding student:", error);
+            alert("Error adding student");
+        }
+    };
+
     if (loading) {
         return <div className="admin-loading">Loading students...</div>;
     }
@@ -98,7 +187,76 @@ const ManageStudents = () => {
         <div className="admin-page">
             <div className="admin-page-header">
                 <h1>Manage Students</h1>
-                <p>View, edit, and manage all student accounts</p>
+                <button
+                    className="admin-btn admin-btn-primary"
+                    onClick={() => setShowContainer(true)}
+                >
+                    Add Student
+                </button>
+                {showContainer && (
+                    <div style={styles.overlay}>
+                        <div style={styles.container}>
+                            <div style={styles.header}>
+                                <h3 style={styles.title}>Add New Student</h3>
+                                <button
+                                    onClick={() => setShowContainer(false)}
+                                    style={styles.closeBtn}
+                                    title="Close"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <div style={styles.form}>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="name">Name *</label>
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Enter student name"
+                                        className="admin-input"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="email">Email *</label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Enter student email"
+                                        className="admin-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="password">Password *</label>
+                                    <input
+                                        type="text"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Initial password"
+                                        className="admin-input"
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={styles.footer}>
+                                <button
+                                    onClick={() => setShowContainer(false)}
+                                    className="admin-btn admin-btn-secondary"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleAddStudent}
+                                    className="admin-btn admin-btn-primary"
+                                >
+                                    Add Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Filters */}
@@ -107,7 +265,7 @@ const ManageStudents = () => {
                     type="text"
                     name="search"
                     placeholder="Search by name or email..."
-                    value={filters.search}
+                    value={searchTerm}
                     onChange={handleFilterChange}
                     className="admin-filter-input"
                 />
@@ -208,3 +366,73 @@ const ManageStudents = () => {
 };
 
 export default ManageStudents;
+
+const styles = {
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000
+    },
+    container: {
+        backgroundColor: 'white',
+        padding: '30px',
+        borderRadius: '12px',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+        width: '500px',
+        maxWidth: '95%',
+        maxHeight: '90vh',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px'
+    },
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: '1px solid #eee',
+        paddingBottom: '15px'
+    },
+    title: {
+        margin: 0,
+        fontSize: '20px',
+        fontWeight: '600',
+        color: '#1a1a1a'
+    },
+    closeBtn: {
+        background: 'none',
+        border: 'none',
+        fontSize: '28px',
+        lineHeight: '1',
+        cursor: 'pointer',
+        color: '#666',
+        padding: '0 5px'
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '15px'
+    },
+    label: {
+        fontSize: '14px',
+        fontWeight: '500',
+        color: '#4a5568',
+        marginBottom: '5px',
+        display: 'block'
+    },
+    footer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '12px',
+        marginTop: '20px',
+        borderTop: '1px solid #eee',
+        paddingTop: '20px'
+    }
+};

@@ -1,7 +1,7 @@
 export const courseData = {
     "NLP": {
         title: "Natural Language Processing with Python",
-        instructor: "Explosion AI & FreeCodeCamp",
+        teacher: "Explosion AI & FreeCodeCamp",
         description: "A complete course on NLP using spacy and Python. Learn how to build natural language understanding systems, process text, and build chatbots.",
         lessons: [
             { id: 1, title: "Intro to NLP", duration: "05:00", videoId: "dIUTsFT2MeE", start: 0 },
@@ -15,7 +15,7 @@ export const courseData = {
     },
     "Programming for AI": {
         title: "Python for Data Science & AI",
-        instructor: "FreeCodeCamp",
+        teacher: "FreeCodeCamp",
         description: "Learn Python programming specifically for Data Science and Artificial Intelligence. Covers Pandas, NumPy, and more.",
         lessons: [
             { id: 1, title: "Introduction", duration: "10:00", videoId: "LHBE6Q9XlzI", start: 0 },
@@ -29,7 +29,7 @@ export const courseData = {
     },
     "Artificial intelligence": {
         title: "Artificial Intelligence: The Big Picture",
-        instructor: "Edureka",
+        teacher: "Edureka",
         description: "Understand the broad field of AI, including Machine Learning, Deep Learning, and their real-world applications.",
         lessons: [
             { id: 1, title: "What is AI?", duration: "12:00", videoId: "JMUxmLyrhSk", start: 0 },
@@ -41,7 +41,7 @@ export const courseData = {
     },
     "Deep Learning": {
         title: "Deep Learning Crash Course",
-        instructor: "FreeCodeCamp",
+        teacher: "FreeCodeCamp",
         description: "A comprehensive introduction to Deep Learning neural networks, PyTorch, and TensorFlow concepts.",
         lessons: [
             { id: 1, title: "Introduction to DL", duration: "18:00", videoId: "VyWAvY2CF9c", start: 0 },
@@ -53,7 +53,7 @@ export const courseData = {
     },
     "Computer Netwoks": {
         title: "Computer Networking Complete Course",
-        instructor: "NetworkChuck",
+        teacher: "NetworkChuck",
         description: "Learn Computer Networking from scratch. Covers OSI Model, TCP/IP, IP addressing, Subnetting, and more.",
         lessons: [
             { id: 1, title: "What is a Network?", duration: "08:00", videoId: "qiQR5rTSshw", start: 0 },
@@ -66,7 +66,7 @@ export const courseData = {
     },
     "JAVA": {
         title: "Java Programming Masterclass",
-        instructor: "Mosh Hamedani",
+        teacher: "Mosh Hamedani",
         description: "Master Java – one of the most popular programming languages in the world. This comprehensive course covers everything from installation to Object-Oriented Programming (OOP).",
         lessons: [
             { id: 1, title: "Introduction to Java", duration: "02:30", videoId: "eIrMbAQSU34", start: 0 },
@@ -83,7 +83,7 @@ export const courseData = {
     },
     "DBMS": {
         title: "SQL Tutorial - Full Database Course",
-        instructor: "Mike Dane (FreeCodeCamp)",
+        teacher: "Mike Dane (FreeCodeCamp)",
         description: "Learn SQL and Database Management Systems. This course covers everything from creating databases to complex queries.",
         lessons: [
             { id: 1, title: "What is a DBMS?", duration: "05:00", videoId: "HXV3zeQKqGY", start: 0 },
@@ -98,7 +98,7 @@ export const courseData = {
     },
     "MERN": {
         title: "MERN Stack Full Course",
-        instructor: "Simplilearn",
+        teacher: "Simplilearn",
         description: "An extensive 11-hour course covering MongoDB, Express, React, and Node.js. Perfect for mastering full-stack development.",
         lessons: [
             { id: 1, title: "Course Introduction", duration: "10:00", videoId: "wNrw9DcLDs", start: 0 },
@@ -112,7 +112,7 @@ export const courseData = {
     },
     "Machine Learning": {
         title: "Machine Learning with Python",
-        instructor: "FreeCodeCamp",
+        teacher: "FreeCodeCamp",
         description: "A complete guide to Machine Learning with Python. Learn Linear Regression, K-Nearest Neighbors, SVM, and more.",
         lessons: [
             { id: 1, title: "Intro to Machine Learning", duration: "10:00", videoId: "GwIo3gDZCVQ", start: 0 },

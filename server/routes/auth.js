@@ -42,6 +42,14 @@ router.post('/register', async (req, res) => {
                 lastName: user.lastName,
                 name: `${user.firstName} ${user.lastName}`, // Backward compat key
                 email: user.email,
+                bio: user.bio,
+                gender: user.gender,
+                dob: user.dob,
+                secondaryEmail: user.secondaryEmail,
+                alternatePhone: user.alternatePhone,
+                permanentAddress: user.permanentAddress,
+                currentAddress: user.currentAddress,
+                parentDetails: user.parentDetails,
                 role: user.role,
                 branch: user.branch,
                 year: user.year,
@@ -106,6 +114,144 @@ router.put('/profile', protect, async (req, res) => {
             user.year = req.body.year || user.year;
             user.phone = req.body.phone || user.phone;
             user.profilePicture = req.body.profilePicture || user.profilePicture;
+            user.bio = req.body.bio !== undefined ? req.body.bio : user.bio;
+            user.gender = req.body.gender !== undefined ? req.body.gender : user.gender;
+            user.dob = req.body.dob !== undefined ? req.body.dob : user.dob;
+            user.secondaryEmail = req.body.secondaryEmail !== undefined ? req.body.secondaryEmail : user.secondaryEmail;
+            user.alternatePhone = req.body.alternatePhone !== undefined ? req.body.alternatePhone : user.alternatePhone;
+            user.permanentAddress = req.body.permanentAddress !== undefined ? req.body.permanentAddress : user.permanentAddress;
+            user.currentAddress = req.body.currentAddress !== undefined ? req.body.currentAddress : user.currentAddress;
+
+            if (req.body.parentDetails) {
+                user.parentDetails = {
+                    fatherName: req.body.parentDetails.fatherName || user.parentDetails.fatherName,
+                    fatherOccupation: req.body.parentDetails.fatherOccupation || user.parentDetails.fatherOccupation,
+                    motherName: req.body.parentDetails.motherName || user.parentDetails.motherName,
+                    motherOccupation: req.body.parentDetails.motherOccupation || user.parentDetails.motherOccupation,
+                    parentPhone: req.body.parentDetails.parentPhone || user.parentDetails.parentPhone,
+                    parentEmail: req.body.parentDetails.parentEmail || user.parentDetails.parentEmail
+                };
+            }
+
+            if (req.body.currentEducation) {
+                user.currentEducation = {
+                    institution: req.body.currentEducation.institution || user.currentEducation.institution,
+                    currentSemester: req.body.currentEducation.currentSemester || user.currentEducation.currentSemester,
+                    department: req.body.currentEducation.department || user.currentEducation.department,
+                    rollNo: req.body.currentEducation.rollNo || user.currentEducation.rollNo,
+                    passoutBatch: req.body.currentEducation.passoutBatch || user.currentEducation.passoutBatch,
+                    specialization: req.body.currentEducation.specialization || user.currentEducation.specialization,
+                    semesterScores: req.body.currentEducation.semesterScores || user.currentEducation.semesterScores,
+                    marksheet: req.body.currentEducation.marksheet || user.currentEducation.marksheet
+                };
+            }
+
+            if (req.body.previousEducation) {
+                user.previousEducation = {
+                    classXII: { ...user.previousEducation?.classXII, ...req.body.previousEducation.classXII },
+                    classX: { ...user.previousEducation?.classX, ...req.body.previousEducation.classX }
+                };
+            }
+
+            if (req.body.socialLinks) {
+                user.socialLinks = {
+                    github: req.body.socialLinks.github || user.socialLinks.github,
+                    linkedin: req.body.socialLinks.linkedin || user.socialLinks.linkedin,
+                    twitter: req.body.socialLinks.twitter || user.socialLinks.twitter,
+                    instagram: req.body.socialLinks.instagram || user.socialLinks.instagram,
+                    website: req.body.socialLinks.website || user.socialLinks.website,
+                    leetcode: req.body.socialLinks.leetcode || user.socialLinks.leetcode
+                };
+            } else {
+                // If socialLinks is not provided in body, keep existing. 
+                // However, the original code had `user.socialLinks = req.body.socialLinks || user.socialLinks`.
+                // If req.body.socialLinks is partial, we might overwrite others with undefined if we just do assignment.
+                // Better to merge if it's an object, but looking at previous simple assignment, I'll stick to a merge approach to be safe or just standard assignment if the frontend sends the whole object.
+                // Reverting to the existing simple pattern but ensuring all keys are present if the frontend sends a partial object is safer. 
+                // Let's assume frontend sends the full object for now or user.socialLinks references the doc.
+                // Actually, simply relying on Mongoose's ability to partial update if we iterate is better?
+                // The previous code was `user.socialLinks = req.body.socialLinks || user.socialLinks;`
+                // This means if I send `{ github: '...' }` and nothing else, `socialLinks` becomes just `{ github: '...' }` losing others?
+                // Check Mongoose schema: they are fields in an object.
+                // Let's just use the spread to be safe:
+                user.socialLinks = { ...user.socialLinks, ...req.body.socialLinks };
+            }
+
+            if (req.body.resume) {
+                user.resume = req.body.resume;
+            }
+
+            if (req.body.skills) {
+                user.skills = req.body.skills;
+            }
+
+            if (req.body.workExperience) {
+                user.workExperience = req.body.workExperience;
+            }
+
+            if (req.body.hasNoWorkExperience !== undefined) {
+                user.hasNoWorkExperience = req.body.hasNoWorkExperience;
+            }
+
+            if (req.body.projects) {
+                user.projects = req.body.projects;
+            }
+
+            if (req.body.hasNoProjects !== undefined) {
+                user.hasNoProjects = req.body.hasNoProjects;
+            }
+
+            if (req.body.isAvailableForMentoring !== undefined) {
+                user.isAvailableForMentoring = req.body.isAvailableForMentoring;
+            }
+
+            if (req.body.achievements) {
+                user.achievements = req.body.achievements;
+            }
+
+            if (req.body.hasNoAchievements !== undefined) {
+                user.hasNoAchievements = req.body.hasNoAchievements;
+            }
+
+            if (req.body.competitions) {
+                user.competitions = req.body.competitions;
+            }
+
+            if (req.body.hasNoCompetitions !== undefined) {
+                user.hasNoCompetitions = req.body.hasNoCompetitions;
+            }
+
+            if (req.body.events) {
+                user.events = req.body.events;
+            }
+
+            if (req.body.hasNoEvents !== undefined) {
+                user.hasNoEvents = req.body.hasNoEvents;
+            }
+
+            if (req.body.certifications) {
+                user.certifications = req.body.certifications;
+            }
+
+            if (req.body.hasNoCertifications !== undefined) {
+                user.hasNoCertifications = req.body.hasNoCertifications;
+            }
+
+            if (req.body.publications) {
+                user.publications = req.body.publications;
+            }
+
+            if (req.body.hasNoPublications !== undefined) {
+                user.hasNoPublications = req.body.hasNoPublications;
+            }
+
+            if (req.body.languages) {
+                user.languages = req.body.languages;
+            }
+
+            if (req.body.interests) {
+                user.interests = req.body.interests;
+            }
 
             if (req.body.password) {
                 user.password = req.body.password;
@@ -124,6 +270,37 @@ router.put('/profile', protect, async (req, res) => {
                 year: updatedUser.year,
                 phone: updatedUser.phone,
                 profilePicture: updatedUser.profilePicture,
+                bio: updatedUser.bio,
+                gender: updatedUser.gender,
+                dob: updatedUser.dob,
+                secondaryEmail: updatedUser.secondaryEmail,
+                alternatePhone: updatedUser.alternatePhone,
+                permanentAddress: updatedUser.permanentAddress,
+                currentAddress: updatedUser.currentAddress,
+                parentDetails: updatedUser.parentDetails,
+                currentEducation: updatedUser.currentEducation,
+                previousEducation: updatedUser.previousEducation,
+                socialLinks: updatedUser.socialLinks,
+                resume: updatedUser.resume,
+                skills: updatedUser.skills,
+                workExperience: updatedUser.workExperience,
+                hasNoWorkExperience: updatedUser.hasNoWorkExperience,
+                projects: updatedUser.projects,
+                hasNoProjects: updatedUser.hasNoProjects,
+                hasNoProjects: updatedUser.hasNoProjects,
+                isAvailableForMentoring: updatedUser.isAvailableForMentoring,
+                achievements: updatedUser.achievements,
+                hasNoAchievements: updatedUser.hasNoAchievements,
+                competitions: updatedUser.competitions,
+                hasNoCompetitions: updatedUser.hasNoCompetitions,
+                events: updatedUser.events,
+                hasNoEvents: updatedUser.hasNoEvents,
+                certifications: updatedUser.certifications,
+                hasNoCertifications: updatedUser.hasNoCertifications,
+                publications: updatedUser.publications,
+                hasNoPublications: updatedUser.hasNoPublications,
+                languages: updatedUser.languages,
+                interests: updatedUser.interests,
                 token: generateToken(updatedUser._id),
             });
         } else {
