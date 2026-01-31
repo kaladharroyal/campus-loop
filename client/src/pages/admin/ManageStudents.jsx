@@ -26,10 +26,11 @@ const ManageStudents = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     // Debounce search term
+    
     useEffect(() => {
         const timer = setTimeout(() => {
             setFilters(prev => ({ ...prev, search: searchTerm }));
-        }, 500);
+        },);
 
         return () => clearTimeout(timer);
     }, [searchTerm]);
