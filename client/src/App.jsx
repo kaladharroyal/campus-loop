@@ -34,7 +34,18 @@ import AdminManageCourses from './pages/admin/ManageCourses';
 import ManageAssignments from './pages/admin/ManageAssignments';
 import ReportsAndAnalytics from './pages/admin/ReportsAndAnalytics';
 import AdminSettings from './pages/admin/AdminSettings';
-import FacultyDashboard from './pages/teacher/FacultyDashboard';
+
+// Teacher Components
+import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import TeacherCourses from './pages/teacher/TeacherCourses';
+import CreateCourse from './pages/teacher/CreateCourse';
+import EditCourse from './pages/teacher/EditCourse';
+import CourseStudents from './pages/teacher/CourseStudents';
+import TeacherAssignments from './pages/teacher/TeacherAssignments';
+import CreateAssignment from './pages/teacher/CreateAssignment';
+import GradeAssignment from './pages/teacher/GradeAssignment';
+import TeacherProfile from './pages/teacher/TeacherProfile';
+import TeacherAnalytics from './pages/teacher/TeacherAnalytics';
 
 // Route Protection Components
 import AdminRoute from './components/routes/AdminRoute';
@@ -78,10 +89,19 @@ function App() {
               <Route path="/course/:title" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
 
               {/* Teacher Routes */}
-              <Route path="/teacher" element={<TeacherRoute><Layout><FacultyDashboard /></Layout></TeacherRoute>}>
+              <Route path="/teacher" element={<TeacherRoute><Layout /></TeacherRoute>}>
                 <Route index element={<Navigate to="/teacher/dashboard" replace />} />
-                <Route path="dashboard" element={<FacultyDashboard />} />
-                <Route path="courses" element={<ManageCourses />} />
+                <Route path="dashboard" element={<TeacherDashboard />} />
+                <Route path="courses" element={<TeacherCourses />} />
+                <Route path="course/create" element={<CreateCourse />} />
+                <Route path="course/edit/:id" element={<EditCourse />} />
+                <Route path="course/:id/students" element={<CourseStudents />} />
+                <Route path="assignments" element={<TeacherAssignments />} />
+                <Route path="assignment/create" element={<CreateAssignment />} />
+                <Route path="assignment/:id/grade" element={<GradeAssignment />} />
+                <Route path="assignment/:id/edit" element={<CreateAssignment />} />
+                <Route path="profile" element={<TeacherProfile />} />
+                <Route path="analytics" element={<TeacherAnalytics />} />
               </Route>
 
               {/* Admin Routes */}

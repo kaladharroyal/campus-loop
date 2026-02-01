@@ -23,6 +23,10 @@ const courseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
+    completedStudents: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     category: {
         type: String,
         required: true
@@ -35,7 +39,21 @@ const courseSchema = new mongoose.Schema({
         type: String,
         enum: ['Beginner', 'Intermediate', 'Advanced'],
         default: 'Beginner'
-    }
+    },
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        default: 'draft'
+    },
+    videoLink: {
+        type: String,
+        default: ''
+    },
+    curriculum: [{
+        moduleTitle: { type: String, required: true },
+        topics: [{ type: String }],
+        duration: { type: String }
+    }]
 }, { timestamps: true });
 
 const Course = mongoose.model('Course', courseSchema);
