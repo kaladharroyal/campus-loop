@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLayout } from '../context/LayoutContext';
@@ -21,8 +21,19 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
 
     const toggleSidebar = () => {
-        setIsCollapsed(!isCollapsed);
+        setIsCollapsed(prev => !prev);
     };
+
+    // Broadcast sidebar state changes to the entire app
+    useEffect(() => {
+        const state = isSidebarHidden ? 'hidden' : isCollapsed ? 'collapsed' : 'expanded';
+        
+        // Dispatch custom event
+        const event = new CustomEvent('sidebarStateChange', {
+            detail: { state, isCollapsed, isSidebarHidden }
+        });
+        window.dispatchEvent(event);
+    }, [isCollapsed, isSidebarHidden]);
 
     const menuItems = {
         discover: [
@@ -38,8 +49,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         ]
     };
 
-
-
     if (isSidebarHidden) return null;
 
     return (
@@ -47,7 +56,12 @@ const Sidebar = ({ isOpen, onClose }) => {
             <div className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
 
                 {/* Toggle / Close Button */}
-                <button className="toggle-btn" onClick={toggleSidebar} aria-label="Toggle Sidebar">
+                <button 
+                    className="toggle-btn" 
+                    onClick={toggleSidebar} 
+                    aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                    title={isCollapsed ? "Expand" : "Collapse"}
+                >
                     <i className={`toggle-icon ${isCollapsed ? 'bi-list' : 'bi-x-lg'}`}></i>
                 </button>
 
@@ -77,7 +91,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     to={item.to}
                                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                                     onClick={handleLinkClick}
-                                    title={isCollapsed ? item.label : ''}
+                                    data-tooltip={item.label}
                                 >
                                     <i
                                         className={`item-icon ${item.icon}`}
@@ -100,7 +114,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     to={item.to}
                                     className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
                                     onClick={handleLinkClick}
-                                    title={isCollapsed ? item.label : ''}
+                                    data-tooltip={item.label}
                                 >
                                     <i
                                         className={`item-icon ${item.icon}`}
@@ -149,12 +163,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
-                    z-index: 200; /* higher than logo */
+                    z-index: 200;
                     transition: all 0.2s ease;
                     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
                     padding: 0;
                 }
-
 
                 .toggle-btn:hover {
                     background: #f9fafb;
@@ -168,6 +181,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 .toggle-icon {
                     font-size: 16px;
                     color: #374151;
+                    transition: transform 0.2s ease;
                 }
 
                 /* Logo */
@@ -177,30 +191,39 @@ const Sidebar = ({ isOpen, onClose }) => {
                     background: #ffffff;
                     flex-shrink: 0;
                     margin-top: 35px;
+                    transition: padding 0.3s ease;
+                }
+
+                .sidebar.collapsed .logo-container {
+                    padding: 24px 12px;
                 }
 
                 .logo-wrapper {
                     display: flex;
                     align-items: center;
                     gap: 12px;
+                    transition: gap 0.3s ease;
                 }
 
                 .logo-img {
                     height: 40px;
                     width: 40px;
                     object-fit: contain;
+                    flex-shrink: 0;
                 }
 
                 .logo-text-wrapper {
                     display: flex;
                     flex-direction: column;
                     gap: 2px;
+                    min-width: 0;
                 }
 
                 .logo-text {
                     font-size: 18px;
                     font-weight: 600;
                     color: #6366f1;
+                    white-space: nowrap;
                 }
 
                 .logo-tagline {
@@ -208,6 +231,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     font-weight: 600;
                     color: #9ca3af;
                     text-transform: uppercase;
+                    white-space: nowrap;
                 }
 
                 /* Navigation */
@@ -218,6 +242,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                     flex-direction: column;
                     gap: 32px;
                     overflow-y: auto;
+                    transition: padding 0.3s ease;
+                }
+
+                .sidebar.collapsed .sidebar-nav {
+                    gap: 24px;
                 }
 
                 .menu-section {
@@ -262,8 +291,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                 /* Icon Styling */
                 .item-icon {
                     font-size: 20px;
-                    color: #9ca3af; /* default gray */
+                    color: #9ca3af;
                     transition: color 0.2s ease, transform 0.2s ease;
+                    flex-shrink: 0;
                 }
 
                 .menu-item:hover .item-icon {
@@ -277,6 +307,9 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                 .item-label {
                     flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .item-indicator {
@@ -286,17 +319,94 @@ const Sidebar = ({ isOpen, onClose }) => {
                     background: currentColor;
                     opacity: 0;
                     transition: all 0.2s ease;
+                    flex-shrink: 0;
                 }
 
                 .menu-item.active .item-indicator {
                     opacity: 1;
                 }
 
+                /* Tooltip for collapsed sidebar - Show text on hover */
+                .sidebar.collapsed .menu-item {
+                    position: relative;
+                }
+
+                .sidebar.collapsed .menu-item::after {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-left: 12px;
+                    background: #ffffff;
+                    color: #1f2937;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    white-space: nowrap;
+                    font-size: 14px;
+                    font-weight: 600;
+                    letter-spacing: 0.3px;
+                    opacity: 0;
+                    pointer-events: auto;
+                    z-index: 10000;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+                    border: 1px solid #e5e7eb;
+                    visibility: hidden;
+                    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, visibility 0.3s 0.3s;
+                }
+
+                .sidebar.collapsed .menu-item:hover::after {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                /* Arrow pointer */
+                .sidebar.collapsed .menu-item::before {
+                    content: '';
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    margin-left: 4px;
+                    width: 0;
+                    height: 0;
+                    border-right: 8px solid #ffffff;
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                    opacity: 0;
+                    pointer-events: none;
+                    z-index: 10001;
+                    visibility: hidden;
+                    filter: drop-shadow(-2px 0px 2px rgba(0, 0, 0, 0.1));
+                    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, visibility 0.3s 0.3s;
+                }
+
+                .sidebar.collapsed .menu-item:hover::before {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                /* Make sidebar overflow visible for tooltips */
+                .sidebar.collapsed .sidebar-nav {
+                    overflow: visible;
+                }
+
+                .sidebar.collapsed .menu-items {
+                    overflow: visible;
+                }
+
                 /* Mobile Support */
                 @media (max-width: 768px) {
                     .sidebar {
-                        transform: translateX(-100%);
+                        position: fixed;
+                        left: 0;
+                        top: 0;
+                        bottom: 0;
                         width: 285px;
+                        transform: translateX(-100%);
+                        /* Smooth transition for BOTH opening and closing */
+                        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                        will-change: transform;
                     }
 
                     .sidebar.open {

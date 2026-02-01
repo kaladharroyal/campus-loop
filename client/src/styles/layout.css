@@ -1,60 +1,335 @@
+/* ==================== ROOT VARIABLES ==================== */
+:root {
+    --sidebar-width-expanded: 285px;
+    --sidebar-width-collapsed: 72px;
+    --transition-duration: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== APP LAYOUT BASE ==================== */
 .app-layout {
     display: flex;
     min-height: 100vh;
-    background-color: var(--color-bg);
+    background-color: var(--color-bg, #f8fafc);
+    position: relative;
 }
 
-/* Sidebar is fixed width 250px */
-.side-nav-placeholder {
-    width: 250px;
-    flex-shrink: 0;
-}
-
+/* ==================== MAIN CONTENT ==================== */
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    width: calc(100% - 250px);
-    margin-left: 250px;
-    /* Crucial fix for fixed sidebar overlap */
-    transition: margin-left 0.3s ease, width 0.3s ease;
+    /* Default: sidebar expanded */
+    margin-left: var(--sidebar-width-expanded);
+    width: calc(100% - var(--sidebar-width-expanded));
+    
+    /* Smooth transition for all layout changes */
+    transition: 
+        margin-left var(--transition-duration) var(--transition-timing),
+        width var(--transition-duration) var(--transition-timing);
 }
 
+/* ==================== LAYOUT STATES ==================== */
+
+/* Expanded Sidebar Mode (Default Desktop) */
+.app-layout.expanded-mode .main-content {
+    margin-left: var(--sidebar-width-expanded);
+    width: calc(100% - var(--sidebar-width-expanded));
+}
+
+/* Collapsed Sidebar Mode */
+.app-layout.collapsed-mode .main-content {
+    margin-left: var(--sidebar-width-collapsed);
+    width: calc(100% - var(--sidebar-width-collapsed));
+}
+
+/* Full Width Mode (Sidebar Hidden on Mobile) */
 .app-layout.full-width-mode .main-content {
     margin-left: 0;
     width: 100%;
 }
 
-.app-layout.collapsed-mode .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-}
-
-.app-layout.collapsed-mode .side-nav-placeholder {
-    width: 80px;
-}
-
+/* ==================== PAGE CONTENT ==================== */
 .page-content {
     flex: 1;
     padding: 0;
-    /* overflow-y: auto;  Let body handle scroll usually better for page apps */
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+    
+    /* Prevent layout shift */
+    scrollbar-gutter: stable;
 }
 
+.page-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== CONTENT WRAPPER ==================== */
+.content-wrapper {
+    animation: slideUp 0.6s var(--transition-timing);
+    /* Content area is now handled by specific page styles */
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ==================== TOPBAR ==================== */
 .topbar {
-    /* Topbar is inside main-content */
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 90;
+    
+    /* Transition support for topbar adjustments */
+    transition: all var(--transition-duration) var(--transition-timing);
 }
 
+.main-content.scrolled .topbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== MOBILE OVERLAY ==================== */
+.mobile-overlay {
+    will-change: opacity;
+}
+
+/* ==================== SIDEBAR ANIMATIONS ==================== */
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Apply animation to sidebar when mobile menu opens */
+.sidebar {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar.open {
+    animation: slideInFromLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* Large Desktop (> 1400px) */
+@media (min-width: 1401px) {
+    .main-content {
+        margin-left: var(--sidebar-width-expanded);
+        width: calc(100% - var(--sidebar-width-expanded));
+    }
+
+    .app-layout.collapsed-mode .main-content {
+        margin-left: var(--sidebar-width-collapsed);
+        width: calc(100% - var(--sidebar-width-collapsed));
+    }
+}
+
+/* Desktop (1200px - 1400px) */
+@media (max-width: 1400px) {
+    .main-content {
+        margin-left: var(--sidebar-width-expanded);
+        width: calc(100% - var(--sidebar-width-expanded));
+    }
+
+    .app-layout.collapsed-mode .main-content {
+        margin-left: var(--sidebar-width-collapsed);
+        width: calc(100% - var(--sidebar-width-collapsed));
+    }
+}
+
+/* Tablet Landscape (968px - 1200px) */
+@media (max-width: 1200px) {
+    .main-content {
+        margin-left: var(--sidebar-width-expanded);
+        width: calc(100% - var(--sidebar-width-expanded));
+    }
+
+    .app-layout.collapsed-mode .main-content {
+        margin-left: var(--sidebar-width-collapsed);
+        width: calc(100% - var(--sidebar-width-collapsed));
+    }
+}
+
+/* Tablet Portrait (768px - 968px) */
+@media (max-width: 968px) {
+    .main-content {
+        /* Respects the app-layout class state */
+        margin-left: var(--sidebar-width-expanded);
+        width: calc(100% - var(--sidebar-width-expanded));
+    }
+
+    .app-layout.expanded-mode .main-content {
+        margin-left: var(--sidebar-width-expanded);
+        width: calc(100% - var(--sidebar-width-expanded));
+    }
+
+    .app-layout.collapsed-mode .main-content {
+        margin-left: var(--sidebar-width-collapsed);
+        width: calc(100% - var(--sidebar-width-collapsed));
+    }
+
+    .app-layout.full-width-mode .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Mobile (< 768px) */
 @media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 0;
+    }
+
+    .app-layout.expanded-mode .main-content,
+    .app-layout.collapsed-mode .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .app-layout.full-width-mode .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .page-content {
+        padding: 0;
+    }
+}
+
+/* Small Mobile (< 640px) */
+@media (max-width: 640px) {
     .main-content {
         margin-left: 0;
         width: 100%;
     }
 
-    .side-nav-placeholder {
+    .page-content {
+        padding: 0;
+    }
+
+    .content-wrapper {
+        padding: 16px;
+    }
+}
+
+/* Extra Small Mobile (< 480px) */
+@media (max-width: 480px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .page-content {
+        padding: 0;
+    }
+
+    .content-wrapper {
+        padding: 12px;
+    }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .main-content,
+    .topbar,
+    .mobile-overlay,
+    .content-wrapper {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: more) {
+    .main-content {
+        border-left: 2px solid var(--border-color, #e2e8f0);
+    }
+}
+
+/* ==================== PERFORMANCE OPTIMIZATIONS ==================== */
+
+.main-content {
+    will-change: margin-left, width;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.page-content {
+    contain: layout style paint;
+}
+
+/* ==================== UTILITIES ==================== */
+
+.sidebar-hidden {
+    display: none;
+}
+
+.scrolled {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== PRINT STYLES ==================== */
+@media print {
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .topbar,
+    .mobile-overlay {
         display: none;
     }
 }
