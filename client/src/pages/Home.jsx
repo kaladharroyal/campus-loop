@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
-import dbms from '../assets/dbms.png';
+import dbms from '../assets/DBMS.JPG';
 import java from '../assets/java.png';
 import mern from '../assets/mern-stack.png';
 import ml from '../assets/machine-learning.png';
@@ -63,9 +63,9 @@ const Home = () => {
             className={`campus-card ${!isSmall ? 'registered' : ''}`}
             onClick={() => handleCourseClick(course.title)}
         >
-            <div 
-                className={`card-image-placeholder ${isSmall ? 'small' : ''}`} 
-                style={{ background: course.color || '#1e293b' }}
+            <div
+                className={`card-image-placeholder ${isSmall ? 'small' : ''}`}
+                style={{ '--accent': course.color }}
             >
                 <img src={course.img} alt={course.title} />
                 <button
@@ -88,11 +88,11 @@ const Home = () => {
                             <span className="progress-percent">{course.progress}%</span>
                         </div>
                         <div className="progress-bar-bg">
-                            <div 
-                                className="progress-bar-fill" 
-                                style={{ 
+                            <div
+                                className="progress-bar-fill"
+                                style={{
                                     width: `${course.progress}%`,
-                                    background: course.color 
+                                    background: course.color
                                 }}
                             />
                         </div>

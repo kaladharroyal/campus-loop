@@ -11,6 +11,7 @@ const Layout = ({ children }) => {
     const { isSidebarHidden } = useLayout();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -19,6 +20,25 @@ const Layout = ({ children }) => {
     const closeMobileMenu = () => {
         setMobileMenuOpen(false);
     };
+
+    // Listen for sidebar collapse state from Sidebar component
+    useEffect(() => {
+        const handleSidebarChange = (event) => {
+            setSidebarCollapsed(event.detail.isCollapsed);
+            
+            // Broadcast to entire app (for child components like Home)
+            window.dispatchEvent(new CustomEvent('sidebarStateChange', {
+                detail: {
+                    state: isSidebarHidden ? 'hidden' : event.detail.isCollapsed ? 'collapsed' : 'expanded',
+                    isCollapsed: event.detail.isCollapsed,
+                    isSidebarHidden: isSidebarHidden
+                }
+            }));
+        };
+
+        window.addEventListener('sidebarStateChange', handleSidebarChange);
+        return () => window.removeEventListener('sidebarStateChange', handleSidebarChange);
+    }, [isSidebarHidden]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -29,12 +49,27 @@ const Layout = ({ children }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    return (
-        <div className={`app-layout ${isSidebarHidden ? 'full-width-mode' : ''}`}>
-            <Sidebar role={user?.role} isOpen={mobileMenuOpen} onClose={closeMobileMenu} hidden={isSidebarHidden} />
+    // Determine layout class based on states
+    let layoutClass = 'app-layout';
+    if (isSidebarHidden) {
+        layoutClass += ' full-width-mode';
+    } else if (sidebarCollapsed) {
+        layoutClass += ' collapsed-mode';
+    } else {
+        layoutClass += ' expanded-mode';
+    }
 
-            {/* Enhanced Mobile Overlay with Backdrop Blur */}
-            {mobileMenuOpen && (
+    return (
+        <div className={layoutClass}>
+            <Sidebar 
+                role={user?.role} 
+                isOpen={mobileMenuOpen} 
+                onClose={closeMobileMenu} 
+                hidden={isSidebarHidden} 
+            />
+
+            {/* Mobile Overlay - Click to close sidebar */}
+            {mobileMenuOpen && !isSidebarHidden && (
                 <div
                     className="mobile-overlay"
                     onClick={closeMobileMenu}
@@ -44,9 +79,7 @@ const Layout = ({ children }) => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(15, 23, 42, 0.4)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
+                        background: 'transparent',
                         zIndex: 99,
                         animation: 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
@@ -75,10 +108,6 @@ const Layout = ({ children }) => {
 
                 .content-wrapper {
                     animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-                    background: white;
-                    border-radius: 12px;
-                    padding: 24px;
-                    box-shadow: var(--shadow-md);
                 }
 
                 @keyframes slideUp {
