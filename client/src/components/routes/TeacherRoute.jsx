@@ -29,7 +29,7 @@ const TeacherRoute = ({ children }) => {
     }
 
     // Not a teacher - redirect to appropriate dashboard
-    if (user.role !== 'instructor') {
+    if (user.role !== 'teacher') {
         if (user.role === 'admin') {
             return <Navigate to="/admin/dashboard" replace />;
         }

@@ -230,6 +230,26 @@ const ManageStudents = () => {
                                     />
                                 </div>
                                 <div className="form-group">
+                                    <label style={styles.label} htmlFor="branch">Branch *</label>
+                                    <input
+                                        type="text"
+                                        value={branch}
+                                        onChange={(e) => setBranch(e.target.value)}
+                                        placeholder="Enter student branch"
+                                        className="admin-input"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label style={styles.label} htmlFor="year">Year *</label>
+                                    <input
+                                        type="text"
+                                        value={year}
+                                        onChange={(e) => setYear(e.target.value)}
+                                        placeholder="Enter student year"
+                                        className="admin-input"
+                                    />
+                                </div>
+                                <div className="form-group">
                                     <label style={styles.label} htmlFor="password">Password *</label>
                                     <input
                                         type="text"
