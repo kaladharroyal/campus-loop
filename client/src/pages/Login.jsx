@@ -40,7 +40,7 @@ const Login = () => {
       // Role-based navigation
       if (userData.role === 'admin') {
         navigate('/admin/dashboard');
-      } else if (userData.role === 'instructor') { // Assuming 'teacher' role from UI maps to 'instructor' in backend
+      } else if (userData.role === 'teacher') {
         navigate('/teacher/dashboard');
       } else { // Default for student or other roles
         navigate('/dashboard');

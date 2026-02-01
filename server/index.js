@@ -82,6 +82,7 @@ app.use('/api/courses', require('./routes/courses'));
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/attendance', require('./routes/attendance'));
 app.use('/api/admin', require('./routes/admin')); // Admin routes
+app.use('/api/teacher', require('./routes/teacher')); // Teacher routes
 
 console.log('✅ All routes loaded');
 
