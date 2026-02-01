@@ -11,15 +11,15 @@
     --primary-dark: #4f46e5;
     --primary-light: #818cf8;
     --accent: #ec4899;
-    
+
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
-    
+
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-tertiary: #94a3b8;
-    
+
     --border: #e2e8f0;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -41,9 +41,23 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
+/* Overlay behind sidebar */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(6px);
+    z-index: 40;
+}
+
 
 /* ==================== SECTION STYLES ==================== */
 .course-section {
@@ -80,40 +94,21 @@
 
 /* ==================== COURSE CARDS ==================== */
 .campus-card {
+    position: relative;
     background: var(--bg-primary);
     border: 1px solid var(--border);
     border-radius: 20px;
-    overflow: hidden;
+    overflow: visible;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: slideUp 0.5s ease both;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .campus-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--primary-light);
+    box-shadow: var(--shadow-lg);
 }
 
 .campus-card.registered {
     position: relative;
-}
-
-.campus-card.registered::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-}
-
-.campus-card.registered:hover::before {
-    transform: scaleX(1);
 }
 
 @keyframes slideUp {
@@ -121,17 +116,32 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-.campus-card:nth-child(1) { animation-delay: 0.1s; }
-.campus-card:nth-child(2) { animation-delay: 0.15s; }
-.campus-card:nth-child(3) { animation-delay: 0.2s; }
-.campus-card:nth-child(4) { animation-delay: 0.25s; }
-.campus-card:nth-child(5) { animation-delay: 0.3s; }
+.campus-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.campus-card:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.campus-card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.campus-card:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.campus-card:nth-child(5) {
+    animation-delay: 0.3s;
+}
 
 /* ==================== CARD IMAGE ==================== */
 .card-image-placeholder {
@@ -140,25 +150,51 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px;
+    background: transparent;
+    border-radius: 16px;
     overflow: hidden;
+    isolation: isolate;
+    contain: paint;
 }
+
+
+.card-image-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    pointer-events: none;
+}
+.campus-card .card-image-placeholder::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color:transparent;
+}
+
 
 .card-image-placeholder.small {
     height: 160px;
-    padding: 24px;
+    padding: 22px;
 }
 
 .card-image-placeholder img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-    transition: transform 0.3s ease;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+    transform: scale(1.08);
+    background: transparent;
 }
 
+
 .campus-card:hover .card-image-placeholder img {
-    transform: scale(1.05);
+    transform: scale(1.18);
 }
 
 /* ==================== FAVORITE BUTTON ==================== */
@@ -268,7 +304,7 @@
     .course-grid-4 {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
-    
+
     .course-grid-5 {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
@@ -299,6 +335,7 @@
 }
 
 @media (max-width: 768px) {
+
     .course-grid-4,
     .course-grid-5 {
         grid-template-columns: 1fr;

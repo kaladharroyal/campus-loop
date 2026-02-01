@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import '../styles/pages.css';
 
 // Import assets
 import dbms from '../assets/dbms.png';
@@ -17,16 +16,14 @@ import cn from '../assets/computer-networks.png';
 const Courses = () => {
   const navigate = useNavigate();
 
-  // Mock data to match screenshot "All courses" list
   const allCourses = [
     { title: 'NLP', sub: 'NLP Using python', img: nlp, health: { score: 92, completion: '95%', feedback: '4.8', dropoff: '2%' } },
     { title: 'Programming for AI', sub: 'python', img: ai, health: { score: 85, completion: '88%', feedback: '4.5', dropoff: '5%' } },
     { title: 'Artificial intelligence', sub: 'fundamentals of ai', img: ai2, health: { score: 78, completion: '80%', feedback: '4.2', dropoff: '8%' } },
     { title: 'Deep Learning', sub: 'DL using python', img: dl, health: { score: 88, completion: '90%', feedback: '4.6', dropoff: '3%' } },
-    { title: 'Computer Netwoks', sub: 'CN', img: cn, health: { score: 65, completion: '70%', feedback: '3.5', dropoff: '15%' } }
+    { title: 'Computer Networks', sub: 'CN', img: cn, health: { score: 65, completion: '70%', feedback: '3.5', dropoff: '15%' } }
   ];
 
-  // Favorites Logic
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCourses = allCourses.filter(course =>
@@ -39,31 +36,317 @@ const Courses = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="section-header">
+    <div className="courses-page">
+      <style>{`
+        .courses-page {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 30px;
+          background: #f8fafc;
+          min-height: 100vh;
+        }
+
+        .courses-header {
+          margin-bottom: 40px;
+        }
+
+        .courses-header h2 {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 8px;
+        }
+
+        .courses-header p {
+          color: #64748b;
+          font-size: 0.95rem;
+        }
+
+        .search-container {
+          margin-bottom: 40px;
+          width: 100%;
+        }
+
+        .search-wrapper {
+          position: relative;
+          width: 100%;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 14px 18px 14px 45px;
+          border-radius: 10px;
+          border: 1px solid #e2e8f0;
+          background: #ffffff;
+          font-size: 0.95rem;
+          color: #1e293b;
+          transition: all 0.2s ease;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+          background: #ffffff;
+        }
+
+        .search-input::placeholder {
+          color: #94a3b8;
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1.1rem;
+          color: #94a3b8;
+          pointer-events: none;
+        }
+
+        .courses-section {
+          margin-bottom: 60px;
+        }
+
+        .section-header {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 8px;
+        }
+
+        .section-sub {
+          color: #64748b;
+          font-size: 0.95rem;
+          margin-bottom: 25px;
+        }
+
+        .course-grid-5 {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: 24px;
+        }
+
+        .campus-card {
+          background: #ffffff;
+          border-radius: 16px;
+          overflow: hidden;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        .campus-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-image-placeholder {
+          width: 100%;
+          aspect-ratio: 1/1;
+          background: #0e1b2a;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .card-image-placeholder img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .card-image-placeholder::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.2);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .campus-card:hover .card-image-placeholder::after {
+          opacity: 1;
+        }
+
+        .health-badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          z-index: 10;
+        }
+
+        .health-badge > div {
+          background: rgba(0, 0, 0, 0.85);
+          color: #fff;
+          padding: 8px 12px;
+          border-radius: 14px;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          font-weight: 700;
+          backdrop-filter: blur(8px);
+        }
+
+        .health-badge .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+        }
+
+        .health-tooltip {
+          display: none !important;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          margin-top: 10px;
+          background: white;
+          color: #333;
+          padding: 14px;
+          border-radius: 10px;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+          width: 200px;
+          z-index: 100;
+          font-size: 0.8rem;
+        }
+
+        .health-tooltip > div {
+          display: flex;
+          justify-content: space-between;
+          padding: 5px 0;
+          font-weight: 500;
+        }
+
+        .health-badge:hover .health-tooltip {
+          display: block !important;
+        }
+
+        .card-content {
+          padding: 20px;
+          background: #ffffff;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+        }
+
+        .card-content h3 {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 6px 0;
+          line-height: 1.3;
+        }
+
+        .card-content p {
+          font-size: 0.9rem;
+          color: #64748b;
+          margin: 0;
+          text-transform: capitalize;
+        }
+
+        .no-results {
+          grid-column: 1 / -1;
+          text-align: center;
+          padding: 40px 20px;
+          color: #94a3b8;
+          font-size: 0.95rem;
+        }
+
+        @media (max-width: 1200px) {
+          .course-grid-5 {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .courses-page {
+            padding: 20px;
+          }
+
+          .course-grid-5 {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+          }
+
+          .section-header {
+            font-size: 1.3rem;
+          }
+
+          .search-input {
+            padding: 12px 16px 12px 40px;
+            font-size: 0.9rem;
+          }
+
+          .card-content {
+            padding: 16px;
+          }
+
+          .card-content h3 {
+            font-size: 0.95rem;
+          }
+
+          .card-content p {
+            font-size: 0.85rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .courses-page {
+            padding: 16px;
+          }
+
+          .course-grid-5 {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+          }
+
+          .card-content {
+            padding: 12px;
+          }
+
+          .card-content h3 {
+            font-size: 0.85rem;
+          }
+
+          .card-content p {
+            font-size: 0.8rem;
+          }
+        }
+      `}</style>
+
+      <div className="courses-header">
         <h2>Browse courses</h2>
-        <p className="section-sub">Search for your favourite courses</p>
+        <p>Search for your favourite courses</p>
       </div>
 
-      <div style={{ marginBottom: '40px', position: 'relative', width: '300px' }}>
-        <input
-          type="text"
-          placeholder="Search for the course"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '12px 15px 12px 40px',
-            borderRadius: '25px',
-            border: 'none',
-            background: '#f0eef5',
-            fontSize: '0.95rem'
-          }}
-        />
-        <span style={{ position: 'absolute', left: '15px', top: '12px', fontSize: '1.1rem', color: '#666' }}>🔍</span>
+      <div className="search-container">
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search for the course"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
 
-      <section>
+      <div className="courses-section">
         <h2 className="section-header">All courses</h2>
         <p className="section-sub">Enroll new courses</p>
 
@@ -74,54 +357,20 @@ const Courses = () => {
                 key={i}
                 className="campus-card"
                 onClick={() => handleCourseClick(course.title)}
-                style={{ cursor: 'pointer' }}
               >
-                <div className="card-image-placeholder small" style={{ background: '#0e1b2a', position: 'relative' }}>
-                  <img src={course.img} alt={course.title} width="100%" height="100%" style={{ objectFit: 'cover' }} />
-                  {/* Health Indicator Badge */}
-                  <div className="health-badge" style={{
-                    position: 'absolute',
-                    top: '10px',
-                    left: '10px',
-                    cursor: 'help'
-                  }}>
-                    <div style={{
-                      background: 'rgba(0,0,0,0.7)',
-                      color: '#fff',
-                      padding: '4px 8px',
-                      borderRadius: '12px',
-                      fontSize: '0.75rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      <span style={{
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
+                <div className="card-image-placeholder">
+                  <img src={course.img} alt={course.title} />
+                  <div className="health-badge">
+                    <div>
+                      <span className="dot" style={{
                         background: course.health.score > 80 ? '#22c55e' : course.health.score > 50 ? '#eab308' : '#ef4444'
                       }}></span>
                       Health: {course.health.score}%
                     </div>
-                    {/* Tooltip Content */}
-                    <div className="health-tooltip" style={{
-                      display: 'none',
-                      position: 'absolute',
-                      top: '100%',
-                      left: '0',
-                      marginTop: '5px',
-                      background: 'white',
-                      color: '#333',
-                      padding: '10px',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                      width: '180px',
-                      zIndex: 10,
-                      fontSize: '0.8rem'
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Completion:</span> <strong>{course.health.completion}</strong></div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Feedback:</span> <strong>{course.health.feedback}/5</strong></div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Drop-offs:</span> <strong>{course.health.dropoff}</strong></div>
+                    <div className="health-tooltip">
+                      <div><span>Completion:</span> <strong>{course.health.completion}</strong></div>
+                      <div><span>Feedback:</span> <strong>{course.health.feedback}/5</strong></div>
+                      <div><span>Drop-offs:</span> <strong>{course.health.dropoff}</strong></div>
                     </div>
                   </div>
                 </div>
@@ -132,10 +381,10 @@ const Courses = () => {
               </div>
             ))
           ) : (
-            <p style={{ color: '#666', gridColumn: '1 / -1', textAlign: 'center' }}>No courses found matching "{searchQuery}"</p>
+            <p className="no-results">No courses found matching "{searchQuery}"</p>
           )}
         </div>
-      </section>
+      </div>
     </div>
   );
 };
