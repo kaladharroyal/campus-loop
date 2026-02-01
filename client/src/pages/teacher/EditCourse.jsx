@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/teacher.css';
 
-const CreateCourse = () => {
+const EditCourse = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -16,6 +18,45 @@ const CreateCourse = () => {
         status: 'draft',
         curriculum: [{ moduleTitle: '', topics: [''], duration: '' }]
     });
+
+    useEffect(() => {
+        fetchCourse();
+    }, [id]);
+
+    const fetchCourse = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/teacher/course/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                const course = data.data;
+                setFormData({
+                    title: course.title,
+                    description: course.description,
+                    category: course.category,
+                    level: course.level,
+                    duration: course.duration,
+                    thumbnail: course.thumbnail || '',
+                    videoLink: course.videoLink || '',
+                    status: course.status,
+                    curriculum: course.curriculum.length > 0 ? course.curriculum : [{ moduleTitle: '', topics: [''], duration: '' }]
+                });
+            } else {
+                alert(data.message);
+                navigate('/teacher/courses');
+            }
+        } catch (err) {
+            alert('Failed to load course');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({
@@ -62,12 +103,12 @@ const CreateCourse = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        setSaving(true);
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:5000/api/teacher/course', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5000/api/teacher/course/${id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -77,23 +118,27 @@ const CreateCourse = () => {
 
             const data = await response.json();
             if (data.success) {
-                alert('Course created successfully!');
+                alert('Course updated successfully!');
                 navigate('/teacher/courses');
             } else {
                 alert(data.message);
             }
         } catch (err) {
-            alert('Failed to create course');
+            alert('Failed to update course');
             console.error(err);
         } finally {
-            setLoading(false);
+            setSaving(false);
         }
     };
+
+    if (loading) {
+        return <div className="page-container"><p>Loading course...</p></div>;
+    }
 
     return (
         <div className="page-container">
             <div className="page-header">
-                <h1>Create New Course</h1>
+                <h1>Edit Course</h1>
                 <button className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
                     Back to Courses
                 </button>
@@ -104,39 +149,19 @@ const CreateCourse = () => {
                     <h2>Basic Information</h2>
                     <div className="form-group">
                         <label>Course Title *</label>
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="text" name="title" value={formData.title} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label>Description *</label>
-                        <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            rows="4"
-                            required
-                        />
+                        <textarea name="description" value={formData.description} onChange={handleChange} rows="4" required />
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label>Category *</label>
-                            <input
-                                type="text"
-                                name="category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                placeholder="e.g., Web Development, Data Science"
-                                required
-                            />
+                            <input type="text" name="category" value={formData.category} onChange={handleChange} required />
                         </div>
-
                         <div className="form-group">
                             <label>Level *</label>
                             <select name="level" value={formData.level} onChange={handleChange} required>
@@ -145,41 +170,20 @@ const CreateCourse = () => {
                                 <option value="Advanced">Advanced</option>
                             </select>
                         </div>
-
                         <div className="form-group">
                             <label>Duration *</label>
-                            <input
-                                type="text"
-                                name="duration"
-                                value={formData.duration}
-                                onChange={handleChange}
-                                placeholder="e.g., 8 weeks"
-                                required
-                            />
+                            <input type="text" name="duration" value={formData.duration} onChange={handleChange} required />
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label>Thumbnail URL</label>
-                            <input
-                                type="url"
-                                name="thumbnail"
-                                value={formData.thumbnail}
-                                onChange={handleChange}
-                                placeholder="https://example.com/image.jpg"
-                            />
+                            <input type="url" name="thumbnail" value={formData.thumbnail} onChange={handleChange} />
                         </div>
-
                         <div className="form-group">
-                            <label>Video Link (Optional)</label>
-                            <input
-                                type="url"
-                                name="videoLink"
-                                value={formData.videoLink}
-                                onChange={handleChange}
-                                placeholder="https://youtube.com/watch?v=..."
-                            />
+                            <label>Video Link</label>
+                            <input type="url" name="videoLink" value={formData.videoLink} onChange={handleChange} />
                         </div>
                     </div>
 
@@ -189,7 +193,6 @@ const CreateCourse = () => {
                             <option value="draft">Draft</option>
                             <option value="published">Published</option>
                         </select>
-                        <small>Drafts are only visible to you. Published courses are visible to students.</small>
                     </div>
                 </div>
 
@@ -200,16 +203,11 @@ const CreateCourse = () => {
                             <div className="module-header">
                                 <h3>Module {moduleIndex + 1}</h3>
                                 {formData.curriculum.length > 1 && (
-                                    <button
-                                        type="button"
-                                        className="btn-small btn-danger"
-                                        onClick={() => removeModule(moduleIndex)}
-                                    >
+                                    <button type="button" className="btn-small btn-danger" onClick={() => removeModule(moduleIndex)}>
                                         Remove Module
                                     </button>
                                 )}
                             </div>
-
                             <div className="form-group">
                                 <label>Module Title *</label>
                                 <input
@@ -219,17 +217,14 @@ const CreateCourse = () => {
                                     required
                                 />
                             </div>
-
                             <div className="form-group">
                                 <label>Duration</label>
                                 <input
                                     type="text"
                                     value={module.duration}
                                     onChange={(e) => handleCurriculumChange(moduleIndex, 'duration', e.target.value)}
-                                    placeholder="e.g., 2 hours"
                                 />
                             </div>
-
                             <div className="form-group">
                                 <label>Topics</label>
                                 {module.topics.map((topic, topicIndex) => (
@@ -241,27 +236,18 @@ const CreateCourse = () => {
                                             placeholder={`Topic ${topicIndex + 1}`}
                                         />
                                         {module.topics.length > 1 && (
-                                            <button
-                                                type="button"
-                                                className="btn-small btn-danger"
-                                                onClick={() => removeTopic(moduleIndex, topicIndex)}
-                                            >
+                                            <button type="button" className="btn-small btn-danger" onClick={() => removeTopic(moduleIndex, topicIndex)}>
                                                 ✕
                                             </button>
                                         )}
                                     </div>
                                 ))}
-                                <button
-                                    type="button"
-                                    className="btn-small btn-secondary"
-                                    onClick={() => addTopic(moduleIndex)}
-                                >
+                                <button type="button" className="btn-small btn-secondary" onClick={() => addTopic(moduleIndex)}>
                                     + Add Topic
                                 </button>
                             </div>
                         </div>
                     ))}
-
                     <button type="button" className="btn btn-secondary" onClick={addModule}>
                         + Add Module
                     </button>
@@ -271,8 +257,8 @@ const CreateCourse = () => {
                     <button type="button" className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
                         Cancel
                     </button>
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
-                        {loading ? 'Creating...' : 'Create Course'}
+                    <button type="submit" className="btn btn-primary" disabled={saving}>
+                        {saving ? 'Saving...' : 'Update Course'}
                     </button>
                 </div>
             </form>
@@ -280,4 +266,4 @@ const CreateCourse = () => {
     );
 };
 
-export default CreateCourse;
+export default EditCourse;

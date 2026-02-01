@@ -10,22 +10,22 @@ const Login = () => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [label, setLabel] = useState('Roll No.');
-  const [placeholder, setPlaceholder] = useState('e.g., CSE001');
+  const [label, setLabel] = useState('Email Address');
+  const [placeholder, setPlaceholder] = useState('e.g., student@university.edu');
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (role === 'student') {
-      setLabel('Roll Number');
-      setPlaceholder('e.g., CSE001');
+      setLabel('Email Address');
+      setPlaceholder('e.g., student@university.edu');
     } else if (role === 'teacher') {
       setLabel('Email Address');
-      setPlaceholder('faculty@university.edu');
+      setPlaceholder('e.g., faculty@university.edu');
     } else if (role === 'admin') {
       setLabel('Username');
-      setPlaceholder('admin_username');
+      setPlaceholder('e.g., admin_username');
     }
   }, [role]);
 

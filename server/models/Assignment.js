@@ -14,23 +14,24 @@ const assignmentSchema = new mongoose.Schema({
         ref: 'Course',
         required: true
     },
+    teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     dueDate: {
         type: Date,
         required: true
     },
-    submissions: [{
-        student: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        submissionUrl: String, // Link to file/repo
-        submittedAt: {
-            type: Date,
-            default: Date.now
-        },
-        grade: String, // e.g. "A", "90/100"
-        feedback: String
-    }]
+    maxGrade: {
+        type: Number,
+        default: 100
+    },
+    status: {
+        type: String,
+        enum: ['active', 'closed'],
+        default: 'active'
+    }
 }, { timestamps: true });
 
 const Assignment = mongoose.model('Assignment', assignmentSchema);
