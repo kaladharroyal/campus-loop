@@ -82,9 +82,11 @@ const ManageCourses = () => {
                     <h1>Manage Courses</h1>
                     <p>View and manage all courses in the system</p>
                 </div>
-                <a href="/admin/create-course" className="btn-primary">
+                <div>   
+                <a href="./CreateCourse" className="btn-primary">
                     ➕ Create New Course
                 </a>
+                </div>
             </div>
 
             {error && (

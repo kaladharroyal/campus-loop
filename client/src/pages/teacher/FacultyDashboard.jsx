@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell  } from 'recharts';
 import '../../styles/pages.css';
 
 const dataSubmissions = [
@@ -29,7 +29,7 @@ const FacultyDashboard = () => {
             <header className="dashboard-header">
                 <div>
                     <h1>Faculty Dashboard</h1>
-                    <p>Welcome back, teacher {user?.lastName}!</p>
+                    <p>Welcome back, teacher {user?.firstName}!</p>
                 </div>
                 <button className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
                     + Create New Course
