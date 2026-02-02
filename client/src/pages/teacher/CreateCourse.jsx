@@ -146,7 +146,7 @@ const CreateCourse = () => {
 
                         <div className="form-group">
                             <label>Level *</label>
-                            <select name="level" value={formData.level} onChange={handleChange} required>
+                            <select name="level" value={formData.level} onChange={handleChange} className='form-control' required>
                                 <option value="Beginner">Beginner</option>
                                 <option value="Intermediate">Intermediate</option>
                                 <option value="Advanced">Advanced</option>

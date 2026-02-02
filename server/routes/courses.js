@@ -123,4 +123,36 @@ router.get('/mycourses', protect, async (req, res) => {
     }
 });
 
+// @desc    Enroll in a course
+// @route   POST /api/courses/:id/enroll
+// @access  Private
+router.post('/:id/enroll', protect, async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id);
+
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        // Check if already enrolled
+        if (course.studentsEnrolled.includes(req.user._id)) {
+            return res.status(400).json({ message: 'Already enrolled in this course' });
+        }
+
+        // Add user to course's enrolled students
+        course.studentsEnrolled.push(req.user._id);
+        await course.save();
+
+        // Add course to user's enrolled courses using $addToSet to avoid duplicates
+        await User.findByIdAndUpdate(req.user._id, {
+            $addToSet: { enrolledCourses: course._id }
+        });
+
+        res.json({ success: true, message: 'Enrolled successfully' });
+    } catch (error) {
+        console.error("Enrollment Error:", error);
+        res.status(500).json({ message: 'Server Error: ' + error.message });
+    }
+});
+
 module.exports = router;
