@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { LayoutProvider } from './context/LayoutContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/Layout';
+import TeacherLayout from './components/TeacherLayout';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,6 +19,7 @@ import Favourites from './pages/Favourites';
 import Feedback from './pages/Feedback';
 import FocusMode from './pages/FocusMode';
 import CoursePlayer from './pages/CoursePlayer';
+import CourseOverview from './pages/CourseOverview';
 import Contact from './pages/Contact';
 import Support from './pages/Support';
 import About from './pages/About';
@@ -86,10 +88,11 @@ function App() {
               <Route path="/focus-mode" element={<StudentRoute><FocusMode /></StudentRoute>} />
               <Route path="/assignments" element={<StudentRoute><Layout><Assignments /></Layout></StudentRoute>} />
               <Route path="/attendance" element={<StudentRoute><Layout><Attendance /></Layout></StudentRoute>} />
-              <Route path="/course/:title" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
+              <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
+              <Route path="/course/:title/play" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
 
               {/* Teacher Routes */}
-              <Route path="/teacher" element={<TeacherRoute><Layout /></TeacherRoute>}>
+              <Route path="/teacher" element={<TeacherRoute><TeacherLayout /></TeacherRoute>}>
                 <Route index element={<Navigate to="/teacher/dashboard" replace />} />
                 <Route path="dashboard" element={<TeacherDashboard />} />
                 <Route path="courses" element={<TeacherCourses />} />

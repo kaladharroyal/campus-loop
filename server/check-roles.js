@@ -1,5 +1,5 @@
 // Quick Database Role Checker and Fixer
-// This script will show all users and their roles, and fix any 'instructor'/'faculty' roles to 'teacher'
+// This script will show all users and their roles, and fix any 'teacher'/'faculty' roles to 'teacher'
 
 const mongoose = require('mongoose');
 const path = require('path');
@@ -39,9 +39,9 @@ mongoose.connect(MONGO_URI)
             console.log('═'.repeat(90));
             console.log();
 
-            // Check for instructor/faculty roles
+            // Check for teacher/faculty roles
             const problematicUsers = users.filter(u =>
-                u.role === 'instructor' || u.role === 'faculty'
+                u.role === 'teacher' || u.role === 'faculty'
             );
 
             if (problematicUsers.length > 0) {

@@ -36,27 +36,27 @@ async function checkAndFixTeacherRoles() {
         console.log('─'.repeat(80));
         console.log();
 
-        // Find users with 'instructor' or 'faculty' role
-        const instructorUsers = await User.find({
-            role: { $in: ['instructor', 'faculty'] }
+        // Find users with 'teacher' or 'faculty' role
+        const teacherUsers = await User.find({
+            role: { $in: ['teacher', 'faculty'] }
         });
 
-        if (instructorUsers.length > 0) {
-            console.log(`\n⚠️  Found ${instructorUsers.length} user(s) with 'instructor' or 'faculty' role:`);
-            instructorUsers.forEach(user => {
+        if (teacherUsers.length > 0) {
+            console.log(`\n⚠️  Found ${teacherUsers.length} user(s) with 'teacher' or 'faculty' role:`);
+            teacherUsers.forEach(user => {
                 console.log(`   - ${user.email} (${user.firstName} ${user.lastName}) - Role: ${user.role}`);
             });
 
             console.log('\n🔧 Updating to "teacher" role...');
 
             const result = await User.updateMany(
-                { role: { $in: ['instructor', 'faculty'] } },
+                { role: { $in: ['teacher', 'faculty'] } },
                 { $set: { role: 'teacher' } }
             );
 
             console.log(`✅ Updated ${result.modifiedCount} user(s)`);
         } else {
-            console.log('✅ No users found with "instructor" or "faculty" role');
+            console.log('✅ No users found with "teacher" or "faculty" role');
         }
 
         // Check for valid teacher users

@@ -24,7 +24,7 @@ const Topbar = ({ onToggleMenu }) => {
     const tabs = [
         { to: '/dashboard', label: 'Courses' },
         { to: '/assignments', label: 'Assignments' },
-        { to: '/feedback', label: 'Feedback' }
+        // { to: '/feedback', label: 'Feedback' }
     ];
 
     return (

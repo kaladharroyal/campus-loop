@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import '../../styles/pages.css';
+import '../../styles/teacher.css';
 
 const COLORS = ['#00C49F', '#FFBB28', '#FF8042'];
 
@@ -19,7 +19,8 @@ const TeacherDashboard = () => {
 
     const fetchAnalytics = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch('http://localhost:5000/api/teacher/analytics', {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -92,13 +93,13 @@ const TeacherDashboard = () => {
             </div>
 
             <div className="dashboard-quick-actions" style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-                <button className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
+                <button className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
                     View All Courses
                 </button>
-                <button className="btn btn-secondary" onClick={() => navigate('/teacher/assignments')}>
+                <button className="btn btn-primary" onClick={() => navigate('/teacher/assignments')}>
                     Manage Assignments
                 </button>
-                <button className="btn btn-secondary" onClick={() => navigate('/teacher/analytics')}>
+                <button className="btn btn-primary" onClick={() => navigate('/teacher/analytics')}>
                     View Analytics
                 </button>
             </div>
@@ -194,3 +195,38 @@ const TeacherDashboard = () => {
 };
 
 export default TeacherDashboard;
+<style jsx>
+    {`
+    .dashboard-content {
+        margin-top: 20px;
+    }
+    .dashboard-grid-main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+
+    }
+        .stat-card{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width:30px;
+        margin:10px;
+        padding:10px;
+        border-radius:10px;
+        background-color:#fff;
+        box-shadow:0 2px 4px rgba(0,0,0,0.1);   
+        }
+        .dashboard-stats{
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width:30px;
+            margin:10px;
+            padding:10px;
+            border-radius:10px;
+            background-color:#fff;
+            box-shadow:0 2px 4px rgba(0,0,0,0.1);   
+        }     
+    `}
+</style>

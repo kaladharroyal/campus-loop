@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const ProfileSkills = ({
     formData,
     newSkill,
@@ -23,23 +24,11 @@ const ProfileSkills = ({
                 <div className="grid-2">
                     <div className="input-group">
                         <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '8px' }}>Skill Name<span style={{ color: '#ef4444' }}>*</span></label>
-                        <select className="input-outline" value={newSkill.name} onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })} style={{ border: '1px solid #e2e8f0' }}>
-                            <option value="">Search or Add a New Skill..</option>
-                            <option value="React">React</option>
-                            <option value="Node.js">Node.js</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
-                        </select>
+                        <input type="text" className="input-outline" value={newSkill.name} onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })} style={{ border: '1px solid #e2e8f0' }} />
                     </div>
                     <div className="input-group">
                         <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '8px' }}>Proficiency Level<span style={{ color: '#ef4444' }}>*</span></label>
-                        <select className="input-outline" value={newSkill.level} onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })} style={{ border: '1px solid #e2e8f0' }}>
-                            <option value="">Select proficiency level</option>
-                            <option value="Beginner">Beginner</option>
-                            <option value="Intermediate">Intermediate</option>
-                            <option value="Advanced">Advanced</option>
-                            <option value="Expert">Expert</option>
-                        </select>
+                        <input type="text" className="input-outline" value={newSkill.level} onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })} style={{ border: '1px solid #e2e8f0' }} />
                     </div>
                 </div>
 

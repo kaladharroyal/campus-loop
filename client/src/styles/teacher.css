@@ -725,6 +725,15 @@
     margin: 15px 0;
 }
 
+.search-box input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    min-width: 300px;
+    background: white;
+    font-size: 14px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .page-header {

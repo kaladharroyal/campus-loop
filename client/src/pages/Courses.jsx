@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Import assets
+// Import fallback images for courses without thumbnails
 import dbms from '../assets/dbms.png';
 import java from '../assets/java.png';
 import mern from '../assets/mern-stack.png';
@@ -15,25 +15,68 @@ import cn from '../assets/computer-networks.png';
 
 const Courses = () => {
   const navigate = useNavigate();
-
-  const allCourses = [
-    { title: 'NLP', sub: 'NLP Using python', img: nlp, health: { score: 92, completion: '95%', feedback: '4.8', dropoff: '2%' } },
-    { title: 'Programming for AI', sub: 'python', img: ai, health: { score: 85, completion: '88%', feedback: '4.5', dropoff: '5%' } },
-    { title: 'Artificial intelligence', sub: 'fundamentals of ai', img: ai2, health: { score: 78, completion: '80%', feedback: '4.2', dropoff: '8%' } },
-    { title: 'Deep Learning', sub: 'DL using python', img: dl, health: { score: 88, completion: '90%', feedback: '4.6', dropoff: '3%' } },
-    { title: 'Computer Networks', sub: 'CN', img: cn, health: { score: 65, completion: '70%', feedback: '3.5', dropoff: '15%' } }
-  ];
-
+  const [allCourses, setAllCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Fallback images mapping
+  const fallbackImages = [nlp, ai, ai2, dl, cn, dbms, java, mern, ml];
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/courses');
+      const data = await response.json();
+
+      if (data.success) {
+        // Map courses and add fallback images if thumbnail is missing
+        const coursesWithImages = data.data.map((course, index) => ({
+          ...course,
+          img: course.thumbnail || fallbackImages[index % fallbackImages.length],
+          // Add health data if not present (for UI compatibility)
+          health: course.health || {
+            score: Math.floor(Math.random() * 30) + 70,
+            completion: '85%',
+            feedback: '4.5',
+            dropoff: '5%'
+          }
+        }));
+        setAllCourses(coursesWithImages);
+      } else {
+        setError(data.message || 'Failed to load courses');
+      }
+    } catch (err) {
+      setError('Failed to connect to server');
+      console.error('Error fetching courses:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const filteredCourses = allCourses.filter(course =>
     course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    course.sub.toLowerCase().includes(searchQuery.toLowerCase())
+    (course.description && course.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (course.category && course.category.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const handleCourseClick = (title) => {
-    navigate(`/course/${encodeURIComponent(title)}`);
+  const handleCourseClick = (course) => {
+    navigate(`/course-overview/${course._id}`);
   };
+
+  if (loading) {
+    return (
+      <div className="courses-page">
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b' }}>
+          <p>Loading courses...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="courses-page">
@@ -346,6 +389,18 @@ const Courses = () => {
         </div>
       </div>
 
+      {error && (
+        <div style={{
+          background: '#fee2e2',
+          color: '#991b1b',
+          padding: '12px 20px',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          {error}
+        </div>
+      )}
+
       <div className="courses-section">
         <h2 className="section-header">All courses</h2>
         <p className="section-sub">Enroll new courses</p>
@@ -354,9 +409,9 @@ const Courses = () => {
           {filteredCourses.length > 0 ? (
             filteredCourses.map((course, i) => (
               <div
-                key={i}
+                key={course._id || i}
                 className="campus-card"
-                onClick={() => handleCourseClick(course.title)}
+                onClick={() => handleCourseClick(course)}
               >
                 <div className="card-image-placeholder">
                   <img src={course.img} alt={course.title} />
@@ -376,7 +431,7 @@ const Courses = () => {
                 </div>
                 <div className="card-content">
                   <h3>{course.title}</h3>
-                  <p>{course.sub}</p>
+                  <p>{course.description ? course.description.substring(0, 50) + '...' : course.category || ''}</p>
                 </div>
               </div>
             ))

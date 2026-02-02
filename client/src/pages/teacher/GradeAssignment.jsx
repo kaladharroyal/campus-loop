@@ -18,7 +18,8 @@ const GradeAssignment = () => {
 
     const fetchAssignment = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch(`http://localhost:5000/api/teacher/assignment/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

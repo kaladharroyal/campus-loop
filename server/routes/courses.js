@@ -31,15 +31,53 @@ const teacherOnly = (req, res, next) => {
     }
 };
 
-// @desc    Get all courses
+// @desc    Get all published courses
 // @route   GET /api/courses
-// @access  Private
-router.get('/', protect, async (req, res) => {
+// @access  Public (for students to browse)
+router.get('/', async (req, res) => {
     try {
-        const courses = await Course.find({}).populate('teacher', 'name email');
-        res.json(courses);
+        const courses = await Course.find({ status: 'published' })
+            .populate('teacher', 'firstName lastName email')
+            .sort({ createdAt: -1 });
+
+        res.json({
+            success: true,
+            count: courses.length,
+            data: courses
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({
+            success: false,
+            message: 'Server Error: ' + error.message
+        });
+    }
+});
+
+// @desc    Get single course by ID
+// @route   GET /api/courses/:id
+// @access  Public
+router.get('/:id', async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id)
+            .populate('teacher', 'firstName lastName email')
+            .populate('studentsEnrolled', 'firstName lastName');
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: 'Course not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: course
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server Error: ' + error.message
+        });
     }
 });
 
