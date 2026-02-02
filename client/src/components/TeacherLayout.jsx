@@ -33,7 +33,7 @@ const TeacherLayout = ({ children }) => {
         <div className={layoutClass}>
             <TeacherSidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
             <div className="main-content">
-                <Topbar onMenuClick={toggleSidebar} />
+                <Topbar onToggleMenu={toggleSidebar} />
                 <div className="page-content">
                     {children || <Outlet />}
                 </div>
@@ -44,7 +44,7 @@ const TeacherLayout = ({ children }) => {
                 .teacher-layout {
                     display: flex;
                     min-height: 100vh;
-                    background: #f9fafb;
+                    background: var(--bg-secondary);
                 }
 
                 .main-content {

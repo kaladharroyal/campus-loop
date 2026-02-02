@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             {/* Statistics Cards */}
             <div className="admin-stats-grid">
                 <div className="admin-stat-card">
-                    <div className="stat-icon" style={{ backgroundColor: '#667eea' }}>
+                    <div className="stat-icon" style={{ backgroundColor: 'var(--primary)' }}>
                         👨‍🎓
                     </div>
                     <div className="stat-details">
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="admin-stat-card">
-                    <div className="stat-icon" style={{ backgroundColor: '#10b981' }}>
+                    <div className="stat-icon" style={{ backgroundColor: 'var(--color-success)' }}>
                         👨‍🏫
                     </div>
                     <div className="stat-details">
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="admin-stat-card">
-                    <div className="stat-icon" style={{ backgroundColor: '#f59e0b' }}>
+                    <div className="stat-icon" style={{ backgroundColor: 'var(--color-warning)' }}>
                         📚
                     </div>
                     <div className="stat-details">
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="admin-stat-card">
-                    <div className="stat-icon" style={{ backgroundColor: '#8b5cf6' }}>
+                    <div className="stat-icon" style={{ backgroundColor: 'var(--primary-dark)' }}>
                         ✓
                     </div>
                     <div className="stat-details">

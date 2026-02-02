@@ -7,14 +7,14 @@
 .admin-layout {
     display: flex;
     min-height: 100vh;
-    background-color: #f5f7fa;
+    background-color: var(--bg-secondary);
 }
 
 /* Sidebar Styles */
 .admin-sidebar {
     width: 250px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    color: var(--text-inverse);
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -81,7 +81,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1rem;
-    color: white;
+    color: var(--text-inverse);
     transition: all 0.2s;
 }
 
@@ -117,7 +117,7 @@
 
 .admin-nav-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .admin-nav-item.active {
@@ -137,7 +137,7 @@
 
 /* Topbar Styles */
 .admin-topbar {
-    background: white;
+    background: var(--bg-primary);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
@@ -151,7 +151,7 @@
 .admin-topbar-left h1 {
     margin: 0;
     font-size: 22px;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .admin-topbar-right {
@@ -174,21 +174,21 @@
 
 .admin-name {
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
     font-size: 14px;
 }
 
 .admin-role {
     font-size: 12px;
-    color: #667eea;
+    color: var(--primary);
 }
 
 .admin-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: var(--primary-gradient);
+    color: var(--text-inverse);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,8 +198,8 @@
 
 .admin-logout-btn {
     padding: 8px 20px;
-    background-color: #f44336;
-    color: white;
+    background-color: var(--color-error);
+    color: var(--text-inverse);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -229,12 +229,12 @@
 
 .admin-page-header h1 {
     font-size: 28px;
-    color: #333;
+    color: var(--text-primary);
     margin: 0 0 8px 0;
 }
 
 .admin-page-header p {
-    color: #666;
+    color: var(--text-secondary);
     margin: 0;
 }
 
@@ -253,7 +253,7 @@
 }
 
 .admin-stat-card {
-    background: white;
+    background: var(--bg-primary);
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -281,20 +281,20 @@
 .stat-details h3 {
     margin: 0 0 8px 0;
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
 .stat-number {
     font-size: 32px;
     font-weight: 700;
-    color: #333;
+    color: var(--text-primary);
     margin: 0;
 }
 
 .stat-link {
     font-size: 13px;
-    color: #667eea;
+    color: var(--primary);
     text-decoration: none;
     margin-top: 5px;
     display: inline-block;
@@ -306,7 +306,7 @@
 
 /* Sections */
 .admin-section {
-    background: white;
+    background: var(--bg-primary);
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 25px;
@@ -316,13 +316,13 @@
 .admin-section h2 {
     font-size: 20px;
     margin: 0 0 20px 0;
-    color: #333;
+    color: var(--text-primary);
 }
 
 /* Tables */
 .admin-table-container {
     overflow-x: auto;
-    background: white;
+    background: var(--bg-primary);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -333,25 +333,25 @@
 }
 
 .admin-table thead {
-    background-color: #f8f9fa;
+    background-color: var(--bg-tertiary);
 }
 
 .admin-table th {
     padding: 15px;
     text-align: left;
     font-weight: 600;
-    color: #555;
-    border-bottom: 2px solid #e0e0e0;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border);
 }
 
 .admin-table td {
     padding: 15px;
-    border-bottom: 1px solid #f0f0f0;
-    color: #333;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary);
 }
 
 .admin-table tbody tr:hover {
-    background-color: #f8f9fa;
+    background-color: var(--bg-secondary);
 }
 
 /* Badges */
@@ -398,21 +398,21 @@
     font-size: 14px;
     font-weight: 500;
     transition: all 0.3s;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--primary-gradient);
 }
 
 .admin-btn-primary {
-    background-color: #667eea;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-inverse);
 }
 
 .admin-btn-primary:hover {
-    background-color: #5568d3;
+    background-color: var(--primary-dark);
 }
 
 .admin-btn-success {
-    background-color: #10b981;
-    color: white;
+    background-color: var(--color-success);
+    color: var(--text-inverse);
 }
 
 .admin-btn-success:hover {
@@ -420,8 +420,8 @@
 }
 
 .admin-btn-danger {
-    background-color: #f44336;
-    color: white;
+    background-color: var(--color-error);
+    color: var(--text-inverse);
 }
 
 .admin-btn-danger:hover {
@@ -429,8 +429,8 @@
 }
 
 .admin-btn-warning {
-    background-color: #f59e0b;
-    color: white;
+    background-color: var(--color-warning);
+    color: var(--text-inverse);
 }
 
 .admin-btn-warning:hover {
@@ -438,8 +438,8 @@
 }
 
 .admin-btn-info {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-inverse);
 }
 
 .admin-btn-info:hover {
@@ -447,8 +447,8 @@
 }
 
 .admin-btn-secondary {
-    background-color: #6c757d;
-    color: white;
+    background-color: var(--text-secondary);
+    color: var(--text-inverse);
 }
 
 .admin-btn-secondary:hover {
@@ -477,19 +477,19 @@
 .admin-filter-input,
 .admin-filter-select {
     padding: 12px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
     outline: none;
     transition: border-color 0.3s, background-color 0.3s;
     font-family: inherit;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .admin-filter-input:focus,
 .admin-filter-select:focus {
-    border-color: #667eea;
+    border-color: var(--primary);
 }
 
 .admin-filter-input {
@@ -505,17 +505,17 @@
 .admin-count {
     margin-bottom: 15px;
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .admin-count strong {
-    color: #333;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
 /* Forms */
 .admin-form-card {
-    background: white;
+    background: var(--bg-primary);
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 25px;
@@ -524,7 +524,7 @@
 
 .admin-form-card h3 {
     margin: 0 0 20px 0;
-    color: #333;
+    color: var(--text-primary);
     font-size: 18px;
 }
 
@@ -545,27 +545,27 @@
 .admin-form select,
 .admin-form textarea {
     padding: 12px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
     outline: none;
     transition: border-color 0.3s, background-color 0.3s;
     font-family: inherit;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .admin-input:focus,
 .admin-form input:focus,
 .admin-form select:focus,
 .admin-form textarea:focus {
-    border-color: #667eea;
-    background-color: #fff;
+    border-color: var(--primary);
+    background-color: var(--bg-primary);
 }
 
 .admin-form label {
     font-size: 14px;
-    color: #555;
+    color: var(--text-secondary);
     font-weight: 500;
     margin-bottom: 5px;
 }
@@ -575,7 +575,7 @@
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    color: #555;
+    color: var(--text-secondary);
     cursor: pointer;
 }
 
@@ -593,7 +593,7 @@
 }
 
 .admin-course-card {
-    background: white;
+    background: var(--bg-primary);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -663,11 +663,11 @@
 .course-info h3 {
     margin: 0 0 10px 0;
     font-size: 18px;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .course-info p {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 14px;
     margin: 0 0 15px 0;
     line-height: 1.5;
@@ -679,7 +679,7 @@
     gap: 15px;
     margin-bottom: 15px;
     font-size: 13px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .course-meta span,
@@ -697,19 +697,19 @@
 }
 
 .quick-action-card {
-    background: white;
-    border: 2px solid #e0e0e0;
+    background: var(--bg-primary);
+    border: 2px solid var(--border);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
     text-decoration: none;
-    color: #333;
+    color: var(--text-primary);
     transition: all 0.3s;
 }
 
 .quick-action-card:hover {
-    border-color: #667eea;
-    background-color: #f8f9ff;
+    border-color: var(--primary);
+    background-color: var(--bg-secondary);
     transform: translateY(-3px);
 }
 
@@ -732,17 +732,17 @@
     justify-content: center;
     min-height: 400px;
     font-size: 18px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Chart Placeholders */
 .chart-placeholder {
-    background: #f8f9fa;
-    border: 2px dashed #ddd;
+    background: var(--bg-secondary);
+    border: 2px dashed var(--border);
     border-radius: 12px;
     padding: 60px 20px;
     text-align: center;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Admin Settings Grid */
@@ -756,7 +756,7 @@
 .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .empty-state p {
@@ -816,7 +816,8 @@
         font-size: 12px;
     }
 }
-.form-group input{
+
+.form-group input {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -825,43 +826,49 @@
     border-radius: 8px;
 }
 
-.settings-tabs{
-    padding:20px;
+.settings-tabs {
+    padding: 20px;
     margin-bottom: 20px;
     border-radius: 12px;
 }
-.tab-btn.active{
+
+.tab-btn.active {
     color: #3b82f6;
     background-color: #f8f9ff;
 
 }
-.system-settings-grid{
+
+.system-settings-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 40px;
-    
+
 }
-.notification-item{
+
+.notification-item {
     padding: 10PX;
 }
 
-.save-stn{
+.save-stn {
     margin-top: 20px;
 }
-.filter-section{
+
+.filter-section {
     padding: 10px;
     /* margin-bottom: 10px; */
     border-radius: 12px;
     background-color: #f8f9ff;
 }
-.filter-select > option{
+
+.filter-select>option {
     background-color: #333;
     color: white;
 }
-select.filter-select{
+
+select.filter-select {
     color: #333;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 8px;
-    margin-bottom: 10px;    
+    margin-bottom: 10px;
 }

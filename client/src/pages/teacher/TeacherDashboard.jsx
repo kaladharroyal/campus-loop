@@ -158,7 +158,7 @@ const TeacherDashboard = () => {
                     <h3>Recent Enrollments</h3>
                     <table className="simple-table" style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
                         <thead>
-                            <tr style={{ textAlign: 'left', borderBottom: '1px solid #eee' }}>
+                            <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-light)' }}>
                                 <th style={{ padding: '10px' }}>Student</th>
                                 <th>Course</th>
                                 <th>Enrolled Date</th>
@@ -166,7 +166,7 @@ const TeacherDashboard = () => {
                         </thead>
                         <tbody>
                             {analytics.recentEnrollments.map((enrollment, index) => (
-                                <tr key={index} style={{ borderBottom: '1px solid #f9f9f9' }}>
+                                <tr key={index} style={{ borderBottom: '1px solid var(--border-light)' }}>
                                     <td style={{ padding: '10px' }}>{enrollment.studentName}</td>
                                     <td>{enrollment.courseName}</td>
                                     <td>{new Date(enrollment.enrolledAt).toLocaleDateString()}</td>
@@ -214,7 +214,7 @@ export default TeacherDashboard;
         margin:10px;
         padding:10px;
         border-radius:10px;
-        background-color:#fff;
+        background-color: var(--bg-primary);
         box-shadow:0 2px 4px rgba(0,0,0,0.1);   
         }
         .dashboard-stats{
@@ -225,7 +225,7 @@ export default TeacherDashboard;
             margin:10px;
             padding:10px;
             border-radius:10px;
-            background-color:#fff;
+            background-color: var(--bg-primary);
             box-shadow:0 2px 4px rgba(0,0,0,0.1);   
         }     
     `}
