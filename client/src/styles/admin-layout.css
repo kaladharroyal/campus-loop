@@ -2,7 +2,7 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: var(--bg-secondary);
 }
 
 .admin-main-content {
@@ -30,8 +30,8 @@
   top: 0;
   bottom: 0;
   width: 260px;
-  background: linear-gradient(180deg, #1a1f36 0%, #0f1419 100%);
-  color: white;
+  background: var(--primary-gradient);
+  color: var(--text-inverse);
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
@@ -70,7 +70,7 @@
 .collapse-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: white;
+  color: var(--text-inverse);
   width: 32px;
   height: 32px;
   border-radius: 6px;
@@ -94,6 +94,7 @@
   gap: 1rem;
   padding: 0.875rem 1.5rem;
   color: rgba(255, 255, 255, 0.7);
+  /* Keep transparent white for gradient bg */
   text-decoration: none;
   transition: all 0.2s;
   border-left: 3px solid transparent;
@@ -101,13 +102,14 @@
 
 .admin-nav-item:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .admin-nav-item.active {
-  background: rgba(99, 102, 241, 0.15);
-  color: #818cf8;
-  border-left-color: #818cf8;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-left-color: #ffd700;
+  /* Match admin.css gold color or keep primary */
 }
 
 .nav-icon {
@@ -135,17 +137,15 @@
   align-items: center;
   gap: 1rem;
   padding: 0.875rem 1rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: none;
-  color: #fca5a5;
-  border-radius: 8px;
+  background: var(--bg-tertiary);
+  color: var(--color-error);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .admin-logout-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
+  background: var(--color-error);
+  color: var(--text-inverse);
 }
 
 /* ==================== Admin Topbar ==================== */
@@ -154,8 +154,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
@@ -163,7 +163,7 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .topbar-right {
@@ -182,12 +182,12 @@
   position: absolute;
   left: 12px;
   font-size: 1rem;
-  color: #9ca3af;
+  color: var(--text-tertiary);
 }
 
 .search-input {
   padding: 0.5rem 1rem 0.5rem 2.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.875rem;
   width: 250px;
@@ -196,13 +196,13 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #6366f1;
+  border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .topbar-icon-btn {
   position: relative;
-  background: #f3f4f6;
+  background: var(--bg-secondary);
   border: none;
   width: 40px;
   height: 40px;
@@ -213,15 +213,15 @@
 }
 
 .topbar-icon-btn:hover {
-  background: #e5e7eb;
+  background: var(--bg-tertiary);
 }
 
 .notification-badge {
   position: absolute;
   top: 4px;
   right: 4px;
-  background: #ef4444;
-  color: white;
+  background: var(--color-error);
+  color: var(--text-inverse);
   font-size: 0.625rem;
   width: 16px;
   height: 16px;
@@ -249,18 +249,18 @@
 }
 
 .profile-btn:hover {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
 }
 
 .profile-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   font-weight: 600;
   font-size: 0.875rem;
 }
@@ -275,17 +275,17 @@
 .profile-name {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .profile-role {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .dropdown-arrow {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--text-tertiary);
 }
 
 .profile-menu {
@@ -293,8 +293,8 @@
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   min-width: 180px;
@@ -306,7 +306,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  color: #374151;
+  color: var(--text-primary);
   text-decoration: none;
   border: none;
   background: transparent;
@@ -317,17 +317,17 @@
 }
 
 .profile-menu-item:hover {
-  background: #f3f4f6;
+  background: var(--bg-secondary);
 }
 
 .menu-divider {
   margin: 0.5rem 0;
   border: none;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
 }
 
 .logout-item {
-  color: #ef4444;
+  color: var(--color-error);
 }
 
 /* ==================== Page Styles ==================== */
@@ -341,19 +341,19 @@
 .page-header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
 }
 
 .page-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
   font-size: 0.95rem;
 }
 
 /* Admin Dashboard Specific */
 .admin-dashboard .dashboard-header {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 2rem;
@@ -361,7 +361,7 @@
 }
 
 .admin-dashboard .dashboard-header h1 {
-  color: #111827;
+  color: var(--text-primary);
   background: transparent;
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
@@ -369,7 +369,7 @@
 }
 
 .admin-dashboard .dashboard-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   background: transparent;
   margin: 0;
   font-size: 0.95rem;
@@ -384,14 +384,14 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid var(--primary);
   transition: all 0.2s;
 }
 
@@ -401,7 +401,7 @@
 }
 
 .stat-card.primary {
-  border-left-color: #6366f1;
+  border-left-color: var(--primary);
 }
 
 .stat-card.success {
@@ -433,7 +433,7 @@
 }
 
 .stat-details h3 {
-  color: #374151 !important;
+  color: var(--text-secondary) !important;
   font-size: 0.875rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
@@ -447,7 +447,7 @@
 .stat-value {
   font-size: 2.25rem;
   font-weight: 700;
-  color: #111827 !important;
+  color: var(--text-primary) !important;
   margin: 0;
   line-height: 1;
   background: none !important;
@@ -457,7 +457,7 @@
 
 .stat-subtitle {
   font-size: 0.75rem;
-  color: #6b7280 !important;
+  color: var(--text-tertiary) !important;
   font-weight: 500;
   margin-top: 0.25rem;
   display: block;
@@ -476,7 +476,7 @@
 
 /* ==================== Tables ==================== */
 .table-container {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -488,26 +488,26 @@
 }
 
 .data-table thead {
-  background: #f9fafb;
+  background: var(--bg-tertiary);
 }
 
 .data-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
   font-size: 0.875rem;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border);
 }
 
 .data-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #6b7280;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
 }
 
 .data-table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--bg-secondary);
 }
 
 /* ==================== Badges & Status ==================== */
@@ -578,7 +578,7 @@
 
 .btn-primary {
   background: #6366f1;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .btn-primary:hover {
@@ -586,17 +586,17 @@
 }
 
 .btn-secondary {
-  background: #6b7280;
-  color: white;
+  background: var(--text-secondary);
+  color: var(--text-inverse);
 }
 
 .btn-secondary:hover {
-  background: #4b5563;
+  background: var(--text-primary);
 }
 
 .btn-success {
   background: #10b981;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .btn-success:hover {
@@ -605,7 +605,7 @@
 
 .btn-danger {
   background: #ef4444;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .btn-danger:hover {
@@ -614,7 +614,7 @@
 
 .btn-warning {
   background: #f59e0b;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .btn-warning:hover {
@@ -623,7 +623,7 @@
 
 .btn-info {
   background: #3b82f6;
-  color: white;
+  color: var(--text-inverse);
 }
 
 .btn-info:hover {
@@ -643,7 +643,7 @@
 
 /* ==================== Filters ==================== */
 .filters-section {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
@@ -663,17 +663,17 @@
 
 .filter-select {
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.875rem;
-  background: white;
+  background: var(--bg-primary);
   cursor: pointer;
 }
 
 .clear-filters-btn {
   padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.875rem;
@@ -681,7 +681,7 @@
 }
 
 .clear-filters-btn:hover {
-  background: #e5e7eb;
+  background: var(--bg-tertiary);
 }
 
 /* ==================== Alerts ==================== */
@@ -710,16 +710,16 @@
 .loading {
   padding: 3rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1.125rem;
 }
 
 .no-data {
   padding: 3rem;
   text-align: center;
-  background: white;
+  background: var(--bg-primary);
   border-radius: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .text-danger {
@@ -749,7 +749,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 12px;
   max-width: 500px;
   width: 90%;
@@ -763,7 +763,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
 }
 
 .modal-header h2 {
@@ -777,7 +777,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #9ca3af;
+  color: var(--text-tertiary);
   width: 32px;
   height: 32px;
   display: flex;
@@ -788,8 +788,8 @@
 }
 
 .modal-close:hover {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .modal-form {

@@ -103,8 +103,8 @@ const Dashboard = () => {
             <ResponsiveContainer>
               <LineChart data={dataProgress}>
                 <XAxis dataKey="name" stroke="#888" fontSize={10} tickLine={false} axisLine={false} />
-                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px' }} />
-                <Line type="monotone" dataKey="hours" stroke="#8884d8" strokeWidth={3} dot={{ r: 4 }} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', borderRadius: '8px', border: '1px solid var(--border)' }} />
+                <Line type="monotone" dataKey="hours" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -160,10 +160,10 @@ const Dashboard = () => {
           <div style={{ width: '100%', height: 200 }}>
             <ResponsiveContainer>
               <BarChart data={dataTrends}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" fontSize={10} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: '#f0f0f0' }} />
-                <Bar dataKey="score" fill="#4d7bf3" radius={[4, 4, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                <XAxis dataKey="name" fontSize={10} axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
+                <Tooltip cursor={{ fill: 'var(--bg-tertiary)' }} contentStyle={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', borderRadius: '8px', border: '1px solid var(--border)' }} />
+                <Bar dataKey="score" fill="var(--primary)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

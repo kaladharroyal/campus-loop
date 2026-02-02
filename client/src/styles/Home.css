@@ -6,26 +6,7 @@
     box-sizing: border-box;
 }
 
-:root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --accent: #ec4899;
-
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-tertiary: #94a3b8;
-
-    --border: #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
+/* :root variables removed to avoid conflict with global variables.css */
 
 .page-container {
     max-width: 1400px;
@@ -49,6 +30,7 @@
         opacity: 1;
     }
 }
+
 /* Overlay behind sidebar */
 .sidebar-overlay {
     position: fixed;
@@ -165,6 +147,7 @@
     border-radius: 16px;
     pointer-events: none;
 }
+
 .campus-card .card-image-placeholder::after {
     content: '';
     position: absolute;
@@ -174,7 +157,7 @@
     height: 100%;
     opacity: 0;
     transition: opacity 0.3s ease;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 
@@ -388,7 +371,7 @@ html {
 
 ::selection {
     background: var(--primary-light);
-    color: white;
+    color: var(--text-inverse);
 }
 
 /* ==================== PERFORMANCE OPTIMIZATIONS ==================== */

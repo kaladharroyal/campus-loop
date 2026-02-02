@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-:root {
+.landing-wrapper {
     /* Primary Colors */
     --primary: #6366f1;
     --primary-dark: #4f46e5;
@@ -41,7 +41,7 @@
     --section-padding: 100px;
 }
 
-body {
+.landing-wrapper {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-primary);
     background: var(--bg-primary);
