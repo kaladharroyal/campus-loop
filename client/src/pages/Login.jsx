@@ -265,6 +265,13 @@ const Login = () => {
           font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
           position: relative;
           overflow: hidden;
+          
+          /* Enforce Light Theme locally */
+          --bg-primary: #ffffff;
+          --text-primary: #0f172a;
+          --text-secondary: #475569;
+          
+          color: var(--text-primary);
         }
 
         /* Background */
