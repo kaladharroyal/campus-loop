@@ -89,7 +89,7 @@ function App() {
               <Route path="/assignments" element={<StudentRoute><Layout><Assignments /></Layout></StudentRoute>} />
               <Route path="/attendance" element={<StudentRoute><Layout><Attendance /></Layout></StudentRoute>} />
               <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
-              <Route path="/course/:title/play" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
+              <Route path="/course/:id" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
 
               {/* Teacher Routes */}
               <Route path="/teacher" element={<TeacherRoute><TeacherLayout /></TeacherRoute>}>

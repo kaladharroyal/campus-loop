@@ -85,7 +85,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/courses
 // @access  Private/teacher
 router.post('/', protect, teacherOnly, async (req, res) => {
-    const { title, description, category, duration, level, thumbnail } = req.body;
+    const { title, description, category, duration, level, thumbnail, videoLink } = req.body;
 
     try {
         const course = new Course({
@@ -95,6 +95,7 @@ router.post('/', protect, teacherOnly, async (req, res) => {
             duration,
             level,
             thumbnail,
+            videoLink,
             teacher: req.user._id
         });
 
@@ -110,16 +111,56 @@ router.post('/', protect, teacherOnly, async (req, res) => {
 // @access  Private
 router.get('/mycourses', protect, async (req, res) => {
     try {
+        // Safety check
+        if (!req.user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
         if (req.user.role === 'teacher') {
             const courses = await Course.find({ teacher: req.user._id });
             res.json(courses);
         } else {
             // For students, find courses where their ID is in studentsEnrolled
-            const courses = await Course.find({ studentsEnrolled: req.user._id }).populate('teacher', 'name');
+            // Changed 'name' to 'firstName lastName' as 'name' might not exist
+            const courses = await Course.find({ studentsEnrolled: req.user._id })
+                .populate('teacher', 'firstName lastName email');
             res.json(courses);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        console.error("Error in /mycourses:", error); // Log the actual error
+        res.status(500).json({ message: 'Server Error: ' + error.message });
+    }
+});
+
+// @desc    Enroll in a course
+// @route   POST /api/courses/:id/enroll
+// @access  Private
+router.post('/:id/enroll', protect, async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.id);
+
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+
+        // Check if already enrolled
+        if (course.studentsEnrolled.includes(req.user._id)) {
+            return res.status(400).json({ message: 'Already enrolled in this course' });
+        }
+
+        // Add user to course's enrolled students
+        course.studentsEnrolled.push(req.user._id);
+        await course.save();
+
+        // Add course to user's enrolled courses using $addToSet to avoid duplicates
+        await User.findByIdAndUpdate(req.user._id, {
+            $addToSet: { enrolledCourses: course._id }
+        });
+
+        res.json({ success: true, message: 'Enrolled successfully' });
+    } catch (error) {
+        console.error("Enrollment Error:", error);
+        res.status(500).json({ message: 'Server Error: ' + error.message });
     }
 });
 

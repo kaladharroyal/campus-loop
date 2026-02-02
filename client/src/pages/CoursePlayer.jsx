@@ -1,36 +1,123 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { courseData } from '../data/courseData';
+import { useAuth } from '../context/AuthContext'; // Import auth context
 import '../styles/pages.css';
 
 const CoursePlayer = () => {
-    const { title } = useParams(); // Should match the route param
+    const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
 
-    // Find course based on title (decoding URL percentage encoding)
-    const decodedTitle = decodeURIComponent(title);
-
-    // Fuzzy match or exact match logic
-    const courseKey = Object.keys(courseData).find(key =>
-        key.toLowerCase() === decodedTitle.toLowerCase() ||
-        decodedTitle.toLowerCase().includes(key.toLowerCase())
-    );
-
-    const course = courseData[courseKey];
-
+    // State to hold dynamic course data
+    const [course, setCourse] = useState(null);
     const [activeLesson, setActiveLesson] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
+    // Fetch course data from API
     useEffect(() => {
-        if (course && course.lessons.length > 0) {
-            setActiveLesson(course.lessons[0]);
-        }
-    }, [course]);
+        const fetchCourse = async () => {
+            try {
+                // Since our API gets by ID, but we have title in URL, we first need to find the course
+                // For now, let's assume we can change the route to use ID or we search by ID if title matches.
+                // NOTE: Best practice is to use ID in URL: /course/:id/play
+                // But typically we might need to search. 
 
-    if (!course) {
+                // Fetch ALL courses to find match (inefficient but works for now without route change)
+                // ideally we change route to use :id
+                // Fetch ALL courses to find match (inefficient but works for now without route change)
+                // ideally we change route to use :id
+                const response = await fetch('http://localhost:5000/api/courses');
+                if (!response.ok) throw new Error('Failed to load courses');
+
+                const data = await response.json();
+                if (data.success) {
+                    // Find course by ID directly since we have it
+                    const foundCourse = data.data.find(c => c._id === id);
+
+                    if (foundCourse) {
+                        // We need full details including curriculum/lessons
+                        // The list API might return summary, let's fetch individual if needed
+                        // But wait, the list doesn't have lessons usually.
+                        // Let's get the specific course ID
+                        const detailResponse = await fetch(`http://localhost:5000/api/courses/${foundCourse._id}`);
+                        const detailData = await detailResponse.json();
+
+                        if (detailData.success) {
+                            // Helper to extract YouTube ID
+                            const getYoutubeId = (url) => {
+                                if (!url) return 'eIrMbAQSU34'; // Default placeholder
+                                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                                const match = url.match(regExp);
+                                return (match && match[2].length === 11) ? match[2] : 'eIrMbAQSU34';
+                            };
+
+                            const courseVideoId = getYoutubeId(detailData.data.videoLink);
+                            console.log("Debug: Full Course Data:", detailData.data);
+                            console.log("Debug: Video Link from DB:", detailData.data.videoLink);
+                            console.log("Debug: Extracted Video ID:", courseVideoId);
+
+                            // Transform curriculum to flat lesson list for player
+                            const flatLessons = [];
+                            if (detailData.data.curriculum) {
+                                let lessonId = 1;
+                                detailData.data.curriculum.forEach(module => {
+                                    if (module.topics) {
+                                        module.topics.forEach(topic => {
+                                            // Check if topic is object (new style) or string (old style)
+                                            const isObject = typeof topic === 'object';
+                                            const title = isObject ? topic.title : topic;
+                                            const startTime = isObject ? (topic.time || 0) : 0;
+
+                                            flatLessons.push({
+                                                id: lessonId++,
+                                                title: title,
+                                                duration: '10:00', // Placeholder
+                                                videoId: courseVideoId,
+                                                start: startTime // Add start timestamp
+                                            });
+                                        });
+                                    }
+                                });
+                            }
+
+                            // If no curriculum, add a dummy lesson
+                            if (flatLessons.length === 0) {
+                                flatLessons.push({
+                                    id: 1,
+                                    title: 'Introduction',
+                                    duration: '5:00',
+                                    videoId: courseVideoId
+                                });
+                            }
+
+                            setCourse({ ...detailData.data, lessons: flatLessons });
+                            setActiveLesson(flatLessons[0]);
+                        } else {
+                            setError('Course details not found');
+                        }
+                    } else {
+                        setError('Course not found');
+                    }
+                }
+            } catch (err) {
+                console.error("Error loading course:", err);
+                setError('Failed to load course');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCourse();
+    }, [id]);
+
+    if (loading) return <div className="page-container" style={{ textAlign: 'center', padding: '50px' }}>Loading Player...</div>;
+
+    if (error || !course) {
         return (
             <div className="page-container" style={{ textAlign: 'center', marginTop: '50px' }}>
-                <h2>Course not found</h2>
-                <button className="primary-btn" onClick={() => navigate('/courses')}>
+                <h2>{error || 'Course not found'}</h2>
+                <button className="btn btn-primary" onClick={() => navigate('/courses')}>
                     Browse Courses
                 </button>
             </div>
@@ -51,7 +138,7 @@ const CoursePlayer = () => {
                             <iframe
                                 width="100%"
                                 height="100%"
-                                src={`https://www.youtube.com/embed/${activeLesson.videoId}?autoplay=1${activeLesson.start ? `&start=${activeLesson.start}` : ''}`}
+                                src={`https://www.youtube-nocookie.com/embed/${activeLesson.videoId}?autoplay=1${activeLesson.start ? `&start=${activeLesson.start}` : ''}`}
                                 title={activeLesson.title}
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -63,7 +150,6 @@ const CoursePlayer = () => {
                     </div>
                     <div className="video-info">
                         <h1>{activeLesson?.title || course.title}</h1>
-
                         <p className="description">{course.description}</p>
                     </div>
                 </div>

@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../styles/pages.css';
 
 const CourseOverview = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth(); // Get user from context
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isEnrolled, setIsEnrolled] = useState(false);
+
+    useEffect(() => {
+        if (user && course) {
+            // Check if user is in the studentsEnrolled array of the course
+            const isUserEnrolled = course.studentsEnrolled && course.studentsEnrolled.some(student =>
+                (typeof student === 'object' ? student._id === user._id : student === user._id)
+            );
+            setIsEnrolled(!!isUserEnrolled);
+        }
+    }, [user, course]);
 
     useEffect(() => {
         fetchCourseDetails();
@@ -41,8 +53,6 @@ const CourseOverview = () => {
 
             if (data.success) {
                 setCourse(data.data);
-                // Check if user is already enrolled (you can implement this check)
-                // setIsEnrolled(checkEnrollment());
             } else {
                 setError(data.message || 'Course not found');
             }
@@ -55,9 +65,40 @@ const CourseOverview = () => {
     };
 
     const handleEnroll = async () => {
-        // Navigate directly to course player for now
-        // In future, implement actual enrollment API call
-        navigate(`/course/${encodeURIComponent(course.title)}/play`);
+        if (!user) {
+            navigate('/login');
+            return;
+        }
+
+        if (isEnrolled) {
+            navigate(`/course/${encodeURIComponent(course.title)}/play`);
+            return;
+        }
+
+        try {
+            const token = user.token || JSON.parse(localStorage.getItem('userInfo'))?.token;
+            const response = await fetch(`http://localhost:5000/api/courses/${id}/enroll`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setIsEnrolled(true);
+                // Refresh course data to update enrollment count
+                fetchCourseDetails();
+                alert("Successfully enrolled! You can now start learning.");
+            } else {
+                alert(data.message || 'Enrollment failed');
+            }
+        } catch (error) {
+            console.error("Enrollment error:", error);
+            alert('Something went wrong. Please try again.');
+        }
     };
 
     if (loading) {
@@ -138,7 +179,7 @@ const CourseOverview = () => {
                             onClick={handleEnroll}
                             style={{ marginTop: '20px', padding: '14px 32px', fontSize: '16px' }}
                         >
-                            {isEnrolled ? 'Continue Learning' : 'Enroll Now'}
+                            {isEnrolled ? 'Start Course' : 'Enroll Now'}
                         </button>
                     </div>
 
@@ -173,7 +214,14 @@ const CourseOverview = () => {
                                         {module.topics && module.topics.length > 0 && (
                                             <ul>
                                                 {module.topics.map((topic, topicIndex) => (
-                                                    <li key={topicIndex}>{topic}</li>
+                                                    <li key={topicIndex}>
+                                                        {typeof topic === 'object' ? topic.title : topic}
+                                                        {typeof topic === 'object' && topic.time > 0 && (
+                                                            <span style={{ fontSize: '0.8em', color: '#94a3b8', marginLeft: '8px' }}>
+                                                                {Math.floor(topic.time / 60)}:{(topic.time % 60).toString().padStart(2, '0')}
+                                                            </span>
+                                                        )}
+                                                    </li>
                                                 ))}
                                             </ul>
                                         )}
@@ -294,6 +342,7 @@ const CourseOverview = () => {
                     display: flex;
                     align-items: center;
                     gap: 12px;
+                    justify-content: start;
                 }
 
                 .learning-outcomes li:before {
@@ -308,6 +357,7 @@ const CourseOverview = () => {
                     justify-content: center;
                     font-weight: bold;
                     flex-shrink: 0;
+                    margin-right: 12px;
                 }
 
                 .curriculum-module {

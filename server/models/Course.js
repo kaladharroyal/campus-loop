@@ -51,7 +51,10 @@ const courseSchema = new mongoose.Schema({
     },
     curriculum: [{
         moduleTitle: { type: String, required: true },
-        topics: [{ type: String }],
+        topics: [{
+            title: { type: String, required: true },
+            time: { type: Number, default: 0 } // Timestamp in seconds
+        }],
         duration: { type: String }
     }]
 }, { timestamps: true });
