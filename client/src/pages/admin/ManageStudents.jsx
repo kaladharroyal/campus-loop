@@ -233,7 +233,7 @@ const ManageStudents = () => {
                                     <label style={styles.label} htmlFor="branch">Branch *</label>
                                     <input
                                         type="text"
-                                        value={branch}
+                                        value={branch.toUpperCase()} //automatically convert to uppercase
                                         onChange={(e) => setBranch(e.target.value)}
                                         placeholder="Enter student branch"
                                         className="admin-input"
