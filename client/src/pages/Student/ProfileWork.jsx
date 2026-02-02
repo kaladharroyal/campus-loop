@@ -13,7 +13,7 @@ const ProfileWork = ({
             <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '24px' }}>List all your relevant work/internships experience.</p>
 
             <div className="card-ui" style={{ padding: '16px 24px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
-                <input type="checkbox" style={{ width: '18px', height: '18px' }} />
+                <input type="checkbox" style={{ width: '18px', height: '18px', }} />
                 <span style={{ fontSize: '0.9rem', color: '#475569', fontWeight: '500' }}>I'm yet to find my first Opportunity</span>
             </div>
 

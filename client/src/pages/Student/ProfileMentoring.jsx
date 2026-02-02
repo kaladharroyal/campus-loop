@@ -27,7 +27,7 @@ const ProfileMentoring = ({ formData, handleChange }) => {
                         checked={formData.isAvailableForMentoring}
                         onChange={(e) => handleChange({ target: { name: 'isAvailableForMentoring', value: e.target.checked } })}
                     />
-                    <span className="slider round" style={{ backgroundColor: formData.isAvailableForMentoring ? '#6366f1' : '#f1f5f9', border: '1px solid #e2e8f0' }}></span>
+                    {/* <span className="slider round" style={{ backgroundColor: formData.isAvailableForMentoring ? '#6366f1' : '#f1f5f9', border: '1px solid #e2e8f0' }}></span> */}
                 </label>
             </div>
 

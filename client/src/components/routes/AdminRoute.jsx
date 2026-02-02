@@ -30,7 +30,7 @@ const AdminRoute = ({ children }) => {
 
     // Not an admin - redirect to appropriate dashboard
     if (user.role !== 'admin') {
-        if (user.role === 'instructor') {
+        if (user.role === 'teacher') {
             return <Navigate to="/teacher/dashboard" replace />;
         }
         return <Navigate to="/dashboard" replace />;

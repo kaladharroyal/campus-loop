@@ -65,7 +65,14 @@ const CreateCourse = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
+
+            if (!token) {
+                alert('Please log in again');
+                return;
+            }
+
             const response = await fetch('http://localhost:5000/api/teacher/course', {
                 method: 'POST',
                 headers: {
@@ -94,7 +101,7 @@ const CreateCourse = () => {
         <div className="page-container">
             <div className="page-header">
                 <h1>Create New Course</h1>
-                <button className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
+                <button className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
                     Back to Courses
                 </button>
             </div>
@@ -253,7 +260,7 @@ const CreateCourse = () => {
                                 ))}
                                 <button
                                     type="button"
-                                    className="btn-small btn-secondary"
+                                    className="btn-small btn-primary"
                                     onClick={() => addTopic(moduleIndex)}
                                 >
                                     + Add Topic
@@ -262,13 +269,13 @@ const CreateCourse = () => {
                         </div>
                     ))}
 
-                    <button type="button" className="btn btn-secondary" onClick={addModule}>
+                    <button type="button" className="btn btn-primary" onClick={addModule}>
                         + Add Module
                     </button>
                 </div>
 
                 <div className="form-actions">
-                    <button type="button" className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
+                    <button type="button" className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
                         Cancel
                     </button>
                     <button type="submit" className="btn btn-primary" disabled={loading}>

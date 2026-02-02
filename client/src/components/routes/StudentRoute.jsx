@@ -33,7 +33,7 @@ const StudentRoute = ({ children }) => {
         if (user.role === 'admin') {
             return <Navigate to="/admin/dashboard" replace />;
         }
-        if (user.role === 'instructor') {
+        if (user.role === 'teacher') {
             return <Navigate to="/teacher/dashboard" replace />;
         }
     }

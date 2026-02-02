@@ -25,7 +25,8 @@ const EditCourse = () => {
 
     const fetchCourse = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch(`http://localhost:5000/api/teacher/course/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

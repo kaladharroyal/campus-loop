@@ -53,20 +53,20 @@ const ManageCourses = () => {
         }
     };
 
-    const assignInstructor = async (courseId, instructorId) => {
+    const assignteacher = async (courseId, teacherId) => {
         try {
-            const response = await fetch(`/api/admin/courses/${courseId}/assign-instructor`, {
+            const response = await fetch(`/api/admin/courses/${courseId}/assign-teacher`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user?.token}`
                 },
-                body: JSON.stringify({ instructorId })
+                body: JSON.stringify({ teacherId })
             });
 
-            if (!response.ok) throw new Error('Failed to assign instructor');
+            if (!response.ok) throw new Error('Failed to assign teacher');
 
-            alert('Instructor assigned successfully!');
+            alert('teacher assigned successfully!');
             fetchCourses();
         } catch (err) {
             alert('Error: ' + err.message);
@@ -82,10 +82,10 @@ const ManageCourses = () => {
                     <h1>Manage Courses</h1>
                     <p>View and manage all courses in the system</p>
                 </div>
-                <div>   
-                <a href="./CreateCourse" className="btn-primary">
-                    ➕ Create New Course
-                </a>
+                <div>
+                    <a href="./CreateCourse" className="btn-primary">
+                        ➕ Create New Course
+                    </a>
                 </div>
             </div>
 
@@ -107,7 +107,7 @@ const ManageCourses = () => {
                             <div className="course-details">
                                 <p><strong>Description:</strong> {course.description}</p>
                                 <p><strong>Duration:</strong> {course.duration || 'N/A'}</p>
-                                <p><strong>Instructor:</strong> {course.instructor?.firstName || 'Not Assigned'} {course.instructor?.lastName || ''}</p>
+                                <p><strong>teacher:</strong> {course.teacher?.firstName || 'Not Assigned'} {course.teacher?.lastName || ''}</p>
                                 <p><strong>Enrolled Students:</strong> {course.enrolledStudents?.length || 0}</p>
                             </div>
 
@@ -115,13 +115,13 @@ const ManageCourses = () => {
                                 <select
                                     onChange={(e) => {
                                         if (e.target.value) {
-                                            assignInstructor(course._id, e.target.value);
+                                            assignteacher(course._id, e.target.value);
                                         }
                                     }}
-                                    className="instructor-select"
+                                    className="teacher-select"
                                     defaultValue=""
                                 >
-                                    <option value="">Assign Instructor</option>
+                                    <option value="">Assign teacher</option>
                                     {teachers.map(teacher => (
                                         <option key={teacher._id} value={teacher._id}>
                                             {teacher.firstName} {teacher.lastName}

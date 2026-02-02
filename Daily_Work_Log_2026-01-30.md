@@ -8,7 +8,7 @@
   - Added profile fields: `profilePicture`, `bio`, `socialLinks` (GitHub, LinkedIn, Website).
   - Added course related fields: `enrolledCourses`, `wishlist`, `createdCourses`.
   - Added password reset fields: `resetPasswordToken`, `resetPasswordExpire`.
-  - Updated role enum to support both `teacher` and `instructor` (later user chose `teacher`).
+  - Updated role enum to support both `teacher` and `teacher` (later user chose `teacher`).
   - Fixed `pre('save')` hook to use modern async/await syntax.
 
 ### 2. Server Initialization Update
@@ -27,7 +27,7 @@
 - Added debug logs to `client/src/pages/admin/ManageTeachers.jsx` to verify data flow.
 
 ### 4. Codebase Refactoring (User Actions)
-- The user manually updated `server/routes/admin.js` to use `teacher` instead of `instructor` for course assignments.
+- The user manually updated `server/routes/admin.js` to use `teacher` instead of `teacher` for course assignments.
 - The user updated `server/models/User.js` role enum to favor `teacher`.
 - The user corrected the path import in `client/src/App.jsx` for `FacultyDashboard`.
 

@@ -20,7 +20,8 @@ const CreateAssignment = () => {
 
     const fetchCourses = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch('http://localhost:5000/api/teacher/courses', {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -77,7 +78,7 @@ const CreateAssignment = () => {
         <div className="page-container">
             <div className="page-header">
                 <h1>Create Assignment</h1>
-                <button className="btn btn-secondary" onClick={() => navigate('/teacher/assignments')}>
+                <button className="btn btn-primary" onClick={() => navigate('/teacher/assignments')}>
                     Back to Assignments
                 </button>
             </div>
@@ -150,7 +151,7 @@ const CreateAssignment = () => {
                 </div>
 
                 <div className="form-actions">
-                    <button type="button" className="btn btn-secondary" onClick={() => navigate('/teacher/assignments')}>
+                    <button type="button" className="btn btn-primary" onClick={() => navigate('/teacher/assignments')}>
                         Cancel
                     </button>
                     <button type="submit" className="btn btn-primary" disabled={loading || courses.length === 0}>
