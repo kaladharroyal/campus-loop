@@ -450,6 +450,13 @@ const Register = () => {
           position: relative;
           overflow: hidden;
           padding: 20px 0;
+          
+          /* Enforce Light Theme locally */
+          --bg-primary: #ffffff;
+          --text-primary: #0f172a;
+          --text-secondary: #475569;
+          
+          color: var(--text-primary);
         }
 
         /* Background */
