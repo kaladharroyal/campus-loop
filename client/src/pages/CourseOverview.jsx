@@ -214,7 +214,14 @@ const CourseOverview = () => {
                                         {module.topics && module.topics.length > 0 && (
                                             <ul>
                                                 {module.topics.map((topic, topicIndex) => (
-                                                    <li key={topicIndex}>{topic}</li>
+                                                    <li key={topicIndex}>
+                                                        {typeof topic === 'object' ? topic.title : topic}
+                                                        {typeof topic === 'object' && topic.time > 0 && (
+                                                            <span style={{ fontSize: '0.8em', color: '#94a3b8', marginLeft: '8px' }}>
+                                                                {Math.floor(topic.time / 60)}:{(topic.time % 60).toString().padStart(2, '0')}
+                                                            </span>
+                                                        )}
+                                                    </li>
                                                 ))}
                                             </ul>
                                         )}

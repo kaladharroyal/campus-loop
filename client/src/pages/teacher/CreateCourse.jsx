@@ -14,7 +14,7 @@ const CreateCourse = () => {
         thumbnail: '',
         videoLink: '',
         status: 'draft',
-        curriculum: [{ moduleTitle: '', topics: [''], duration: '' }]
+        curriculum: [{ moduleTitle: '', topics: [{ title: '', time: 0 }], duration: '' }]
     });
 
     const handleChange = (e) => {
@@ -50,7 +50,7 @@ const CreateCourse = () => {
 
     const addTopic = (moduleIndex) => {
         const newCurriculum = [...formData.curriculum];
-        newCurriculum[moduleIndex].topics.push('');
+        newCurriculum[moduleIndex].topics.push({ title: '', time: 0 });
         setFormData({ ...formData, curriculum: newCurriculum });
     };
 
@@ -202,6 +202,73 @@ const CreateCourse = () => {
 
                 <div className="form-section">
                     <h2>Course Curriculum</h2>
+
+                    {/* Timestamp Import Section */}
+                    <div style={{ background: '#eef2ff', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #c7d2fe' }}>
+                        <h3 style={{ margin: '0 0 10px 0', fontSize: '16px', color: '#4338ca' }}>✨ Auto-Generate from Timestamps</h3>
+                        <p style={{ fontSize: '13px', marginBottom: '10px', color: '#6366f1' }}>
+                            Paste your YouTube video description (with timestamps like "0:00 Intro") below to automatically generate modules.
+                        </p>
+                        <textarea
+                            placeholder={"Example:\n0:00 Introduction\n2:30 Setting up Environment\n...And so on"}
+                            rows="4"
+                            id="timestampInput"
+                            style={{ width: '100%', marginBottom: '10px', padding: '8px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
+                        ></textarea>
+                        <button
+                            type="button"
+                            className="btn-small btn-primary"
+                            onClick={() => {
+                                const text = document.getElementById('timestampInput').value;
+                                const lines = text.split('\n');
+                                const newTopics = [];
+
+                                lines.forEach(line => {
+                                    if (!line.trim()) return;
+
+                                    // Flexible regex to match: 0:00 Intro, (0:00) Intro, [0:00] Intro, 0:00 - Intro
+                                    const match = line.match(/^\s*[\[\(]?(\d{1,2}:\d{2}(?::\d{2})?)[\]\)]?\s*(?:[-–:.]\s*)?(.*?)\s*$/);
+
+                                    if (match) {
+                                        const timeStr = match[1];
+                                        let title = match[2];
+
+                                        // Cleanup title
+                                        title = title.replace(/^[-–:.]\s*/, ""); // Remove separators
+                                        title = title.replace(/^\d+\.?\s*/, ""); // Remove leading numbering (e.g. "1. ")
+                                        if (!title) title = "Untitled Topic";
+
+                                        // Convert time to seconds
+                                        const parts = timeStr.split(':').reverse();
+                                        let seconds = 0;
+                                        if (parts[0]) seconds += parseInt(parts[0]);
+                                        if (parts[1]) seconds += parseInt(parts[1]) * 60;
+                                        if (parts[2]) seconds += parseInt(parts[2]) * 3600;
+
+                                        newTopics.push({ title: title.trim(), time: seconds });
+                                    }
+                                });
+
+                                if (newTopics.length > 0) {
+                                    setFormData({
+                                        ...formData,
+                                        curriculum: [{
+                                            moduleTitle: 'Full Course Content',
+                                            topics: newTopics,
+                                            duration: `${newTopics.length} sections`
+                                        }]
+                                    });
+                                    alert(`Success! Generated ${newTopics.length} topics.`);
+                                } else {
+                                    console.log("Failed to parse lines:", lines);
+                                    alert("No timestamps found.\n\nTry format:\n0:00 Introduction\n1:05 Next Topic");
+                                }
+                            }}
+                        >
+                            Generate Modules
+                        </button>
+                    </div>
+
                     {formData.curriculum.map((module, moduleIndex) => (
                         <div key={moduleIndex} className="module-block">
                             <div className="module-header">
@@ -240,13 +307,41 @@ const CreateCourse = () => {
                             <div className="form-group">
                                 <label>Topics</label>
                                 {module.topics.map((topic, topicIndex) => (
-                                    <div key={topicIndex} className="topic-row">
-                                        <input
-                                            type="text"
-                                            value={topic}
-                                            onChange={(e) => handleTopicChange(moduleIndex, topicIndex, e.target.value)}
-                                            placeholder={`Topic ${topicIndex + 1}`}
-                                        />
+                                    <div key={topicIndex} className="topic-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                                        <div style={{ flex: 1 }}>
+                                            <input
+                                                type="text"
+                                                value={typeof topic === 'object' ? topic.title : topic}
+                                                onChange={(e) => {
+                                                    const newCurriculum = [...formData.curriculum];
+                                                    if (typeof newCurriculum[moduleIndex].topics[topicIndex] === 'object') {
+                                                        newCurriculum[moduleIndex].topics[topicIndex].title = e.target.value;
+                                                    } else {
+                                                        newCurriculum[moduleIndex].topics[topicIndex] = e.target.value;
+                                                    }
+                                                    setFormData({ ...formData, curriculum: newCurriculum });
+                                                }}
+                                                placeholder={`Topic ${topicIndex + 1}`}
+                                            />
+                                        </div>
+                                        <div style={{ width: '100px' }}>
+                                            <input
+                                                type="number"
+                                                value={typeof topic === 'object' ? topic.time : 0}
+                                                onChange={(e) => {
+                                                    const newCurriculum = [...formData.curriculum];
+                                                    // Ensure it's an object structure
+                                                    if (typeof newCurriculum[moduleIndex].topics[topicIndex] !== 'object') {
+                                                        newCurriculum[moduleIndex].topics[topicIndex] = { title: newCurriculum[moduleIndex].topics[topicIndex], time: 0 };
+                                                    }
+                                                    newCurriculum[moduleIndex].topics[topicIndex].time = parseInt(e.target.value);
+                                                    setFormData({ ...formData, curriculum: newCurriculum });
+                                                }}
+                                                placeholder="Sec"
+                                                title="Start time in seconds"
+                                            />
+                                        </div>
+
                                         {module.topics.length > 1 && (
                                             <button
                                                 type="button"

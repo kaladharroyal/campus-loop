@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'; // Import auth context
 import '../styles/pages.css';
 
 const CoursePlayer = () => {
-    const { title } = useParams(); // Note: We might want to use ID instead of title for robustness
+    const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
 
@@ -25,14 +25,15 @@ const CoursePlayer = () => {
 
                 // Fetch ALL courses to find match (inefficient but works for now without route change)
                 // ideally we change route to use :id
+                // Fetch ALL courses to find match (inefficient but works for now without route change)
+                // ideally we change route to use :id
                 const response = await fetch('http://localhost:5000/api/courses');
                 if (!response.ok) throw new Error('Failed to load courses');
 
                 const data = await response.json();
                 if (data.success) {
-                    const decodedTitle = decodeURIComponent(title);
-                    // Find course by title
-                    const foundCourse = data.data.find(c => c.title === decodedTitle);
+                    // Find course by ID directly since we have it
+                    const foundCourse = data.data.find(c => c._id === id);
 
                     if (foundCourse) {
                         // We need full details including curriculum/lessons
@@ -43,6 +44,19 @@ const CoursePlayer = () => {
                         const detailData = await detailResponse.json();
 
                         if (detailData.success) {
+                            // Helper to extract YouTube ID
+                            const getYoutubeId = (url) => {
+                                if (!url) return 'eIrMbAQSU34'; // Default placeholder
+                                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                                const match = url.match(regExp);
+                                return (match && match[2].length === 11) ? match[2] : 'eIrMbAQSU34';
+                            };
+
+                            const courseVideoId = getYoutubeId(detailData.data.videoLink);
+                            console.log("Debug: Full Course Data:", detailData.data);
+                            console.log("Debug: Video Link from DB:", detailData.data.videoLink);
+                            console.log("Debug: Extracted Video ID:", courseVideoId);
+
                             // Transform curriculum to flat lesson list for player
                             const flatLessons = [];
                             if (detailData.data.curriculum) {
@@ -50,13 +64,17 @@ const CoursePlayer = () => {
                                 detailData.data.curriculum.forEach(module => {
                                     if (module.topics) {
                                         module.topics.forEach(topic => {
-                                            // Mocking video ID since it's not in schema yet
-                                            // You need to add videoId to your backend schema!
+                                            // Check if topic is object (new style) or string (old style)
+                                            const isObject = typeof topic === 'object';
+                                            const title = isObject ? topic.title : topic;
+                                            const startTime = isObject ? (topic.time || 0) : 0;
+
                                             flatLessons.push({
                                                 id: lessonId++,
-                                                title: topic,
+                                                title: title,
                                                 duration: '10:00', // Placeholder
-                                                videoId: 'eIrMbAQSU34' // Placeholder default video
+                                                videoId: courseVideoId,
+                                                start: startTime // Add start timestamp
                                             });
                                         });
                                     }
@@ -69,7 +87,7 @@ const CoursePlayer = () => {
                                     id: 1,
                                     title: 'Introduction',
                                     duration: '5:00',
-                                    videoId: 'eIrMbAQSU34'
+                                    videoId: courseVideoId
                                 });
                             }
 
@@ -91,7 +109,7 @@ const CoursePlayer = () => {
         };
 
         fetchCourse();
-    }, [title]);
+    }, [id]);
 
     if (loading) return <div className="page-container" style={{ textAlign: 'center', padding: '50px' }}>Loading Player...</div>;
 
@@ -120,7 +138,7 @@ const CoursePlayer = () => {
                             <iframe
                                 width="100%"
                                 height="100%"
-                                src={`https://www.youtube-nocookie.com/embed/${activeLesson.videoId}?autoplay=1`}
+                                src={`https://www.youtube-nocookie.com/embed/${activeLesson.videoId}?autoplay=1${activeLesson.start ? `&start=${activeLesson.start}` : ''}`}
                                 title={activeLesson.title}
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

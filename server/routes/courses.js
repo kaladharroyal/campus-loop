@@ -85,7 +85,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/courses
 // @access  Private/teacher
 router.post('/', protect, teacherOnly, async (req, res) => {
-    const { title, description, category, duration, level, thumbnail } = req.body;
+    const { title, description, category, duration, level, thumbnail, videoLink } = req.body;
 
     try {
         const course = new Course({
@@ -95,6 +95,7 @@ router.post('/', protect, teacherOnly, async (req, res) => {
             duration,
             level,
             thumbnail,
+            videoLink,
             teacher: req.user._id
         });
 
@@ -110,16 +111,24 @@ router.post('/', protect, teacherOnly, async (req, res) => {
 // @access  Private
 router.get('/mycourses', protect, async (req, res) => {
     try {
+        // Safety check
+        if (!req.user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
         if (req.user.role === 'teacher') {
             const courses = await Course.find({ teacher: req.user._id });
             res.json(courses);
         } else {
             // For students, find courses where their ID is in studentsEnrolled
-            const courses = await Course.find({ studentsEnrolled: req.user._id }).populate('teacher', 'name');
+            // Changed 'name' to 'firstName lastName' as 'name' might not exist
+            const courses = await Course.find({ studentsEnrolled: req.user._id })
+                .populate('teacher', 'firstName lastName email');
             res.json(courses);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        console.error("Error in /mycourses:", error); // Log the actual error
+        res.status(500).json({ message: 'Server Error: ' + error.message });
     }
 });
 
