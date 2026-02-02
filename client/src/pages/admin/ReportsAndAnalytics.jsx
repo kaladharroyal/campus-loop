@@ -76,15 +76,16 @@ const ReportsAndAnalytics = () => {
 
             const data = await response.json();
 
-            // Download as JSON
-            downloadJSON(data, `${report.id}-${Date.now()}.json`);
-
-            // Also offer CSV download for tabular data
+            // Download as CSV
             if (data.data && Array.isArray(data.data)) {
                 downloadCSV(data.data, `${report.id}-${Date.now()}.csv`);
+                alert(`${report.title} generated successfully! Check your downloads folder.`);
+            } else {
+                // For reports without array data, convert to single-row CSV
+                const csvData = [data.data || data];
+                downloadCSV(csvData, `${report.id}-${Date.now()}.csv`);
+                alert(`${report.title} generated successfully! Check your downloads folder.`);
             }
-
-            alert(`${report.title} generated successfully! Check your downloads folder.`);
         } catch (err) {
             setError(err.message);
             alert('Error generating report: ' + err.message);
