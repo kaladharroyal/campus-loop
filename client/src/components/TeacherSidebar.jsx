@@ -162,15 +162,15 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
             </div>
 
             {/* Styles - Reusing student sidebar styles */}
-<style jsx>{`
+            <style jsx>{`
                 .sidebar {
                     position: fixed;
                     left: 0;
                     top: 0;
                     bottom: 0;
                     width: 285px;
-                    background: #ffffff;
-                    border-right: 1px solid #e5e7eb;
+                    background: var(--bg-primary);
+                    border-right: 1px solid var(--border);
                     display: flex;
                     flex-direction: column;
                     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -188,8 +188,8 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                     right: 20px;
                     width: 28px;
                     height: 28px;
-                    background: #ffffff;
-                    border: 1px solid #e5e7eb;
+                    background: var(--bg-primary);
+                    border: 1px solid var(--border);
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
@@ -202,7 +202,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                 }
 
                 .toggle-btn:hover {
-                    background: #f9fafb;
+                    background: var(--bg-secondary);
                     transform: scale(1.05);
                 }
 
@@ -212,15 +212,15 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
 
                 .toggle-icon {
                     font-size: 16px;
-                    color: #374151;
+                    color: var(--text-secondary);
                     transition: transform 0.2s ease;
                 }
 
                 /* Logo */
                 .logo-container {
                     padding: 24px 20px;
-                    border-bottom: 1px solid #f3f4f6;
-                    background: #ffffff;
+                    border-bottom: 1px solid var(--border);
+                    background: var(--bg-primary);
                     flex-shrink: 0;
                     margin-top: 35px;
                     transition: padding 0.3s ease;
@@ -254,14 +254,14 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                 .logo-text {
                     font-size: 18px;
                     font-weight: 600;
-                    color: #6366f1;
+                    color: var(--primary);
                     white-space: nowrap;
                 }
 
                 .logo-tagline {
                     font-size: 10px;
                     font-weight: 600;
-                    color: #9ca3af;
+                    color: var(--text-tertiary);
                     text-transform: uppercase;
                     white-space: nowrap;
                 }
@@ -290,7 +290,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                 .section-title {
                     font-size: 11px;
                     font-weight: 700;
-                    color: #9ca3af;
+                    color: var(--text-tertiary);
                     text-transform: uppercase;
                     letter-spacing: 0.8px;
                     padding: 0 12px;
@@ -303,7 +303,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                     gap: 12px;
                     padding: 12px 16px;
                     border-radius: 10px;
-                    color: #6b7280;
+                    color: var(--text-secondary);
                     text-decoration: none;
                     font-size: 15px;
                     font-weight: 500;
@@ -312,18 +312,18 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                 }
 
                 .menu-item:hover {
-                    background: #f9fafb;
+                    background: var(--bg-secondary);
                 }
 
                 .menu-item.active {
-                    background: #eef2ff;
-                    color: #6366f1;
+                    background: var(--bg-tertiary);
+                    color: var(--primary);
                 }
 
                 /* Icon Styling */
                 .item-icon {
                     font-size: 20px;
-                    color: #9ca3af;
+                    color: var(--text-tertiary);
                     transition: color 0.2s ease, transform 0.2s ease;
                     flex-shrink: 0;
                 }
@@ -370,8 +370,8 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                     top: 50%;
                     transform: translateY(-50%);
                     margin-left: 12px;
-                    background: #ffffff;
-                    color: #1f2937;
+                    background: var(--bg-primary);
+                    color: var(--text-primary);
                     padding: 12px 16px;
                     border-radius: 8px;
                     white-space: nowrap;
@@ -382,7 +382,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                     pointer-events: auto;
                     z-index: 10000;
                     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
-                    border: 1px solid #e5e7eb;
+                    border: 1px solid var(--border);
                     visibility: hidden;
                     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, visibility 0.3s 0.3s;
                 }
@@ -402,7 +402,7 @@ const TeacherSidebar = ({ isOpen, onClose }) => {
                     margin-left: 4px;
                     width: 0;
                     height: 0;
-                    border-right: 8px solid #ffffff;
+                    border-right: 8px solid var(--bg-primary);
                     border-top: 6px solid transparent;
                     border-bottom: 6px solid transparent;
                     opacity: 0;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * AdminTopbar component
@@ -9,6 +10,7 @@ import { useAuth } from '../../context/AuthContext';
 const AdminTopbar = ({ user }) => {
     const [showProfileMenu, setShowProfileMenu] = useState(false);
     const { logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <header className="admin-topbar">
@@ -26,6 +28,15 @@ const AdminTopbar = ({ user }) => {
                         className="search-input"
                     />
                 </div> */}
+
+                {/* Theme Toggle */}
+                <button
+                    onClick={toggleTheme}
+                    className="topbar-icon-btn"
+                    aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                >
+                    <span>{theme === 'light' ? '🌙' : '☀️'}</span>
+                </button>
 
                 {/* Notifications */}
                 <button className="topbar-icon-btn" aria-label="Notifications">
