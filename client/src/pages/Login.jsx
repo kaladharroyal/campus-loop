@@ -335,7 +335,7 @@ const Login = () => {
           position: relative;
           z-index: 1;
           width: 100%;
-          max-width: 1400px;
+          max-width: 1300px;
           min-width: 900px;
           margin: 40px;
           display: grid;
