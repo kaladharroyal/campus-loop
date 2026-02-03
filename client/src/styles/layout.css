@@ -10,7 +10,7 @@
 .app-layout {
     display: flex;
     min-height: 100vh;
-    background-color: var(--color-bg, #f8fafc);
+    background-color: var(--bg-secondary);
     position: relative;
 }
 
@@ -22,9 +22,9 @@
     /* Default: sidebar expanded */
     margin-left: var(--sidebar-width-expanded);
     width: calc(100% - var(--sidebar-width-expanded));
-    
+
     /* Smooth transition for all layout changes */
-    transition: 
+    transition:
         margin-left var(--transition-duration) var(--transition-timing),
         width var(--transition-duration) var(--transition-timing);
 }
@@ -55,10 +55,10 @@
     padding: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    
+
     /* Smooth scrolling */
     scroll-behavior: smooth;
-    
+
     /* Prevent layout shift */
     scrollbar-gutter: stable;
 }
@@ -91,6 +91,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -101,6 +102,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -112,7 +114,7 @@
     position: sticky;
     top: 0;
     z-index: 90;
-    
+
     /* Transition support for topbar adjustments */
     transition: all var(--transition-duration) var(--transition-timing);
 }
@@ -131,6 +133,7 @@
     from {
         transform: translateX(-100%);
     }
+
     to {
         transform: translateX(0);
     }
@@ -140,6 +143,7 @@
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(-100%);
     }
@@ -279,6 +283,7 @@
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
+
     .main-content,
     .topbar,
     .mobile-overlay,
@@ -291,7 +296,7 @@
 /* High contrast mode */
 @media (prefers-contrast: more) {
     .main-content {
-        border-left: 2px solid var(--border-color, #e2e8f0);
+        border-left: 2px solid var(--border);
     }
 }
 

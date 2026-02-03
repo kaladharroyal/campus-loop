@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import '../context/ThemeContext';
 import '../styles/pages.css';
 
 const CourseOverview = () => {
@@ -123,11 +124,11 @@ const CourseOverview = () => {
                     opacity: 0.5
                 }}>📚</div>
                 <h2 style={{
-                    color: '#2c3e50',
+                    color: 'var(--text-primary)',
                     marginBottom: '15px'
                 }}>Course Not Found</h2>
                 <p style={{
-                    color: '#64748b',
+                    color: 'var(--text-secondary)',
                     marginBottom: '30px',
                     lineHeight: '1.6'
                 }}>
@@ -217,7 +218,7 @@ const CourseOverview = () => {
                                                     <li key={topicIndex}>
                                                         {typeof topic === 'object' ? topic.title : topic}
                                                         {typeof topic === 'object' && topic.time > 0 && (
-                                                            <span style={{ fontSize: '0.8em', color: '#94a3b8', marginLeft: '8px' }}>
+                                                            <span style={{ fontSize: '0.8em', color: 'var(--text-tertiary)', marginLeft: '8px' }}>
                                                                 {Math.floor(topic.time / 60)}:{(topic.time % 60).toString().padStart(2, '0')}
                                                             </span>
                                                         )}
@@ -263,7 +264,7 @@ const CourseOverview = () => {
                     padding: 40px;
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     border-radius: 16px;
-                    color: white;
+                    color: var(--text-inverse);
                 }
 
                 .course-badges {
@@ -319,15 +320,15 @@ const CourseOverview = () => {
                 }
 
                 .course-section {
-                    background: white;
+                    background: var(--bg-sidebar);
                     padding: 30px;
                     border-radius: 12px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+                    box-shadow: var(--shadow-md);
                 }
 
                 .course-section h2 {
                     margin: 0 0 20px 0;
-                    color: #2c3e50;
+                    color: var(--text-primary);
                     font-size: 1.5rem;
                 }
 
@@ -338,7 +339,7 @@ const CourseOverview = () => {
 
                 .learning-outcomes li {
                     padding: 12px 0;
-                    border-bottom: 1px solid #ecf0f1;
+                    border-bottom: 1px solid var(--border);
                     display: flex;
                     align-items: center;
                     gap: 12px;
@@ -347,8 +348,8 @@ const CourseOverview = () => {
 
                 .learning-outcomes li:before {
                     content: '✓';
-                    background: #22c55e;
-                    color: white;
+                    background: var(--color-success);
+                    color: var(--text-inverse);
                     width: 24px;
                     height: 24px;
                     border-radius: 50%;
@@ -363,20 +364,20 @@ const CourseOverview = () => {
                 .curriculum-module {
                     margin-bottom: 20px;
                     padding: 15px;
-                    background: #f8f9fa;
+                    background: var(--bg-tertiary);
                     border-radius: 8px;
                 }
 
                 .curriculum-module h3 {
                     margin: 0 0 10px 0;
-                    color: #34495e;
+                    color: var(--text-primary);
                     font-size: 1.1rem;
                 }
 
                 .curriculum-module ul {
                     margin: 0;
                     padding-left: 25px;
-                    color: #64748b;
+                    color: var(--text-secondary);
                 }
 
                 .curriculum-module li {
@@ -404,12 +405,12 @@ const CourseOverview = () => {
 
                 .instructor-card h3 {
                     margin: 0 0 5px 0;
-                    color: #2c3e50;
+                    color: var(--text-primary);
                 }
 
                 .instructor-card p {
                     margin: 0;
-                    color: #64748b;
+                    color: var(--text-secondary);
                 }
 
                 @media (max-width: 768px) {

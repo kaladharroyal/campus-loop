@@ -92,11 +92,11 @@
 }
 
 .btn-gray {
-    background: linear-gradient(135deg, #606c88 0%, #3f4c6b 100%);
+    background: linear-gradient(135deg, #9ca3af 0%, #4b5563 100%);
 }
 
 .btn-gray:hover {
-    background: linear-gradient(135deg, #3f4c6b 0%, #606c88 100%);
+    background: linear-gradient(135deg, #4b5563 0%, #9ca3af 100%);
 }
 
 .language-selector {
@@ -177,7 +177,7 @@
 }
 
 /* History Modal & Input Modal Reuse */
-.history-modal, 
+.history-modal,
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -211,6 +211,7 @@
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -405,7 +406,7 @@
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .modal-content {
         width: 95%;
     }

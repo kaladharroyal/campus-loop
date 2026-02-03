@@ -370,10 +370,14 @@ const CreateCourse = () => {
                 </div>
 
                 <div className="form-actions">
-                    <button type="button" className="btn btn-primary" onClick={() => navigate('/teacher/courses')}>
+                    <button type="button" className="btn btn-secondary" onClick={() => navigate('/teacher/courses')}>
                         Cancel
                     </button>
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={loading || !formData.title || !formData.description || !formData.category || !formData.duration}
+                    >
                         {loading ? 'Creating...' : 'Create Course'}
                     </button>
                 </div>
