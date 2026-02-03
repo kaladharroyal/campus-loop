@@ -71,7 +71,7 @@ const Courses = () => {
   if (loading) {
     return (
       <div className="courses-page">
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748b' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-secondary)' }}>
           <p>Loading courses...</p>
         </div>
       </div>
@@ -85,7 +85,7 @@ const Courses = () => {
           max-width: 1400px;
           margin: 0 auto;
           padding: 30px;
-          background: #f8fafc;
+          background: var(--bg-secondary);
           min-height: 100vh;
         }
 
@@ -96,12 +96,12 @@ const Courses = () => {
         .courses-header h2 {
           font-size: 2rem;
           font-weight: 700;
-          color: #1e293b;
+          color: var(--text-primary);
           margin-bottom: 8px;
         }
 
         .courses-header p {
-          color: #64748b;
+          color: var(--text-secondary);
           font-size: 0.95rem;
         }
 
@@ -119,10 +119,10 @@ const Courses = () => {
           width: 100%;
           padding: 14px 18px 14px 45px;
           border-radius: 10px;
-          border: 1px solid #e2e8f0;
-          background: #ffffff;
+          border: 1px solid var(--border);
+          background: var(--bg-primary);
           font-size: 0.95rem;
-          color: #1e293b;
+          color: var(--text-primary);
           transition: all 0.2s ease;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
@@ -131,11 +131,11 @@ const Courses = () => {
           outline: none;
           border-color: #6366f1;
           box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-          background: #ffffff;
+          background: var(--bg-primary);
         }
 
         .search-input::placeholder {
-          color: #94a3b8;
+          color: var(--text-tertiary);
         }
 
         .search-icon {
@@ -144,7 +144,7 @@ const Courses = () => {
           top: 50%;
           transform: translateY(-50%);
           font-size: 1.1rem;
-          color: #94a3b8;
+          color: var(--text-tertiary);
           pointer-events: none;
         }
 
@@ -155,12 +155,12 @@ const Courses = () => {
         .section-header {
           font-size: 1.5rem;
           font-weight: 700;
-          color: #1e293b;
+          color: var(--text-primary);
           margin-bottom: 8px;
         }
 
         .section-sub {
-          color: #64748b;
+          color: var(--text-secondary);
           font-size: 0.95rem;
           margin-bottom: 25px;
         }
@@ -172,12 +172,12 @@ const Courses = () => {
         }
 
         .campus-card {
-          background: #ffffff;
+          background: var(--bg-sidebar);
           border-radius: 16px;
           overflow: hidden;
           cursor: pointer;
           transition: all 0.3s ease;
-          border: 1px solid #e2e8f0;
+          border: 1px solid var(--border);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
           display: flex;
           flex-direction: column;
@@ -232,7 +232,7 @@ const Courses = () => {
 
         .health-badge > div {
           background: rgba(0, 0, 0, 0.85);
-          color: #fff;
+          color: var(--text-inverse);
           padding: 8px 12px;
           border-radius: 14px;
           font-size: 0.8rem;
@@ -255,8 +255,8 @@ const Courses = () => {
           top: 100%;
           left: 0;
           margin-top: 10px;
-          background: white;
-          color: #333;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
           padding: 14px;
           border-radius: 10px;
           box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
@@ -278,7 +278,7 @@ const Courses = () => {
 
         .card-content {
           padding: 20px;
-          background: #ffffff;
+          background: var(--bg-sidebar);
           flex-grow: 1;
           display: flex;
           flex-direction: column;
@@ -288,14 +288,14 @@ const Courses = () => {
         .card-content h3 {
           font-size: 1.05rem;
           font-weight: 700;
-          color: #1e293b;
+          color: var(--text-primary);
           margin: 0 0 6px 0;
           line-height: 1.3;
         }
 
         .card-content p {
           font-size: 0.9rem;
-          color: #64748b;
+          color: var(--text-secondary);
           margin: 0;
           text-transform: capitalize;
         }
@@ -304,7 +304,7 @@ const Courses = () => {
           grid-column: 1 / -1;
           text-align: center;
           padding: 40px 20px;
-          color: #94a3b8;
+          color: var(--text-tertiary);
           font-size: 0.95rem;
         }
 
