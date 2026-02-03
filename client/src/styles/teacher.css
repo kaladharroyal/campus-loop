@@ -276,8 +276,9 @@
     justify-content: flex-end;
     margin-top: 25px;
 }
-.form-control{
-    color:black
+
+.form-control {
+    color: black
 }
 
 /* Module Blocks */
@@ -357,6 +358,15 @@
 .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:disabled,
+.btn-primary:disabled:hover {
+    background: var(--primary);
+    color: var(--text-inverse);
+    opacity: 0.5;
 }
 
 /* Empty State */
@@ -685,11 +695,13 @@
     color: var(--text-secondary);
     margin: 5px 0;
 }
-.stat-card{
+
+.stat-card {
     height: 250px;
     width: 250px;
 }
-.stat-card h3{
+
+.stat-card h3 {
 
     display: flex;
     align-items: center;
