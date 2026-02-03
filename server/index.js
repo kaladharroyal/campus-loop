@@ -11,24 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-origin: (origin, callback) => {
-  // Allow requests with no origin (like mobile apps or curl requests)
-  if (!origin) return callback(null, true);
-
-  const allowedOrigins = [
-    "http://localhost:5173",
-    "https://student-tracker-aw6t.vercel.app",
-    "https://campus-loop-jmnh.vercel.app"
-  ];
-
-  // Check if origin is in allowed list or is a Vercel preview for this app
-  if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-    callback(null, true);
-  } else {
-    console.log('Blocked by CORS:', origin);
-    callback(new Error('Not allowed by CORS'));
-  }
-},
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // Vite local
+    "https://campus-loop-jmnh.vercel.app" // production frontend
+  ],
   credentials: true
 }));
 app.use(express.json({ limit: '50mb' }));
