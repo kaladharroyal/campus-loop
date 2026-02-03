@@ -17,7 +17,7 @@ const AdminLayout = ({ children }) => {
         <div className="admin-layout">
             <AdminSidebar />
             <div className="admin-main-content">
-                <AdminTopbar user={user} />
+                <AdminTopBar user={user} />
                 <main className="admin-page-content">
                     <Outlet />
                 </main>
