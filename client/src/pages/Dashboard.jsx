@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, CartesianGrid, Legend } from 'recharts';
 import '../styles/pages.css';
+import API_BASE_URL from '../config/api';
 
 const dataProgress = [
   { name: '23 Nov', hours: 2 },
@@ -68,13 +69,13 @@ const Dashboard = () => {
         const token = userInfo?.token;
 
         // Fetch Enrolled Courses
-        const enrolledRes = await fetch('http://localhost:5000/api/courses/mycourses', {
+        const enrolledRes = await fetch('${API_BASE_URL}/api/courses/mycourses', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const enrolledData = await enrolledRes.json();
 
         // Fetch All Courses
-        const allRes = await fetch('http://localhost:5000/api/courses');
+        const allRes = await fetch('${API_BASE_URL}/api/courses');
         const allData = await allRes.json();
 
         if (Array.isArray(enrolledData)) {

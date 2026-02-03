@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/admin.css';
+import API_BASE_URL from '../../config/api';
 
 /**
  * ManageTeachers Component
@@ -25,7 +26,7 @@ const ManageTeachers = () => {
     const fetchTeachers = async () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch('/api/admin/teachers', {
+            const response = await fetch(`${API_BASE_URL}/api/admin/teachers`, {
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`
                 }
@@ -62,7 +63,7 @@ const ManageTeachers = () => {
 
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch('/api/admin/create-teacher', {
+            const response = await fetch(`${API_BASE_URL}/api/admin/create-teacher`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`,
@@ -100,7 +101,7 @@ const ManageTeachers = () => {
 
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch(`/api/admin/user/${teacherId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/user/${teacherId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`

@@ -21,6 +21,7 @@ const Ide = () => {
         { name: 'C++', value: 'cpp', version: '10.2.0', monacoLang: 'cpp', defaultCode: '// Write your C++ code here\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}' },
         { name: 'C', value: 'c', version: '10.2.0', monacoLang: 'c', defaultCode: '// Write your C code here\n#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}' },
         { name: 'Go', value: 'go', version: '1.16.2', monacoLang: 'go', defaultCode: '// Write your Go code here\npackage main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}' },
+import API_BASE_URL from '../config/api';
         { name: 'Rust', value: 'rust', version: '1.68.2', monacoLang: 'rust', defaultCode: '// Write your Rust code here\nfn main() {\n    println!("Hello, World!");\n}' },
         { name: 'PHP', value: 'php', version: '8.2.3', monacoLang: 'php', defaultCode: '<?php\n// Write your PHP code here\necho "Hello, World!\\n";\n?>' },
         { name: 'Ruby', value: 'ruby', version: '3.0.1', monacoLang: 'ruby', defaultCode: '# Write your Ruby code here\nputs "Hello, World!"' },
@@ -47,7 +48,7 @@ const Ide = () => {
         setOutput('Running...');
 
         try {
-            const response = await fetch('http://localhost:5000/api/execute-code', {
+            const response = await fetch('${API_BASE_URL}/api/execute-code', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

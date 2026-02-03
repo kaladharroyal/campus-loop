@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import '../../styles/admin.css'
+import API_BASE_URL from '../../config/api';
 
 /**
  * ManageAssignments component
@@ -20,7 +21,7 @@ const ManageAssignments = () => {
 
     const fetchAssignments = async () => {
         try {
-            const response = await fetch('/api/assignments', {
+            const response = await fetch(`${API_BASE_URL}/api/assignments`, {
                 headers: {
                     'Authorization': `Bearer ${user?.token}`
                 }

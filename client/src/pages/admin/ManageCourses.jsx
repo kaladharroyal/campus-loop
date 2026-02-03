@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import API_BASE_URL from '../../config/api';
 
 /**
  * ManageCourses component
@@ -19,7 +20,7 @@ const ManageCourses = () => {
 
     const fetchCourses = async () => {
         try {
-            const response = await fetch('/api/courses', {
+            const response = await fetch(`${API_BASE_URL}/api/courses`, {
                 headers: {
                     'Authorization': `Bearer ${user?.token}`
                 }
@@ -38,7 +39,7 @@ const ManageCourses = () => {
 
     const fetchTeachers = async () => {
         try {
-            const response = await fetch('/api/admin/teachers', {
+            const response = await fetch(`${API_BASE_URL}/api/admin/teachers`, {
                 headers: {
                     'Authorization': `Bearer ${user?.token}`
                 }
@@ -55,7 +56,7 @@ const ManageCourses = () => {
 
     const assignteacher = async (courseId, teacherId) => {
         try {
-            const response = await fetch(`/api/admin/courses/${courseId}/assign-teacher`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/courses/${courseId}/assign-teacher`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

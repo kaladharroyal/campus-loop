@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../context/ThemeContext';
 import '../styles/pages.css';
+import API_BASE_URL from '../config/api';
 
 const CourseOverview = () => {
     const { id } = useParams();
@@ -29,7 +30,7 @@ const CourseOverview = () => {
 
     const fetchCourseDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/courses/${id}`);
 
             // Check response status first
             if (!response.ok) {
@@ -78,7 +79,7 @@ const CourseOverview = () => {
 
         try {
             const token = user.token || JSON.parse(localStorage.getItem('userInfo'))?.token;
-            const response = await fetch(`http://localhost:5000/api/courses/${id}/enroll`, {
+            const response = await fetch(`${API_BASE_URL}/api/courses/${id}/enroll`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

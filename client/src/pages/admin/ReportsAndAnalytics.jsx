@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import API_BASE_URL from '../../config/api';
 
 /**
  * ReportsAndAnalytics component
@@ -14,42 +15,42 @@ const ReportsAndAnalytics = () => {
     const reports = [
         {
             id: 'student-performance',
-            endpoint: '/api/reports/student-performance',
+            endpoint: `${API_BASE_URL}/api/reports/student-performance`,
             icon: '📋',
             title: 'Student Performance Report',
             description: 'Detailed analysis of student grades and progress'
         },
         {
             id: 'course-analytics',
-            endpoint: '/api/reports/course-analytics',
+            endpoint: `${API_BASE_URL}/api/reports/course-analytics`,
             icon: '📊',
             title: 'Course Analytics',
             description: 'Enrollment trends and course effectiveness metrics'
         },
         {
             id: 'attendance-analytics',
-            endpoint: '/api/reports/attendance-analytics',
+            endpoint: `${API_BASE_URL}/api/reports/attendance-analytics`,
             icon: '📈',
             title: 'Attendance Analytics',
             description: 'Student and class attendance patterns'
         },
         {
             id: 'assignment-analytics',
-            endpoint: '/api/reports/assignment-analytics',
+            endpoint: `${API_BASE_URL}/api/reports/assignment-analytics`,
             icon: '🎯',
             title: 'Assignment Analytics',
             description: 'Submission rates and grading statistics'
         },
         {
             id: 'teacher-workload',
-            endpoint: '/api/reports/teacher-workload',
+            endpoint: `${API_BASE_URL}/api/reports/teacher-workload`,
             icon: '👨‍🏫',
             title: 'Faculty Workload',
             description: 'Course load and teaching assignments overview'
         },
         {
             id: 'monthly-summary',
-            endpoint: '/api/reports/monthly-summary',
+            endpoint: `${API_BASE_URL}/api/reports/monthly-summary`,
             icon: '📅',
             title: 'Monthly Summary',
             description: 'Comprehensive monthly performance summary'

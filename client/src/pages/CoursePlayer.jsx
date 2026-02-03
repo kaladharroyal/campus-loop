@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import auth context
 import '../styles/pages.css';
+import API_BASE_URL from '../config/api';
 
 const CoursePlayer = () => {
     const { id } = useParams();
@@ -27,7 +28,7 @@ const CoursePlayer = () => {
                 // ideally we change route to use :id
                 // Fetch ALL courses to find match (inefficient but works for now without route change)
                 // ideally we change route to use :id
-                const response = await fetch('http://localhost:5000/api/courses');
+                const response = await fetch('${API_BASE_URL}/api/courses');
                 if (!response.ok) throw new Error('Failed to load courses');
 
                 const data = await response.json();
@@ -40,7 +41,7 @@ const CoursePlayer = () => {
                         // The list API might return summary, let's fetch individual if needed
                         // But wait, the list doesn't have lessons usually.
                         // Let's get the specific course ID
-                        const detailResponse = await fetch(`http://localhost:5000/api/courses/${foundCourse._id}`);
+                        const detailResponse = await fetch(`${API_BASE_URL}/api/courses/${foundCourse._id}`);
                         const detailData = await detailResponse.json();
 
                         if (detailData.success) {
