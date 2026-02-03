@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const CreateCourse = () => {
     const navigate = useNavigate();
@@ -73,7 +74,7 @@ const CreateCourse = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:5000/api/teacher/course', {
+            const response = await fetch('${API_BASE_URL}/api/teacher/course', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/variables.css';
 import '../styles/pages.css';
+import API_BASE_URL from '../config/api';
 
 const ManageCourses = () => {
     const { user } = useAuth();
@@ -28,7 +29,7 @@ const ManageCourses = () => {
         setMessage('');
 
         try {
-            const response = await fetch('/api/courses', {
+            const response = await fetch(`${API_BASE_URL}/api/courses`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

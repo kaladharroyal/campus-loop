@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/admin.css';
+import API_BASE_URL from '../../config/api';
 
 /**
  * ManageStudents Component
@@ -44,7 +45,7 @@ const ManageStudents = () => {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const queryParams = new URLSearchParams(filters).toString();
 
-            const response = await fetch(`/api/admin/students?${queryParams}`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/students?${queryParams}`, {
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`
                 }
@@ -75,7 +76,7 @@ const ManageStudents = () => {
     const toggleStatus = async (studentId) => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch(`/api/admin/user/${studentId}/status`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/user/${studentId}/status`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`,
@@ -98,7 +99,7 @@ const ManageStudents = () => {
 
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch(`/api/admin/user/${studentId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/user/${studentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`
@@ -147,7 +148,7 @@ const ManageStudents = () => {
                 studentData.lastName = "."; // Fallback to satisfy required constraint if needed
             }
 
-            const response = await fetch('/api/admin/create-student', {
+            const response = await fetch(`${API_BASE_URL}/api/admin/create-student`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const TeacherCourses = () => {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ const TeacherCourses = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('http://localhost:5000/api/teacher/courses', {
+            const response = await fetch('${API_BASE_URL}/api/teacher/courses', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -43,7 +44,7 @@ const TeacherCourses = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch(`http://localhost:5000/api/teacher/course/${courseId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/teacher/course/${courseId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

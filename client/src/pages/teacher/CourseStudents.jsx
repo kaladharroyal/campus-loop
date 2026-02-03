@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const CourseStudents = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ const CourseStudents = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch(`http://localhost:5000/api/teacher/course/${id}/students`, {
+            const response = await fetch(`${API_BASE_URL}/api/teacher/course/${id}/students`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

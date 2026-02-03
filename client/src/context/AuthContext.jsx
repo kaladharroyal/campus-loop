@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config/api';
 
 const AuthContext = createContext(null);
 
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (firstName, lastName, email, password, role, branch, year, phone, rollno) => {
         try {
-            const response = await fetch('/api/auth/register', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const token = user?.token || JSON.parse(localStorage.getItem('userInfo'))?.token;
 
-            const response = await fetch('/api/auth/profile', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

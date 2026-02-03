@@ -12,6 +12,7 @@ import ai from '../assets/programming-for-ai.png';
 import ai2 from '../assets/ai.png';
 import dl from '../assets/deep-learning.png';
 import cn from '../assets/computer-networks.png';
+import API_BASE_URL from '../config/api';
 
 const Courses = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/courses');
+      const response = await fetch('${API_BASE_URL}/api/courses');
       const data = await response.json();
 
       if (data.success) {

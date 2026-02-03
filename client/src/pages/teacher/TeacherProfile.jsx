@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const TeacherProfile = () => {
     const { user, setUser } = useAuth();
@@ -77,7 +78,7 @@ const TeacherProfile = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('http://localhost:5000/api/teacher/profile', {
+            const response = await fetch('${API_BASE_URL}/api/teacher/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

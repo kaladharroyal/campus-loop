@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const GradeAssignment = () => {
     const { id } = useParams();
@@ -20,7 +21,7 @@ const GradeAssignment = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch(`http://localhost:5000/api/teacher/assignment/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/teacher/assignment/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -55,7 +56,7 @@ const GradeAssignment = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/teacher/assignment/submission/${gradingModal._id}/grade`, {
+            const response = await fetch(`${API_BASE_URL}/api/teacher/assignment/submission/${gradingModal._id}/grade`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

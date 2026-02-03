@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/admin.css'
+import API_BASE_URL from '../../config/api';
 
 /**
  * AdminDashboard Component
@@ -25,7 +26,7 @@ const AdminDashboard = () => {
     const fetchAnalytics = async () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const response = await fetch('/api/admin/analytics', {
+            const response = await fetch(`${API_BASE_URL}/api/admin/analytics`, {
                 headers: {
                     'Authorization': `Bearer ${userInfo.token}`
                 }

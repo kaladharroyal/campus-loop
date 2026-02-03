@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
 import '../../styles/teacher.css';
+import API_BASE_URL from '../../config/api';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -16,7 +17,7 @@ const TeacherAnalytics = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('http://localhost:5000/api/teacher/analytics', {
+            const response = await fetch('${API_BASE_URL}/api/teacher/analytics', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
