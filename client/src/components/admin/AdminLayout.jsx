@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminSidebar from './AdminSidebar';
+import AdminSidebar from './AdminSidebarComp';
 import AdminTopbar from './AdminTopbar';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/admin-layout.css';
