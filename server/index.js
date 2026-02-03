@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     "http://localhost:5173", // Vite local
-    "https://student-tracker-aw6t.vercel.app" // production frontend
+    "https://campus-loop-jmnh.vercel.app" // production frontend
   ],
   credentials: true
 }));
