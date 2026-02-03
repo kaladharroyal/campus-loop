@@ -30,7 +30,7 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('${API_BASE_URL}/api/courses');
+      const response = await fetch(`${API_BASE_URL}/api/courses`);
       const data = await response.json();
 
       if (data.success) {

@@ -22,7 +22,7 @@ const Home = () => {
 
                 // Fetch Registered/Enrolled Courses
                 if (token) {
-                    const enrolledRes = await fetch('${API_BASE_URL}/api/courses/mycourses', {
+                    const enrolledRes = await fetch(`${API_BASE_URL}/api/courses/mycourses`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const enrolledData = await enrolledRes.json();
@@ -32,7 +32,7 @@ const Home = () => {
                 }
 
                 // Fetch All Courses
-                const allRes = await fetch('${API_BASE_URL}/api/courses');
+                const allRes = await fetch(`${API_BASE_URL}/api/courses`);
                 const allData = await allRes.json();
                 if (allData.success) {
                     setAllCourses(allData.data);
