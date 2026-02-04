@@ -49,7 +49,7 @@ const Ide = () => {
         setOutput('Running...');
 
         try {
-            const response = await fetch('${API_BASE_URL}/api/execute-code', {
+            const response = await fetch(`${API_BASE_URL}/api/execute-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +93,14 @@ const Ide = () => {
                 setOutput('Error: ' + data.error);
             }
         } catch (error) {
-            setOutput('Error: Failed to execute code. Make sure the server is running.\n' + error.message);
+            console.error('[IDE] Network/System Error:', error);
+            setOutput(`Error: Failed to execute code.\n
+Details: ${error.message}
+Possible causes:
+1. Server is not running
+2. Internet connection is unstable (Piston API requires internet)
+3. API URL configuration is incorrect
+`);
         } finally {
             setIsRunning(false);
         }
