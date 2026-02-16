@@ -20,7 +20,8 @@ const TeacherCourses = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('${API_BASE_URL}/api/teacher/courses', {
+            // Fixed: Using backticks for template literal
+            const response = await fetch(`${API_BASE_URL}/api/teacher/courses`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

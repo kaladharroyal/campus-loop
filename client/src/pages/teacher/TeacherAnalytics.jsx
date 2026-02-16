@@ -17,7 +17,7 @@ const TeacherAnalytics = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('${API_BASE_URL}/api/teacher/analytics', {
+            const response = await fetch(`${API_BASE_URL}/api/teacher/analytics`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

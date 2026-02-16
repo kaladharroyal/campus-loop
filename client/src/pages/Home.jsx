@@ -5,9 +5,17 @@ import API_BASE_URL from '../config/api';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [userProgress, setUserProgress] = useState({});
     const [registeredCourses, setRegisteredCourses] = useState([]);
     const [allCourses, setAllCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    // Fallback images array (same as Courses.jsx for consistency)
+    const fallbackImages = [
+        'https://via.placeholder.com/300x200?text=Course+1',
+        'https://via.placeholder.com/300x200?text=Course+2',
+        'https://via.placeholder.com/300x200?text=Course+3',
+    ];
 
     const [favorites, setFavorites] = React.useState(() => {
         const saved = localStorage.getItem('favorites');
@@ -28,6 +36,21 @@ const Home = () => {
                     const enrolledData = await enrolledRes.json();
                     if (Array.isArray(enrolledData)) {
                         setRegisteredCourses(enrolledData);
+                    }
+
+                    // Fetch User Progress
+                    const progressRes = await fetch(`${API_BASE_URL}/api/courses/my-progress`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const progressData = await progressRes.json();
+                    if (progressData.success) {
+                        const progressMap = {};
+                        progressData.data.forEach(p => {
+                            // Ensure we use the string version of the course ID
+                            const courseId = typeof p.course === 'object' ? p.course._id : p.course;
+                            progressMap[courseId] = p;
+                        });
+                        setUserProgress(progressMap);
                     }
                 }
 
@@ -68,58 +91,81 @@ const Home = () => {
         navigate(`/course/${courseId}`);
     };
 
-    const CourseCard = ({ course, isSmall = false, isRegistered = false }) => (
-        <div
-            className={`campus-card ${!isSmall ? 'registered' : ''}`}
-            onClick={() => handleCourseClick(course._id)}
-        >
+    const CourseCard = ({ course, isSmall = false, isRegistered = false }) => {
+        // Calculate progress
+        const progressInfo = userProgress[course._id];
+        let progressPercent = 0;
+        if (progressInfo) {
+            if (progressInfo.isCompleted) progressPercent = 100;
+            else if (progressInfo.completedLessons) {
+                let totalLessons = 0;
+                if (course.curriculum) {
+                    course.curriculum.forEach(m => {
+                        if (m.topics) totalLessons += m.topics.length;
+                    });
+                }
+                if (totalLessons === 0) totalLessons = 1; // Avoid divide by zero
+                progressPercent = Math.round((progressInfo.completedLessons.length / totalLessons) * 100);
+            }
+        }
+
+        return (
             <div
-                className={`card-image-placeholder ${isSmall ? 'small' : ''}`}
-                style={{ '--accent': '#6366f1' }} // Default accent color
+                className={`campus-card ${!isSmall ? 'registered' : ''}`}
+                onClick={() => handleCourseClick(course._id)}
             >
-                {/* Use thumbnail or a placeholder color/icon */}
-                {course.thumbnail ? (
-                    <img src={course.thumbnail} alt={course.title} onError={(e) => { e.target.style.display = 'none' }} />
-                ) : (
-                    <div style={{ width: '100%', height: '100%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        📚
-                    </div>
-                )}
+                <div>
+                    {/* Simplified image handling for brevity in this replace block, can adjust if needed */}
+                    <div
+                        className={`card-image-placeholder ${isSmall ? 'small' : ''}`}
+                        style={{ '--accent': '#6366f1' }}
+                    >
+                        {course.thumbnail ? (
+                            <img src={course.thumbnail} alt={course.title} onError={(e) => { e.target.style.display = 'none' }} />
+                        ) : (
+                            <div style={{ width: '100%', height: '100%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                📚
+                            </div>
+                        )}
 
-                <button
-                    className={`fav-btn ${isFav(course._id) ? 'active' : ''}`}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(course);
-                    }}
-                >
-                    {isFav(course._id) ? '❤️' : '🤍'}
-                </button>
-            </div>
-            <div className="card-content">
-                <h3>{course.title}</h3>
-                <p>{course.category || course.description?.substring(0, 30)}</p>
-
-                {isRegistered && (
-                    <div className="progress-wrapper">
-                        <div className="progress-info">
-                            <span className="progress-text">Progress</span>
-                            <span className="progress-percent">0%</span> {/* Placeholder progress */}
-                        </div>
-                        <div className="progress-bar-bg">
-                            <div
-                                className="progress-bar-fill"
-                                style={{
-                                    width: `0%`,
-                                    background: '#6366f1'
-                                }}
-                            />
-                        </div>
+                        <button
+                            className={`fav-btn ${isFav(course._id) ? 'active' : ''}`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFavorite(course);
+                            }}
+                        >
+                            {isFav(course._id) ? '❤️' : '🤍'}
+                        </button>
                     </div>
-                )}
+                </div>
+                <div className="card-content">
+                    <h3>{course.title}</h3>
+                    <p>{course.category || course.description?.substring(0, 30)}</p>
+
+                    {isRegistered && (
+                        <div className="progress-wrapper">
+                            <div className="progress-info">
+                                <span className="progress-text">Progress</span>
+                                <span className="progress-percent">{progressPercent}%</span>
+                            </div>
+                            <div className="progress-bar-bg" style={{ background: '#e0e7ff', height: '6px', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div
+                                    className="progress-bar-fill"
+                                    style={{
+                                        width: `${progressPercent}%`,
+                                        background: '#6366f1',
+                                        height: '100%',
+                                        transition: 'width 0.3s ease'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     if (loading) return <div className="page-container"><p>Loading courses...</p></div>;
 

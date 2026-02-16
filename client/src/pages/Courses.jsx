@@ -16,17 +16,42 @@ import API_BASE_URL from '../config/api';
 
 const Courses = () => {
   const navigate = useNavigate();
+  const [userProgress, setUserProgress] = useState({});
   const [allCourses, setAllCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fallback images mapping
-  const fallbackImages = [nlp, ai, ai2, dl, cn, dbms, java, mern, ml];
+  // Fallback images array
+  const fallbackImages = [dbms, java, mern, ml, nlp, ai, ai2, dl, cn];
 
   useEffect(() => {
     fetchCourses();
+    fetchUserProgress();
   }, []);
+
+  const fetchUserProgress = async () => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      const token = userInfo?.token;
+      if (!token) return;
+
+      const response = await fetch(`${API_BASE_URL}/api/courses/my-progress`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await response.json();
+      if (data.success) {
+        // Create a map of courseId -> progress info
+        const progressMap = {};
+        data.data.forEach(p => {
+          progressMap[p.course] = p;
+        });
+        setUserProgress(progressMap);
+      }
+    } catch (error) {
+      console.error("Error fetching progress:", error);
+    }
+  };
 
   const fetchCourses = async () => {
     try {
@@ -66,6 +91,9 @@ const Courses = () => {
   );
 
   const handleCourseClick = (course) => {
+    // If enrolled (we can check if we have progress, or ideally check enrolledCourses from user profile)
+    // For now, redirecting to course overview is fine, or player if enrolled.
+    // Let's stick to overview for consistency, let overview handle "Go to Course" button.
     navigate(`/course-overview/${course._id}`);
   };
 
@@ -183,6 +211,7 @@ const Courses = () => {
           display: flex;
           flex-direction: column;
           height: 100%;
+          position: relative;
         }
 
         .campus-card:hover {
@@ -308,6 +337,35 @@ const Courses = () => {
           color: var(--text-tertiary);
           font-size: 0.95rem;
         }
+        
+        /* Progress Bar Styles for Course Card */
+        .card-progress-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .card-progress-fill {
+            height: 100%;
+            background: #22c55e;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 5;
+        }
 
         @media (max-width: 1200px) {
           .course-grid-5 {
@@ -408,34 +466,71 @@ const Courses = () => {
 
         <div className="course-grid-5">
           {filteredCourses.length > 0 ? (
-            filteredCourses.map((course, i) => (
-              <div
-                key={course._id || i}
-                className="campus-card"
-                onClick={() => handleCourseClick(course)}
-              >
-                <div className="card-image-placeholder">
-                  <img src={course.img} alt={course.title} />
-                  <div className="health-badge">
-                    <div>
-                      <span className="dot" style={{
-                        background: course.health.score > 80 ? '#22c55e' : course.health.score > 50 ? '#eab308' : '#ef4444'
-                      }}></span>
-                      Health: {course.health.score}%
+            filteredCourses.map((course, i) => {
+              // Calculate progress if available
+              const progressInfo = userProgress[course._id];
+              let progressPercent = 0;
+              if (progressInfo) {
+                if (progressInfo.isCompleted) progressPercent = 100;
+                else if (progressInfo.completedLessons) {
+                  // Estimate total lessons based on curriculum structure, but safely since we don't have full curriculum here mostly.
+                  // Wait, /api/courses returns full course objects including curriculum.
+                  let totalLessons = 0;
+                  if (course.curriculum) {
+                    course.curriculum.forEach(m => {
+                      if (m.topics) totalLessons += m.topics.length;
+                    });
+                  }
+                  if (totalLessons === 0) totalLessons = 1;
+                  progressPercent = Math.round((progressInfo.completedLessons.length / totalLessons) * 100);
+                }
+              }
+
+              return (
+                <div
+                  key={course._id || i}
+                  className="campus-card"
+                  onClick={() => handleCourseClick(course)}
+                >
+                  <div className="card-image-placeholder">
+                    <img src={course.img} alt={course.title} />
+
+                    {/* Health Badge (Existing) */}
+                    <div className="health-badge">
+                      <div>
+                        <span className="dot" style={{
+                          background: course.health.score > 80 ? '#22c55e' : course.health.score > 50 ? '#eab308' : '#ef4444'
+                        }}></span>
+                        Health: {course.health.score}%
+                      </div>
+                      <div className="health-tooltip">
+                        <div><span>Completion:</span> <strong>{course.health.completion}</strong></div>
+                        <div><span>Feedback:</span> <strong>{course.health.feedback}/5</strong></div>
+                        <div><span>Drop-offs:</span> <strong>{course.health.dropoff}</strong></div>
+                      </div>
                     </div>
-                    <div className="health-tooltip">
-                      <div><span>Completion:</span> <strong>{course.health.completion}</strong></div>
-                      <div><span>Feedback:</span> <strong>{course.health.feedback}/5</strong></div>
-                      <div><span>Drop-offs:</span> <strong>{course.health.dropoff}</strong></div>
-                    </div>
+
+                    {/* Progress Badge overlay on image */}
+                    {progressInfo && (
+                      <div className="progress-badge">
+                        {progressPercent}% Complete
+                      </div>
+                    )}
                   </div>
+                  <div className="card-content">
+                    <h3>{course.title}</h3>
+                    <p>{course.description ? course.description.substring(0, 50) + '...' : course.category || ''}</p>
+                  </div>
+
+                  {/* Progress Bar at bottom of card */}
+                  {progressInfo && (
+                    <div className="card-progress-overlay">
+                      <div className="card-progress-fill" style={{ width: `${progressPercent}%` }}></div>
+                    </div>
+                  )}
                 </div>
-                <div className="card-content">
-                  <h3>{course.title}</h3>
-                  <p>{course.description ? course.description.substring(0, 50) + '...' : course.category || ''}</p>
-                </div>
-              </div>
-            ))
+              )
+            })
           ) : (
             <p className="no-results">No courses found matching "{searchQuery}"</p>
           )}

@@ -31,7 +31,25 @@ const assignmentSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'closed'],
         default: 'active'
-    }
+    },
+    // Quiz & Type Fields
+    type: {
+        type: String,
+        enum: ['assignment', 'quiz'],
+        default: 'assignment'
+    },
+    duration: {
+        type: Number, // In minutes
+        default: 0
+    },
+    questions: [{
+        questionText: { type: String, required: true },
+        options: [{
+            text: { type: String, required: true },
+            isCorrect: { type: Boolean, default: false }
+        }],
+        marks: { type: Number, default: 1 }
+    }]
 }, { timestamps: true });
 
 const Assignment = mongoose.model('Assignment', assignmentSchema);

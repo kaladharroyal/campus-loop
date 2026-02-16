@@ -4,6 +4,7 @@ const Course = require('../models/Course');
 const Assignment = require('../models/Assignment');
 const Submission = require('../models/Submission');
 const User = require('../models/User');
+const CourseProgress = require('../models/CourseProgress');
 const { protect } = require('../middleware/authMiddleware');
 const teacherOnly = require('../middleware/teacherOnly');
 
@@ -213,19 +214,40 @@ router.get('/course/:id/students', async (req, res) => {
             });
         }
 
-        const studentsWithProgress = course.studentsEnrolled.map(student => {
-            const isCompleted = course.completedStudents.some(
-                cs => cs._id.toString() === student._id.toString()
-            );
+        const studentsWithProgress = await Promise.all(course.studentsEnrolled.map(async (student) => {
+            const progressDoc = await CourseProgress.findOne({
+                user: student._id,
+                course: course._id
+            });
+
+            // Calculate percentage
+            let progressPercentage = 0;
+            // Determine total lessons (same logic as player/course model)
+            // Flatten curriculum to count topics
+            let totalLessons = 0;
+            if (course.curriculum) {
+                course.curriculum.forEach(module => {
+                    if (module.topics) totalLessons += module.topics.length;
+                });
+            }
+            if (totalLessons === 0) totalLessons = 1; // Avoid divide by zero if empty course
+
+            if (progressDoc) {
+                if (progressDoc.isCompleted) {
+                    progressPercentage = 100;
+                } else if (progressDoc.completedLessons) {
+                    progressPercentage = Math.round((progressDoc.completedLessons.length / totalLessons) * 100);
+                }
+            }
 
             return {
                 _id: student._id,
                 name: `${student.firstName} ${student.lastName}`,
                 email: student.email,
-                progress: isCompleted ? 100 : Math.floor(Math.random() * 80) + 10, // Placeholder
-                status: isCompleted ? 'Completed' : 'In Progress'
+                progress: progressPercentage,
+                status: progressPercentage === 100 ? 'Completed' : (progressPercentage > 0 ? 'In Progress' : 'Not Started')
             };
-        });
+        }));
 
         res.json({
             success: true,
@@ -536,15 +558,17 @@ router.get('/analytics', async (req, res) => {
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-        const recentEnrollments = courses.flatMap(course =>
-            course.studentsEnrolled
-                .filter(student => student.createdAt > sevenDaysAgo)
+        const recentEnrollments = courses.flatMap(course => {
+            if (!course.studentsEnrolled || !Array.isArray(course.studentsEnrolled)) return [];
+
+            return course.studentsEnrolled
+                .filter(student => student && student.createdAt && student.createdAt > sevenDaysAgo)
                 .map(student => ({
                     studentName: `${student.firstName} ${student.lastName}`,
                     courseName: course.title,
                     enrolledAt: student.createdAt
-                }))
-        ).slice(0, 10);
+                }));
+        }).slice(0, 10);
 
         res.json({
             success: true,

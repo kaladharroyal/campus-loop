@@ -1,0 +1,36 @@
+feat: Implement course progress tracking and assignment enhancements (Feb 16-17)
+
+## Feb 17 - Course Progress & UI Enhancements
+- Implement CourseProgress model and API routes for tracking user progress
+- Add progress bars to CoursePlayer with auto-advance and resume functionality
+- Update Dashboard, Home, and Courses pages with dynamic progress display
+- Fix 401 error in teacher grading (token retrieval)
+- Fix TeacherAnalytics API URL syntax error
+- Fix Favourites page thumbnail visibility
+- Enhance Assignments page with Feather icons and functional calendar view
+- Add calendar view showing assignments by due date
+
+## Feb 16 - File Upload Implementation
+- Implement file upload functionality for assignment submissions
+- Configure Multer middleware for multipart/form-data handling
+- Resolve ERR_CONNECTION_RESET errors during file uploads
+- Add file selection UI with support for PDFs and images
+
+## Modified Files
+Backend:
+- server/models/CourseProgress.js
+- server/routes/courses.js
+- server/routes/assignments.js
+- server/middleware/upload.js
+
+Frontend:
+- client/src/pages/CoursePlayer.jsx
+- client/src/pages/Dashboard.jsx
+- client/src/pages/Home.jsx
+- client/src/pages/Courses.jsx
+- client/src/pages/Assignments.jsx
+- client/src/pages/Favourites.jsx
+- client/src/pages/teacher/GradeAssignment.jsx
+- client/src/pages/teacher/TeacherAnalytics.jsx
+- client/src/styles/pages.css
+- client/src/styles/variables.css

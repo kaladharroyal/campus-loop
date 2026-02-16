@@ -22,7 +22,8 @@ const TeacherDashboard = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('${API_BASE_URL}/api/teacher/analytics', {
+            // Fixed: Using backticks for template literal
+            const response = await fetch(`${API_BASE_URL}/api/teacher/analytics`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -108,7 +109,7 @@ const TeacherDashboard = () => {
             {analytics && analytics.courseEnrollment.length > 0 && (
                 <div className="dashboard-grid-main" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginTop: '30px' }}>
                     <div className="chart-card">
-                        <h3>Course Enrollment Overview</h3>
+                        <h3>Course Enrollme</h3>
                         <div style={{ width: '100%', height: 300 }}>
                             <ResponsiveContainer>
                                 <BarChart data={analytics.courseEnrollment}>
@@ -196,38 +197,3 @@ const TeacherDashboard = () => {
 };
 
 export default TeacherDashboard;
-<style jsx>
-    {`
-    .dashboard-content {
-        margin-top: 20px;
-    }
-    .dashboard-grid-main {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-
-    }
-        .stat-card{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        width:30px;
-        margin:10px;
-        padding:10px;
-        border-radius:10px;
-        background-color: var(--bg-primary);
-        box-shadow:0 2px 4px rgba(0,0,0,0.1);   
-        }
-        .dashboard-stats{
-            display:grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            width:30px;
-            margin:10px;
-            padding:10px;
-            border-radius:10px;
-            background-color: var(--bg-primary);
-            box-shadow:0 2px 4px rgba(0,0,0,0.1);   
-        }     
-    `}
-</style>

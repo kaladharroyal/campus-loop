@@ -33,7 +33,14 @@ const Favourites = () => {
                     {favorites.map((course, i) => (
                         <div key={i} className="campus-card registered">
                             <div className="card-image-placeholder small" style={course.color ? { background: course.color } : { background: '#1e293b' }}>
-                                <img src={course.img} alt={course.title} width="100%" height="100%" style={{ objectFit: 'cover' }} />
+                                <img
+                                    src={course.img || course.thumbnail || 'https://via.placeholder.com/300x200?text=Course'}
+                                    alt={course.title}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ objectFit: 'cover' }}
+                                    onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.style.backgroundColor = '#2d3748'; }}
+                                />
                                 <button
                                     className="fav-btn active"
                                     onClick={(e) => {

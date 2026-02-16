@@ -23,7 +23,8 @@ const CreateAssignment = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('${API_BASE_URL}/api/teacher/courses', {
+            // Fixed: Using backticks for template literal
+            const response = await fetch(`${API_BASE_URL}/api/teacher/courses`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -50,8 +51,10 @@ const CreateAssignment = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch('${API_BASE_URL}/api/teacher/assignment', {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
+            // Fixed: Using backticks for template literal
+            const response = await fetch(`${API_BASE_URL}/api/teacher/assignment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,13 +102,13 @@ const CreateAssignment = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Description *</label>
+                        <label>Question / Instructions *</label>
                         <textarea
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
                             rows="5"
-                            placeholder="Provide detailed instructions for the assignment..."
+                            placeholder="Enter the assignment question or detailed instructions here..."
                             required
                         />
                     </div>

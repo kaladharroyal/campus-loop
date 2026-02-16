@@ -21,6 +21,10 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Serve static files from uploads directory
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/lms')
   .then(() => console.log('MongoDB Connected'))
@@ -90,6 +94,10 @@ app.use('/api/attendance', require('./routes/attendance'));
 app.use('/api/admin', require('./routes/admin')); // Admin routes
 app.use('/api/teacher', require('./routes/teacher')); // Teacher routes
 app.use('/api/reports', require('./routes/reports')); // Reports routes
+
+// Error Handler
+const { errorHandler } = require('./middleware/errorMiddleware');
+app.use(errorHandler);
 
 console.log('✅ All routes loaded');
 
