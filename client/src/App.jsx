@@ -24,6 +24,8 @@ import Contact from './pages/Contact';
 import Support from './pages/Support';
 import About from './pages/About';
 import Ide from './pages/Ide';
+import QuizPlayer from './pages/QuizPlayer';
+import AssignmentDetails from './pages/AssignmentDetails';
 
 
 
@@ -45,6 +47,7 @@ import EditCourse from './pages/teacher/EditCourse';
 import CourseStudents from './pages/teacher/CourseStudents';
 import TeacherAssignments from './pages/teacher/TeacherAssignments';
 import CreateAssignment from './pages/teacher/CreateAssignment';
+import CreateQuiz from './pages/teacher/CreateQuiz';
 import GradeAssignment from './pages/teacher/GradeAssignment';
 import TeacherProfile from './pages/teacher/TeacherProfile';
 import TeacherAnalytics from './pages/teacher/TeacherAnalytics';
@@ -89,7 +92,10 @@ function App() {
               <Route path="/assignments" element={<StudentRoute><Layout><Assignments /></Layout></StudentRoute>} />
               <Route path="/attendance" element={<StudentRoute><Layout><Attendance /></Layout></StudentRoute>} />
               <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
+              <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
               <Route path="/course/:id" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
+              <Route path="/quiz/:id" element={<StudentRoute><Layout><QuizPlayer /></Layout></StudentRoute>} />
+              <Route path="/assignment/:id" element={<StudentRoute><Layout><AssignmentDetails /></Layout></StudentRoute>} />
 
               {/* Teacher Routes */}
               <Route path="/teacher" element={<TeacherRoute><TeacherLayout /></TeacherRoute>}>
@@ -100,7 +106,9 @@ function App() {
                 <Route path="course/edit/:id" element={<EditCourse />} />
                 <Route path="course/:id/students" element={<CourseStudents />} />
                 <Route path="assignments" element={<TeacherAssignments />} />
+                <Route path="assignments" element={<TeacherAssignments />} />
                 <Route path="assignment/create" element={<CreateAssignment />} />
+                <Route path="quiz/create" element={<CreateQuiz />} />
                 <Route path="assignment/:id/grade" element={<GradeAssignment />} />
                 <Route path="assignment/:id/edit" element={<CreateAssignment />} />
                 <Route path="profile" element={<TeacherProfile />} />

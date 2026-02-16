@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import auth context
+import { useAuth } from '../context/AuthContext';
 import '../styles/pages.css';
 import API_BASE_URL from '../config/api';
 
@@ -15,102 +15,212 @@ const CoursePlayer = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    // Progress State
+    const [completedLessons, setCompletedLessons] = useState([]);
+    const [progressPercentage, setProgressPercentage] = useState(0);
+    const [isCourseCompleted, setIsCourseCompleted] = useState(false);
+
     // Fetch course data from API
     useEffect(() => {
-        const fetchCourse = async () => {
+        const fetchCourseAndProgress = async () => {
             try {
-                // Since our API gets by ID, but we have title in URL, we first need to find the course
-                // For now, let's assume we can change the route to use ID or we search by ID if title matches.
-                // NOTE: Best practice is to use ID in URL: /course/:id/play
-                // But typically we might need to search. 
+                if (!id) return;
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                const token = userInfo?.token;
 
-                // Fetch ALL courses to find match (inefficient but works for now without route change)
-                // ideally we change route to use :id
-                // Fetch ALL courses to find match (inefficient but works for now without route change)
-                // ideally we change route to use :id
-                const response = await fetch('${API_BASE_URL}/api/courses');
-                if (!response.ok) throw new Error('Failed to load courses');
+                // 1. Fetch Course Details
+                const courseResponse = await fetch(`${API_BASE_URL}/api/courses/${id}`);
 
-                const data = await response.json();
-                if (data.success) {
-                    // Find course by ID directly since we have it
-                    const foundCourse = data.data.find(c => c._id === id);
+                if (!courseResponse.ok) {
+                    if (courseResponse.status === 404) throw new Error('Course not found');
+                    throw new Error('Failed to load course details');
+                }
 
-                    if (foundCourse) {
-                        // We need full details including curriculum/lessons
-                        // The list API might return summary, let's fetch individual if needed
-                        // But wait, the list doesn't have lessons usually.
-                        // Let's get the specific course ID
-                        const detailResponse = await fetch(`${API_BASE_URL}/api/courses/${foundCourse._id}`);
-                        const detailData = await detailResponse.json();
+                const courseDataRes = await courseResponse.json();
 
-                        if (detailData.success) {
-                            // Helper to extract YouTube ID
-                            const getYoutubeId = (url) => {
-                                if (!url) return 'eIrMbAQSU34'; // Default placeholder
-                                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                                const match = url.match(regExp);
-                                return (match && match[2].length === 11) ? match[2] : 'eIrMbAQSU34';
-                            };
+                if (courseDataRes.success) {
+                    const courseData = courseDataRes.data;
 
-                            const courseVideoId = getYoutubeId(detailData.data.videoLink);
-                            console.log("Debug: Full Course Data:", detailData.data);
-                            console.log("Debug: Video Link from DB:", detailData.data.videoLink);
-                            console.log("Debug: Extracted Video ID:", courseVideoId);
+                    // Helper to extract YouTube ID
+                    const getYoutubeId = (url) => {
+                        if (!url) return 'eIrMbAQSU34'; // Default placeholder
+                        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                        const match = url.match(regExp);
+                        return (match && match[2].length === 11) ? match[2] : 'eIrMbAQSU34';
+                    };
 
-                            // Transform curriculum to flat lesson list for player
-                            const flatLessons = [];
-                            if (detailData.data.curriculum) {
-                                let lessonId = 1;
-                                detailData.data.curriculum.forEach(module => {
-                                    if (module.topics) {
-                                        module.topics.forEach(topic => {
-                                            // Check if topic is object (new style) or string (old style)
-                                            const isObject = typeof topic === 'object';
-                                            const title = isObject ? topic.title : topic;
-                                            const startTime = isObject ? (topic.time || 0) : 0;
+                    const courseVideoId = getYoutubeId(courseData.videoLink);
 
-                                            flatLessons.push({
-                                                id: lessonId++,
-                                                title: title,
-                                                duration: '10:00', // Placeholder
-                                                videoId: courseVideoId,
-                                                start: startTime // Add start timestamp
-                                            });
-                                        });
-                                    }
+                    // Transform curriculum to flat lesson list for player
+                    const flatLessons = [];
+                    if (courseData.curriculum) {
+                        let lessonIndex = 1;
+                        courseData.curriculum.forEach(module => {
+                            if (module.topics) {
+                                module.topics.forEach(topic => {
+                                    const isObject = typeof topic === 'object';
+                                    const title = isObject ? topic.title : topic;
+                                    const startTime = isObject ? (topic.time || 0) : 0;
+                                    // Use topic._id if available, otherwise generate a consistent ID based on index
+                                    // Ideally backend should provide unique IDs for all topics. 
+                                    const lessonId = isObject && topic._id ? topic._id : `lesson-${lessonIndex}`;
+
+                                    flatLessons.push({
+                                        id: lessonId,
+                                        index: lessonIndex++,
+                                        title: title,
+                                        duration: '10:00', // Placeholder
+                                        videoId: courseVideoId,
+                                        start: startTime
+                                    });
                                 });
                             }
+                        });
+                    }
 
-                            // If no curriculum, add a dummy lesson
-                            if (flatLessons.length === 0) {
-                                flatLessons.push({
-                                    id: 1,
-                                    title: 'Introduction',
-                                    duration: '5:00',
-                                    videoId: courseVideoId
-                                });
+                    // If no curriculum, add a dummy lesson
+                    if (flatLessons.length === 0) {
+                        flatLessons.push({
+                            id: 'lesson-1',
+                            index: 1,
+                            title: 'Introduction',
+                            duration: '5:00',
+                            videoId: courseVideoId
+                        });
+                    }
+
+                    // 2. Fetch User Progress
+                    let userProgress = { completedLessons: [], lastAccessedLessonId: null, isCompleted: false };
+                    if (token) {
+                        try {
+                            const progressResponse = await fetch(`${API_BASE_URL}/api/courses/${id}/progress`, {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                            });
+                            if (progressResponse.ok) {
+                                const progressData = await progressResponse.json();
+                                if (progressData.success) {
+                                    userProgress = progressData.data;
+                                }
                             }
+                        } catch (err) {
+                            console.error("Failed to load progress", err);
+                        }
+                    }
 
-                            setCourse({ ...detailData.data, lessons: flatLessons });
-                            setActiveLesson(flatLessons[0]);
+                    setCompletedLessons(userProgress.completedLessons || []);
+                    setIsCourseCompleted(userProgress.isCompleted || false);
+
+                    // Calculate initial progress
+                    const percent = Math.round(((userProgress.completedLessons?.length || 0) / flatLessons.length) * 100);
+                    setProgressPercentage(percent);
+
+                    // Determine active lesson (Resume or Start)
+                    let initialLesson = flatLessons[0];
+                    if (userProgress.lastAccessedLessonId) {
+                        console.log("Resuming from:", userProgress.lastAccessedLessonId);
+                        const last = flatLessons.find(l => l.id === userProgress.lastAccessedLessonId);
+                        if (last) {
+                            console.log("Found lesson:", last);
+                            initialLesson = last;
                         } else {
-                            setError('Course details not found');
+                            console.warn("Last accessed lesson ID not found in current course lessons:", userProgress.lastAccessedLessonId);
                         }
                     } else {
-                        setError('Course not found');
+                        console.log("No last accessed lesson found, starting from beginning.");
                     }
+
+                    setCourse({ ...courseData, lessons: flatLessons });
+                    setActiveLesson(initialLesson);
+                } else {
+                    setError('Course details not found');
                 }
             } catch (err) {
                 console.error("Error loading course:", err);
-                setError('Failed to load course');
+                setError(err.message || 'Failed to load course');
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCourse();
+        fetchCourseAndProgress();
     }, [id]);
+
+    const handleLessonComplete = async (lessonId) => {
+        if (completedLessons.includes(lessonId)) return;
+
+        const newCompleted = [...completedLessons, lessonId];
+        setCompletedLessons(newCompleted);
+
+        // Calculate new progress
+        const percent = Math.round((newCompleted.length / course.lessons.length) * 100);
+        setProgressPercentage(percent);
+
+        // Update Backend
+        try {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
+            if (!token) return;
+
+            await fetch(`${API_BASE_URL}/api/courses/${id}/progress`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ lessonId, completed: true })
+            });
+
+            // Check for Course Completion
+            if (newCompleted.length === course.lessons.length) {
+                setIsCourseCompleted(true);
+                await fetch(`${API_BASE_URL}/api/courses/${id}/complete`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                // Redirect to Home after a delay
+                setTimeout(() => {
+                    alert("Congratulations! You have completed the course.");
+                    navigate('/');
+                }, 1000); // 1.5s delay
+            } else {
+                // Auto-advance to next lesson
+                const currentIndex = course.lessons.findIndex(l => l.id === lessonId);
+                if (currentIndex !== -1 && currentIndex < course.lessons.length - 1) {
+                    const nextLesson = course.lessons[currentIndex + 1];
+                    setActiveLesson(nextLesson);
+                    // Update last accessed for the new lesson
+                    handleLessonChange(nextLesson);
+                }
+            }
+
+        } catch (err) {
+            console.error("Failed to update progress", err);
+            alert("Failed to save progress. Please check your internet connection or try again.");
+        }
+    };
+
+    const handleLessonChange = async (lesson) => {
+        setActiveLesson(lesson);
+
+        // Update last accessed in backend without marking as complete
+        try {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
+            if (!token) return;
+
+            await fetch(`${API_BASE_URL}/api/courses/${id}/progress`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ lessonId: lesson.id })
+            });
+        } catch (err) {
+            console.error("Failed to update last accessed", err);
+        }
+    };
 
     if (loading) return <div className="page-container" style={{ textAlign: 'center', padding: '50px' }}>Loading Player...</div>;
 
@@ -127,9 +237,20 @@ const CoursePlayer = () => {
 
     return (
         <div className="page-container course-player-container">
-            <button className="back-link" onClick={() => navigate('/courses')}>
-                ← Back to Courses
-            </button>
+            <div className="player-header">
+                <button className="back-link" onClick={() => navigate('/dashboard')}>
+                    ← Back to Dashboard
+                </button>
+                <div className="course-progress-container">
+                    <span>{progressPercentage}% Completed</span>
+                    <div className="progress-bar-bg">
+                        <div
+                            className="progress-bar-fill"
+                            style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                    </div>
+                </div>
+            </div>
 
             <div className="course-player-grid">
                 {/* Main Video Area */}
@@ -150,7 +271,18 @@ const CoursePlayer = () => {
                         )}
                     </div>
                     <div className="video-info">
-                        <h1>{activeLesson?.title || course.title}</h1>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h1>{activeLesson?.title || course.title}</h1>
+                            {activeLesson && (
+                                <button
+                                    className={`btn ${completedLessons.includes(activeLesson.id) ? 'btn-success' : 'btn-primary'}`}
+                                    onClick={() => handleLessonComplete(activeLesson.id)}
+                                    disabled={completedLessons.includes(activeLesson.id)}
+                                >
+                                    {completedLessons.includes(activeLesson.id) ? 'Completed' : 'Mark as Complete'}
+                                </button>
+                            )}
+                        </div>
                         <p className="description">{course.description}</p>
                     </div>
                 </div>
@@ -162,14 +294,14 @@ const CoursePlayer = () => {
                         {course.lessons.map((lesson) => (
                             <div
                                 key={lesson.id}
-                                className={`lesson-item ${activeLesson?.id === lesson.id ? 'active' : ''}`}
-                                onClick={() => setActiveLesson(lesson)}
+                                className={`lesson-item ${activeLesson?.id === lesson.id ? 'active' : ''} ${completedLessons.includes(lesson.id) ? 'completed' : ''}`}
+                                onClick={() => handleLessonChange(lesson)}
                             >
                                 <div className="play-icon">
-                                    {activeLesson?.id === lesson.id ? '▶' : '•'}
+                                    {completedLessons.includes(lesson.id) ? '✓' : (activeLesson?.id === lesson.id ? '▶' : '•')}
                                 </div>
                                 <div className="lesson-details">
-                                    <span className="lesson-title">{lesson.id}. {lesson.title}</span>
+                                    <span className="lesson-title">{lesson.index}. {lesson.title}</span>
                                     <span className="lesson-duration">{lesson.duration}</span>
                                 </div>
                             </div>

@@ -49,6 +49,23 @@ const courseSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    // Pricing & Meta
+    price: {
+        type: Number,
+        default: 0
+    },
+    currency: {
+        type: String,
+        default: 'INR'
+    },
+    isFree: {
+        type: Boolean,
+        default: false
+    },
+    tags: [{
+        type: String
+    }],
+
     curriculum: [{
         moduleTitle: { type: String, required: true },
         topics: [{

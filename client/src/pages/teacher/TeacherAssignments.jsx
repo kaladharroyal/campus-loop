@@ -18,7 +18,8 @@ const TeacherAssignments = () => {
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             const token = userInfo?.token;
-            const response = await fetch('${API_BASE_URL}/api/teacher/assignments', {
+            // Fixed: Using backticks for template literal
+            const response = await fetch(`${API_BASE_URL}/api/teacher/assignments`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -40,7 +41,8 @@ const TeacherAssignments = () => {
 
     const handleDelete = async (assignmentId) => {
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch(`${API_BASE_URL}/api/teacher/assignment/${assignmentId}`, {
                 method: 'DELETE',
                 headers: {
@@ -76,9 +78,14 @@ const TeacherAssignments = () => {
         <div className="page-container">
             <div className="page-header">
                 <h1>Manage Assignments</h1>
-                <button className="btn btn-primary" onClick={() => navigate('/teacher/assignment/create')}>
-                    + Create Assignment
-                </button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button className="btn btn-primary" onClick={() => navigate('/teacher/assignment/create')}>
+                        + Create Assignment
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => navigate('/teacher/quiz/create')}>
+                        + Create Quiz
+                    </button>
+                </div>
             </div>
 
             <div className="filters-section">
@@ -157,27 +164,29 @@ const TeacherAssignments = () => {
             )}
 
             {/* Delete Confirmation Modal */}
-            {deleteModal && (
-                <div className="modal-overlay" onClick={() => setDeleteModal(null)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2>Delete Assignment</h2>
-                        <p>Are you sure you want to delete "{deleteModal.title}"?</p>
-                        <p className="warning-text">All submissions will be deleted permanently.</p>
-                        <div className="modal-actions">
-                            <button className="btn btn-secondary" onClick={() => setDeleteModal(null)}>
-                                Cancel
-                            </button>
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => handleDelete(deleteModal._id)}
-                            >
-                                Delete Assignment
-                            </button>
+            {
+                deleteModal && (
+                    <div className="modal-overlay" onClick={() => setDeleteModal(null)}>
+                        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                            <h2>Delete Assignment</h2>
+                            <p>Are you sure you want to delete "{deleteModal.title}"?</p>
+                            <p className="warning-text">All submissions will be deleted permanently.</p>
+                            <div className="modal-actions">
+                                <button className="btn btn-secondary" onClick={() => setDeleteModal(null)}>
+                                    Cancel
+                                </button>
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDelete(deleteModal._id)}
+                                >
+                                    Delete Assignment
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

@@ -49,13 +49,13 @@ const GradeAssignment = () => {
             feedback: submission.feedback || ''
         });
     };
-
     const handleGradeSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
 
         try {
-            const token = localStorage.getItem('token');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const token = userInfo?.token;
             const response = await fetch(`${API_BASE_URL}/api/teacher/assignment/submission/${gradingModal._id}/grade`, {
                 method: 'PUT',
                 headers: {

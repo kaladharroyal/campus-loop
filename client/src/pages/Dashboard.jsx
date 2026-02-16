@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, CartesianGrid, Legend } from 'recharts';
 import '../styles/pages.css';
@@ -30,11 +31,9 @@ const Dashboard = () => {
   const [enrolledCourses, setEnrolledCourses] = React.useState([]);
   const [allCourses, setAllCourses] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [userProgress, setUserProgress] = React.useState({});
 
   const handleCourseClick = (courseId) => {
-    // Navigate to course player or overview depending on enrollment
-    // If we click from "Enrolled", we probably want to go to player or overview
-    // If we click from "All", we want to go to overview
     navigate(`/course/${courseId}`);
   };
 
@@ -69,16 +68,40 @@ const Dashboard = () => {
         const token = userInfo?.token;
 
         // Fetch Enrolled Courses
-        const enrolledRes = await fetch('${API_BASE_URL}/api/courses/mycourses', {
+        const enrolledRes = await fetch(`${API_BASE_URL}/api/courses/mycourses`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const enrolledData = await enrolledRes.json();
 
         // Fetch All Courses
-        const allRes = await fetch('${API_BASE_URL}/api/courses');
+        const allRes = await fetch(`${API_BASE_URL}/api/courses`);
         const allData = await allRes.json();
 
+        // Fetch User Progress
+        let progressMap = {};
+        if (token) {
+          try {
+            const progressRes = await fetch(`${API_BASE_URL}/api/courses/my-progress`, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            const progressData = await progressRes.json();
+            if (progressData.success) {
+              const progressMap = {};
+              progressData.data.forEach(p => {
+                // Ensure we use the string version of the course ID
+                const courseId = typeof p.course === 'object' ? p.course._id : p.course;
+                progressMap[courseId] = p;
+              });
+              console.log("Progress Map:", progressMap);
+              setUserProgress(progressMap);
+            }
+          } catch (err) {
+            console.error("Failed to load progress", err);
+          }
+        }
+
         if (Array.isArray(enrolledData)) {
+          console.log("Enrolled Courses:", enrolledData);
           setEnrolledCourses(enrolledData);
         }
 
@@ -156,24 +179,48 @@ const Dashboard = () => {
           <h3>Your Enrolled Courses</h3>
           <div className="course-list-container">
             {enrolledCourses.length > 0 ? (
-              enrolledCourses.map(course => (
-                <div key={course._id} className="course-list-item" onClick={() => handleCourseClick(course._id)} style={{ cursor: 'pointer' }}>
-                  <div
-                    className="course-icon-placeholder"
-                    style={{
-                      width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#e0e7ff',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '12px',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    {course.thumbnail ? <img src={course.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '📚'}
+              enrolledCourses.map(course => {
+                const progressInfo = userProgress[course._id];
+                let progressPercent = 0;
+                if (progressInfo) {
+                  if (progressInfo.isCompleted) progressPercent = 100;
+                  else if (progressInfo.completedLessons) {
+                    let totalLessons = 0;
+                    if (course.curriculum) {
+                      course.curriculum.forEach(m => {
+                        if (m.topics) totalLessons += m.topics.length;
+                      });
+                    }
+                    if (totalLessons === 0) totalLessons = 1;
+                    progressPercent = Math.round((progressInfo.completedLessons.length / totalLessons) * 100);
+                  }
+                }
+
+                return (
+                  <div key={course._id} className="course-list-item" onClick={() => handleCourseClick(course._id)} style={{ cursor: 'pointer' }}>
+                    <div
+                      className="course-icon-placeholder"
+                      style={{
+                        width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#e0e7ff',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '12px',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {course.thumbnail ? <img src={course.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '📚'}
+                    </div>
+                    <div style={{ flexGrow: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                        <h4>{course.title}</h4>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{progressPercent}%</span>
+                      </div>
+                      <p className="text-sm sub-text" style={{ marginBottom: '6px' }}>{course.category}</p>
+                      <div style={{ width: '100%', height: '4px', background: 'var(--border)', borderRadius: '2px', overflow: 'hidden' }}>
+                        <div style={{ width: `${progressPercent}%`, height: '100%', background: '#22c55e', transition: 'width 0.3s ease' }}></div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h4>{course.title}</h4>
-                    <p className="text-sm sub-text">{course.category}</p>
-                  </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p style={{ padding: '10px', color: 'var(--text-secondary)' }}>You haven't enrolled in any courses yet.</p>
             )}

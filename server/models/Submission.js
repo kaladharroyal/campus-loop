@@ -27,6 +27,14 @@ const submissionSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    score: {
+        type: Number,
+        default: 0
+    },
+    quizAnswers: [{
+        questionId: mongoose.Schema.Types.ObjectId,
+        selectedOptionId: mongoose.Schema.Types.ObjectId // assuming options have IDs (subdocs) or just store text
+    }],
     feedback: {
         type: String,
         default: ''
