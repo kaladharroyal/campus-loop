@@ -4,8 +4,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');
 const Assignment = require('../models/Assignment');
 const Attendance = require('../models/Attendance');
-const { protect } = require('../middleware/authMiddleware');
-const adminOnly = require('../middleware/adminOnly');
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 
 // Apply protect and adminOnly middleware to all routes
 router.use(protect);
