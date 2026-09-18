@@ -15,8 +15,7 @@ const protect = async (req, res, next) => {
             req.user = await User.findById(decoded.id).select('-password');
 
             if (!req.user) {
-                res.status(401).json({ message: 'Not authorized, user not found' });
-                return;
+                return res.status(401).json({ message: 'Not authorized, user not found' });
             }
 
             next();
@@ -29,4 +28,18 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports = { protect };
+const requireRole = (...roles) => (req, res, next) => {
+    if (req.user && roles.includes(req.user.role)) {
+        return next();
+    }
+    return res.status(403).json({
+        success: false,
+        message: `Access denied. Requires role: ${roles.join(' or ')}`
+    });
+};
+
+const adminOnly = requireRole('admin');
+const teacherOnly = requireRole('teacher', 'admin');
+
+module.exports = { protect, requireRole, adminOnly, teacherOnly };
+

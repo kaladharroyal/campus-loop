@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { LayoutProvider } from './context/LayoutContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/Layout';
@@ -8,7 +8,6 @@ import TeacherLayout from './components/TeacherLayout';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ManageCourses from './pages/ManageCourses';
 import Courses from './pages/Courses';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -26,8 +25,6 @@ import About from './pages/About';
 import Ide from './pages/Ide';
 import QuizPlayer from './pages/QuizPlayer';
 import AssignmentDetails from './pages/AssignmentDetails';
-
-
 
 // Admin Components
 import AdminLayout from './components/admin/AdminLayout';
@@ -52,17 +49,8 @@ import GradeAssignment from './pages/teacher/GradeAssignment';
 import TeacherProfile from './pages/teacher/TeacherProfile';
 import TeacherAnalytics from './pages/teacher/TeacherAnalytics';
 
-// Route Protection Components
-import AdminRoute from './components/routes/AdminRoute';
-import StudentRoute from './components/routes/StudentRoute';
-import TeacherRoute from './components/routes/TeacherRoute';
-
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
-  return children;
-};
+// Route Protection Component
+import RoleRoute from './components/routes/RoleRoute';
 
 function App() {
   return (
@@ -75,37 +63,35 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-              {/* Shared/Generic Protected Routes */}
-              <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
-              <Route path="/contact" element={<ProtectedRoute><Layout><Contact /></Layout></ProtectedRoute>} />
-              <Route path="/support" element={<ProtectedRoute><Layout><Support /></Layout></ProtectedRoute>} />
-              <Route path="/about" element={<ProtectedRoute><Layout><About /></Layout></ProtectedRoute>} />
-              <Route path="/ide" element={<ProtectedRoute><Layout><Ide /></Layout></ProtectedRoute>} />
+              {/* Shared Protected Routes */}
+              <Route path="/profile" element={<RoleRoute><Layout><Profile /></Layout></RoleRoute>} />
+              <Route path="/contact" element={<RoleRoute><Layout><Contact /></Layout></RoleRoute>} />
+              <Route path="/support" element={<RoleRoute><Layout><Support /></Layout></RoleRoute>} />
+              <Route path="/about" element={<RoleRoute><Layout><About /></Layout></RoleRoute>} />
+              <Route path="/ide" element={<RoleRoute><Layout><Ide /></Layout></RoleRoute>} />
 
               {/* Student Routes */}
-              <Route path="/dashboard" element={<StudentRoute><Layout><Home /></Layout></StudentRoute>} />
-              <Route path="/analytics" element={<StudentRoute><Layout><Dashboard /></Layout></StudentRoute>} />
-              <Route path="/courses" element={<StudentRoute><Layout><Courses /></Layout></StudentRoute>} />
-              <Route path="/favourites" element={<StudentRoute><Layout><Favourites /></Layout></StudentRoute>} />
-              <Route path="/feedback" element={<StudentRoute><Layout><Feedback /></Layout></StudentRoute>} />
-              <Route path="/focus-mode" element={<StudentRoute><FocusMode /></StudentRoute>} />
-              <Route path="/assignments" element={<StudentRoute><Layout><Assignments /></Layout></StudentRoute>} />
-              <Route path="/attendance" element={<StudentRoute><Layout><Attendance /></Layout></StudentRoute>} />
-              <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
-              <Route path="/course-overview/:id" element={<StudentRoute><Layout><CourseOverview /></Layout></StudentRoute>} />
-              <Route path="/course/:id" element={<StudentRoute><Layout><CoursePlayer /></Layout></StudentRoute>} />
-              <Route path="/quiz/:id" element={<StudentRoute><Layout><QuizPlayer /></Layout></StudentRoute>} />
-              <Route path="/assignment/:id" element={<StudentRoute><Layout><AssignmentDetails /></Layout></StudentRoute>} />
+              <Route path="/dashboard" element={<RoleRoute allowedRoles={['student']}><Layout><Home /></Layout></RoleRoute>} />
+              <Route path="/analytics" element={<RoleRoute allowedRoles={['student']}><Layout><Dashboard /></Layout></RoleRoute>} />
+              <Route path="/courses" element={<RoleRoute allowedRoles={['student']}><Layout><Courses /></Layout></RoleRoute>} />
+              <Route path="/favourites" element={<RoleRoute allowedRoles={['student']}><Layout><Favourites /></Layout></RoleRoute>} />
+              <Route path="/feedback" element={<RoleRoute allowedRoles={['student']}><Layout><Feedback /></Layout></RoleRoute>} />
+              <Route path="/focus-mode" element={<RoleRoute allowedRoles={['student']}><FocusMode /></RoleRoute>} />
+              <Route path="/assignments" element={<RoleRoute allowedRoles={['student']}><Layout><Assignments /></Layout></RoleRoute>} />
+              <Route path="/attendance" element={<RoleRoute allowedRoles={['student']}><Layout><Attendance /></Layout></RoleRoute>} />
+              <Route path="/course-overview/:id" element={<RoleRoute allowedRoles={['student']}><Layout><CourseOverview /></Layout></RoleRoute>} />
+              <Route path="/course/:id" element={<RoleRoute allowedRoles={['student']}><Layout><CoursePlayer /></Layout></RoleRoute>} />
+              <Route path="/quiz/:id" element={<RoleRoute allowedRoles={['student']}><Layout><QuizPlayer /></Layout></RoleRoute>} />
+              <Route path="/assignment/:id" element={<RoleRoute allowedRoles={['student']}><Layout><AssignmentDetails /></Layout></RoleRoute>} />
 
               {/* Teacher Routes */}
-              <Route path="/teacher" element={<TeacherRoute><TeacherLayout /></TeacherRoute>}>
+              <Route path="/teacher" element={<RoleRoute allowedRoles={['teacher']}><TeacherLayout /></RoleRoute>}>
                 <Route index element={<Navigate to="/teacher/dashboard" replace />} />
                 <Route path="dashboard" element={<TeacherDashboard />} />
                 <Route path="courses" element={<TeacherCourses />} />
                 <Route path="course/create" element={<CreateCourse />} />
                 <Route path="course/edit/:id" element={<EditCourse />} />
                 <Route path="course/:id/students" element={<CourseStudents />} />
-                <Route path="assignments" element={<TeacherAssignments />} />
                 <Route path="assignments" element={<TeacherAssignments />} />
                 <Route path="assignment/create" element={<CreateAssignment />} />
                 <Route path="quiz/create" element={<CreateQuiz />} />
@@ -116,7 +102,7 @@ function App() {
               </Route>
 
               {/* Admin Routes */}
-              <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+              <Route path="/admin" element={<RoleRoute allowedRoles={['admin']}><AdminLayout /></RoleRoute>}>
                 <Route index element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="students" element={<ManageStudents />} />

@@ -2,8 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const axios = require('axios');
-
 
 dotenv.config();
 
@@ -55,31 +53,36 @@ app.post('/api/execute-code', async (req, res) => {
     console.log('Executing code for language:', language);
 
     // Use Piston API for code execution (free and secure)
-    const pistonResponse = await axios.post('https://emkc.org/api/v2/piston/execute', {
-      language: language,
-      version: version,
-      files: [
-        {
-          name: `main.${getFileExtension(language)}`,
-          content: code,
-        },
-      ],
-      stdin: stdin || '',
+    const pistonResponse = await fetch('https://emkc.org/api/v2/piston/execute', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        language: language,
+        version: version,
+        files: [
+          {
+            name: `main.${getFileExtension(language)}`,
+            content: code,
+          },
+        ],
+        stdin: stdin || '',
+      })
     });
 
-    console.log('Piston response:', pistonResponse.data);
-    res.json({ success: true, run: pistonResponse.data.run });
+    const data = await pistonResponse.json();
+
+    if (!pistonResponse.ok) {
+      return res.status(pistonResponse.status).json({
+        success: false,
+        error: data.message || 'Execution failed'
+      });
+    }
+
+    console.log('Piston response:', data);
+    res.json({ success: true, run: data.run });
   } catch (error) {
     console.error('Code execution error:', error.message);
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-      res.status(500).json({
-        success: false,
-        error: error.response.data.message || error.message
-      });
-    } else {
-      res.status(500).json({ success: false, error: error.message });
-    }
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

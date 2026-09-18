@@ -5,8 +5,7 @@ const Assignment = require('../models/Assignment');
 const Submission = require('../models/Submission');
 const User = require('../models/User');
 const CourseProgress = require('../models/CourseProgress');
-const { protect } = require('../middleware/authMiddleware');
-const teacherOnly = require('../middleware/teacherOnly');
+const { protect, teacherOnly } = require('../middleware/authMiddleware');
 
 // Apply middleware to all routes
 router.use(protect);

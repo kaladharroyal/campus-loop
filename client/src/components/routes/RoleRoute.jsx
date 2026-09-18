@@ -3,11 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 /**
- * Base ProtectedRoute component
- * Ensures user is authenticated before accessing protected routes
- * Redirects to login if not authenticated
+ * Unified role-based and authentication route guard
  */
-const ProtectedRoute = ({ children }) => {
+const RoleRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useAuth();
 
     if (loading) {
@@ -27,7 +25,13 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" replace />;
     }
 
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
+        if (user.role === 'teacher') return <Navigate to="/teacher/dashboard" replace />;
+        return <Navigate to="/dashboard" replace />;
+    }
+
     return children;
 };
 
-export default ProtectedRoute;
+export default RoleRoute;

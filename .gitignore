@@ -4,3 +4,10 @@ server/node_modules/
 dist/
 build/
 .DS_Store
+
+# Environment variables
+.env
+.env.*
+*.env
+server/.env
+client/.env
